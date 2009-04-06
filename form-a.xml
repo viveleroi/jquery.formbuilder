@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<form>
+<field type="radio" required="" title="aaaaa">
+<radio checked="true">yes</radio>
+<radio checked="false">no</radio>
+<radio checked="false"></radio>
+<radio checked="false"></radio>
+</field>
+<field type="select" required="" multiple="false" title="bbbbb">
+<option checked="false">yes</option>
+<option checked="true">no</option>
+</field>
+<field type="select" required="" multiple="true" title="dfgdzgzdfg">
+
+<option checked="false">cfdxfgxh</option>
+<option checked="false">fghfghh</option>
+<option checked="false">fghfgh</option>
+</field>
+</form>
