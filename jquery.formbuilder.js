@@ -1,6 +1,7 @@
 /**
  * jQuery Form Builder Plugin
  * Copyright (c) 2009 Mike Botsko, Botsko.net LLC (http://www.botsko.net)
+ * Originally designed for AspenMSM, a CMS product from Trellis Development
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * Copyright notice and license must remain intact for legal use
  * Version 0.1
@@ -16,24 +17,18 @@
 		};
 		var opts = $.extend(defaults, options);
 		
-		
-		// Begin the core plugin
 		return this.each(function() {
 			var ul_obj = this;
 			
 			var field = '';
 			var field_type = '';
 			var last_id = 1;
-			
-			
-			/**
-			 * LOAD ANY EXISTING XML DATA, GENERATE NEW FORM EDITOR FROM CONTENT
-			 */
+
+			// load existing form data
 			if(opts.load_url){
 				$.ajax({
 					type: "GET",
 					url: opts.load_url,
-					data: 'id='+$('#id').val(),
 					success: function(xml){
 						
 						var values = '';
@@ -82,9 +77,7 @@
 								values = $(this).text();
 							}
 							
-							required = $(this).attr('required');
-
-							appendNewField( $(this).attr('type'), values, options, required );
+							appendNewField( $(this).attr('type'), values, options, $(this).attr('required') );
 							
 						});
 					}
@@ -115,20 +108,7 @@
 			$('#field_control').change(function(){
 				appendNewField($(this).val());
 				$(this).val(0).blur();
-			});
-			
-			// Register delete item actions
-/*
-			$('.remove').live('click', function(){
-				
-				
-				confirm( $(this).attr('title'), function () {
-					$(this).parent().animate({opacity: 'hide', height: 'hide'}, 'slow').remove();
-				});
-				return false;
-			});
-*/
-			
+			});	
 			
 			/**
 			 * ADDING NEW FIELDS
@@ -356,7 +336,7 @@
 							
 				var li = '';
 				li += '<li id="frm-'+last_id+'-item" class="'+field_type+'">';
-				li += '<div class="legend"><a id="frm-'+last_id+'" class="toggle-form open" href="#">Hide</a> <strong id="txt-title-'+last_id+'">'+title+'</strong> <a class="help" href="'+help+'" title="'+title+'">Help</a></div>';
+				li += '<div class="legend"><a id="frm-'+last_id+'" class="toggle-form" href="#">Hide</a> <strong id="txt-title-'+last_id+'">'+title+'</strong> <a class="help" href="'+help+'" title="'+title+'">Help</a></div>';
 				li += '<div id="frm-'+last_id+'-fld" class="frm-holder">';
 				li += '<div class="frm-elements">';
 				li += '<div class="frm-fld"><label for="required-'+last_id+'">Required?</label><input class="required" type="checkbox" value="1" name="required-'+last_id+'" id="required-'+last_id+'"'+(required ? ' checked="checked"' : '')+' /></div>';
@@ -373,6 +353,7 @@
 				last_id++;
 			}
 			
+			// handle field delete links
 			$('.remove').live('click', function(){
 				$(this).parent('div').animate({opacity: 'hide', height: 'hide', marginBottom: '0px'}, 'fast', function () {
 					$(this).remove();
@@ -380,55 +361,65 @@
 				return false;
 			});
 			
-			$('.delete-confirm').live('click', function() {
-				var delete_id = $(this).attr("id").replace(/del_/, '');
-				confirm( $(this).attr('title'), function () {
-					$('#frm-'+delete_id+'-item').animate({opacity: 'hide', height: 'hide', marginBottom: '0px'}, 'slow', function () {
-						$(this).remove();
-					});
-				});
+			// handle field display/hide
+			$('.toggle-form').live('click', function(){
+				var target = $(this).attr("id");
+				if($(this).html() == 'Hide'){
+					$(this).removeClass('open').addClass('closed').html('Show');
+					$('#' + target + '-fld').animate({opacity: 'hide', height: 'hide'}, 'slow');
+					return false;
+				}
+				if($(this).html() == 'Show'){
+					$(this).removeClass('closed').addClass('open').html('Hide');
+					$('#' + target + '-fld').animate({opacity: 'show', height: 'show'}, 'slow');
+					return false;
+				}
 				return false;
 			});
 			
+			// handle delete confirmation
+			$('.delete-confirm').live('click', function() {
+				var delete_id = $(this).attr("id").replace(/del_/, '');
+				if(confirm( $(this).attr('title') )){
+					$('#frm-'+delete_id+'-item').animate({opacity: 'hide', height: 'hide', marginBottom: '0px'}, 'slow', function () {
+						$(this).remove();
+					});
+				}
+				return false;
+			});
 			
 			// saves the serialized data to the server 
 			var save = function(){
 				if(opts.save_url){
-					if($('#title').val() != ''){
-						status();
 						
-						var post_data = 'id='+$('#id').val();
-						post_data += '&title='+$('#title').val();
-						post_data += '&email='+$('#email').val();
-						post_data += '&email_to_user='+$('#email_to_user').attr('checked');
-						post_data += '&email_to_user_text='+$('#email_to_user_text').val();
-						post_data += '&email_form_to_user='+$('#email_form_to_user').attr('checked');
-						post_data += '&return_page='+$('#return_page').val();
-						post_data += $(ul_obj).serializeFormList();
-						
-						$.ajax({
-							type: "POST",
-							url: opts.save_url,
-							data: post_data,
-							success: function(xml){
-							}
-						});
-					} else {
-						alert('You must enter a form title before saving.');
-					}
+					var post_data = 'id='+$('#id').val();
+					post_data += $(ul_obj).serializeFormList();
+					
+					$.ajax({
+						type: "POST",
+						url: opts.save_url,
+						data: post_data,
+						success: function(xml){
+						}
+					});
 				}
 			}
-			
-
 		});
 	};
 })(jQuery);
 
-
+/**
+ * jQuery Form Builder List Serialization Plugin
+ * Copyright (c) 2009 Mike Botsko, Botsko.net LLC (http://www.botsko.net)
+ * Originally designed for AspenMSM, a CMS product from Trellis Development
+ * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
+ * Copyright notice and license must remain intact for legal use
+ */
 (function($){
 	$.fn.serializeFormList = function(options) {
 		/**
 		 * Modified from the serialize list plugin
+		 * http://www.botsko.net/blog/2009/01/jquery_serialize_list_plugin/
 		 */
 		// Extend the configuration options with user-provided
 		var defaults = {
@@ -503,7 +494,7 @@
 									}
 									c++;
 								});
-								break;
+							break;
 						}
 						
 					}
