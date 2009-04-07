@@ -18,11 +18,10 @@
 		var opts = $.extend(defaults, options);
 		
 		return this.each(function() {
-			var ul_obj = this;
-			
-			var field = '';
-			var field_type = '';
-			var last_id = 1;
+			var ul_obj 		= this;
+			var field 		= '';
+			var field_type 	= '';
+			var last_id 	= 1;
 
 			// load existing form data
 			if(opts.load_url){
@@ -31,42 +30,39 @@
 					url: opts.load_url,
 					success: function(xml){
 						
-						var values = '';
-						var options = false;
-						var required = false;
+						var values 		= '';
+						var options 	= false;
+						var required 	= false;
 			
 						$(xml).find('field').each(function(){
 							// checkbox type
 							if($(this).attr('type') == 'checkbox'){
-								options = new Array;
-								options[0] = $(this).attr('title');
-								
-								values = new Array;
+								options 	= new Array;
+								options[0] 	= $(this).attr('title');
+								values 		= new Array;
 								$(this).find('checkbox').each(function(a){
-									values[a] = new Array(2);
+									values[a] 	 = new Array(2);
 									values[a][0] = $(this).text();
 									values[a][1] = $(this).attr('checked');
 								});
 							}
 							// radio type
 							else if($(this).attr('type') == 'radio'){
-								options = new Array;
-								options[0] = $(this).attr('title');
-								
-								values = new Array;
+								options 	= new Array;
+								options[0] 	= $(this).attr('title');
+								values 		= new Array;
 								$(this).find('radio').each(function(a){
-									values[a] = new Array(2);
+									values[a] 	 = new Array(2);
 									values[a][0] = $(this).text();
 									values[a][1] = $(this).attr('checked');
 								});
 							}
 							// select type
 							else if($(this).attr('type') == 'select'){
-								options = new Array;
-								options[0] = $(this).attr('title');
-								options[1] = $(this).attr('multiple');
-								
-								values = new Array;
+								options 	= new Array;
+								options[0]  = $(this).attr('title');
+								options[1]  = $(this).attr('multiple');
+								values 		= new Array;
 								$(this).find('option').each(function(a){
 									values[a] = new Array(2);
 									values[a][0] = $(this).text();
@@ -84,17 +80,12 @@
 				});
 			}
 			
-			
-			/**
-			 * PREPARE THE DOM FOR THE FORM EDITOR
-			 */
+
 			// set the form save action
-			$('#save-form').click(function(){
+			$(this).after($('<button id="save-form" type="submit" name="submit">Save</button>').click(function(){
 				save();
 				return false;
-			});
-			
-		//	$(this).after('<div id="form-bot"></div>');
+			}));
 			
 			// Create form control select box and add into the editor
 			var select = '';
@@ -113,19 +104,13 @@
 				return false;
 			});	
 			
-			
-			/**
-			 * ADDING NEW FIELDS
-			 */
 			// Wrapper for adding a new field
 			var appendNewField = function(type, values, options, required){
 				
 				field = '';
 				field_type = type;
 				
-				if(typeof(values) == 'undefined'){
-					values = '';
-				}
+				if(typeof(values) == 'undefined'){ values = ''; }
 				
 				switch(type){
 					case 'input_text':
@@ -229,9 +214,7 @@
 			var appendRadioGroup = function(values, options, required){
 				
 				var title = '';
-				if(typeof(options) == 'object'){
-					title = options[0];
-				}
+				if(typeof(options) == 'object'){ title = options[0]; }
 
 				field += '<div class="rd_group">';
 				field += '<div class="frm-fld"><label>Title:</label>';
@@ -334,9 +317,7 @@
 			// Appends the new field markup to the editor
 			var appendFieldLi = function(title, field_html, required, help){
 				
-				if(required){
-					required = required == 'true' ? true : false;
-				}
+				if(required){ required = required == 'true' ? true : false; }
 							
 				var li = '';
 				li += '<li id="frm-'+last_id+'-item" class="'+field_type+'">';
@@ -395,16 +376,11 @@
 			// saves the serialized data to the server 
 			var save = function(){
 				if(opts.save_url){
-						
-					var post_data = $(ul_obj).serializeFormList();
-					
 					$.ajax({
 						type: "POST",
 						url: opts.save_url,
-						data: post_data,
-						success: function(xml){
-							// success here
-						}
+						data: $(ul_obj).serializeFormList(),
+						success: function(xml){  }
 					});
 				}
 			}
@@ -418,13 +394,11 @@
  * Originally designed for AspenMSM, a CMS product from Trellis Development
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * Copyright notice and license must remain intact for legal use
+ * Modified from the serialize list plugin
+ * http://www.botsko.net/blog/2009/01/jquery_serialize_list_plugin/
  */
 (function($){
 	$.fn.serializeFormList = function(options) {
-		/**
-		 * Modified from the serialize list plugin
-		 * http://www.botsko.net/blog/2009/01/jquery_serialize_list_plugin/
-		 */
 		// Extend the configuration options with user-provided
 		var defaults = {
 			prepend: 'ul',
@@ -500,7 +474,6 @@
 								});
 							break;
 						}
-						
 					}
 				}
 				li_count++;
