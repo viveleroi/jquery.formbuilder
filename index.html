@@ -12,12 +12,12 @@
 		<script type="text/javascript" src="jquery.formbuilder.js"></script>
 		
 		<script type="text/javascript">
-		$(document).ready(function(){
-			$('#form-builder').formbuilder({
-				'save_url': '',
-				'load_url': 'form-a.xml'
-			});
-		});
+$(document).ready(function(){
+	$('#form-builder').formbuilder({
+		'save_url': 'save.php',
+		'load_url': 'form-a.xml'
+	});
+});
 		</script>
 		
 	</head>
@@ -25,13 +25,15 @@
 		
 		<h1>jQuery Form Builder Plugin</h1>
 		
-		<p>This is a demonstration of a jQuery plugin we've developed for our custom CMS product at Trellis Development. It's entirely written in javascript, and loads form construction information through an XML file. In this demo, the xml file is an example but in the real product it's generated on the backend by PHP.</p>
+		<p>This is a demonstration of a jQuery (1.3+) plugin we've developed for our custom CMS product at Trellis Development. It's entirely written in javascript, and loads form construction information through an XML file. In this demo, the xml file is an example but in the real product it's generated on the backend by PHP.</p>
 		
 		<p>This entire form builder is generated for us &ndash; all we needed to do give it the id of UL and a location for where to load/save the data. Just check out the source!</p>
 		
+		<p>For the nice scrolling, formbuilder uses the jQuery.scrollTo plugin.</p>
+		
 		<div id="form-wrap">
 			<ul id="form-builder"></ul>
-			<div id="form-bot"></div>
+			<button id="save-form" type="submit" name="submit">Save</button>
 		<div>
 	</body>
 </html>
