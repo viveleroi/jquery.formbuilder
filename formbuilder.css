@@ -1,12 +1,9 @@
-
+/* Demo css for jQuery form builder plugin */
 a, body { font-family: "Tahoma", "Verdana", sans-serif; font-size: 12px; }
-
 #form-wrap { width: 600px; }
 #form-builder li { background-color: #CFCFCF; margin-bottom: 5px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 #form-builder .legend { padding: 5px;}
-
 .field_control { margin-left: 40px; }
-
 .frm-elements { background-color: rgba(255,255,255,0.70); margin: 0 4px 4px 4px; padding: 9px; -moz-border-radius: 3px; -webkit-border-radius: 3px; }
 .frm-elements label { width: 120px; float: left; margin: 0 15px; line-height: 24px; }
 .frm-elements .false-label { width: 120px; float: left; margin: 0 15px; font-size: 10px; text-transform: uppercase; font-weight: bold; line-height: 24px; }
@@ -23,5 +20,4 @@ a, body { font-family: "Tahoma", "Verdana", sans-serif; font-size: 12px; }
 .frm-elements:after, .frm-fld:after  {content:".";display:block;height:0;clear:both;visibility:hidden;}
 .frm-elements, .frm-fld {display:inline-block;}
 .frm-elements, .frm-fld {display:block;}
-
 .del-button { padding: 5px 0 10px 15px; display:block; clear:both; width: 50px; }

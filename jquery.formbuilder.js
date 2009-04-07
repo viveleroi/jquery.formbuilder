@@ -1,12 +1,12 @@
 /**
  * jQuery Form Builder Plugin
  * Copyright (c) 2009 Mike Botsko, Botsko.net LLC (http://www.botsko.net)
+ * http://www.botsko.net/blog/2009/04/jquery-form-builder-plugin/
  * Originally designed for AspenMSM, a CMS product from Trellis Development
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * Copyright notice and license must remain intact for legal use
  * Version 0.1
  */
-
 (function($){
 	$.fn.formbuilder = function(options) {
 		
@@ -22,6 +22,8 @@
 			var field 		= '';
 			var field_type 	= '';
 			var last_id 	= 1;
+			
+			$(ul_obj).html('');
 
 			// load existing form data
 			if(opts.load_url){
