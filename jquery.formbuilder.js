@@ -94,21 +94,25 @@
 				return false;
 			});
 			
+		//	$(this).after('<div id="form-bot"></div>');
+			
 			// Create form control select box and add into the editor
 			var select = '';
-			select += '<select name="field_control" id="field_control">';
 			select += '<option value="0">Add New Field...</option>';
 			select += '<option value="input_text">Text</option>';
 			select += '<option value="textarea">Paragraph</option>';
 			select += '<option value="checkbox">Checkboxes</option>';
 			select += '<option value="radio">Radio</option>';
 			select += '<option value="select">Select List</option>';
-			select += '</select>';
-			$('.toolbox').append(select);
-			$('#field_control').change(function(){
+			$(this).before('<select name="field_control_top" class="field_control">'+select+'</select>');
+			$(this).after('<select name="field_control_bot" class="field_control">'+select+'</select>');
+			$('.field_control').change(function(){
 				appendNewField($(this).val());
 				$(this).val(0).blur();
+				$().scrollTo($('#frm-'+(last_id-1)+'-item'), 800);
+				return false;
 			});	
+			
 			
 			/**
 			 * ADDING NEW FIELDS
@@ -336,13 +340,13 @@
 							
 				var li = '';
 				li += '<li id="frm-'+last_id+'-item" class="'+field_type+'">';
-				li += '<div class="legend"><a id="frm-'+last_id+'" class="toggle-form" href="#">Hide</a> <strong id="txt-title-'+last_id+'">'+title+'</strong> <a class="help" href="'+help+'" title="'+title+'">Help</a></div>';
+				li += '<div class="legend"><a id="frm-'+last_id+'" class="toggle-form" href="#">Hide</a> <strong id="txt-title-'+last_id+'">'+title+'</strong></div>';
 				li += '<div id="frm-'+last_id+'-fld" class="frm-holder">';
 				li += '<div class="frm-elements">';
 				li += '<div class="frm-fld"><label for="required-'+last_id+'">Required?</label><input class="required" type="checkbox" value="1" name="required-'+last_id+'" id="required-'+last_id+'"'+(required ? ' checked="checked"' : '')+' /></div>';
 				li += field;
 				li += '</div>';
-				li += '<a id="del_'+last_id+'" class="dark-button delete-confirm" href="#"  title="Are you sure you want to delete this form section?"><span>Delete</span></a>'
+				li += '<a id="del_'+last_id+'" class="del-button delete-confirm" href="#"  title="Are you sure you want to delete this form section?"><span>Delete</span></a>'
 				li += '</div>';
 				li += '</li>';
 				
