@@ -396,14 +396,14 @@
 			var save = function(){
 				if(opts.save_url){
 						
-					var post_data = 'id='+$('#id').val();
-					post_data += $(ul_obj).serializeFormList();
+					var post_data = $(ul_obj).serializeFormList();
 					
 					$.ajax({
 						type: "POST",
 						url: opts.save_url,
 						data: post_data,
 						success: function(xml){
+							// success here
 						}
 					});
 				}
