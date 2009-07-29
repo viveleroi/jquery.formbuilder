@@ -335,7 +335,7 @@
 				
 				$(ul_obj).append(li);
 				$('#frm-'+last_id+'-item').hide();
-				$('#frm-'+last_id+'-item').animate({opacity: 'show', height: 'show', marginBottom: 35}, 'slow');
+				$('#frm-'+last_id+'-item').animate({opacity: 'show', height: 'show'}, 'slow');
 				
 				last_id++;
 			}
