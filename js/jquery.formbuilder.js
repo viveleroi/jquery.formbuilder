@@ -5,7 +5,6 @@
  * Originally designed for AspenMSM, a CMS product from Trellis Development
  * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * Copyright notice and license must remain intact for legal use
- * Version 0.1
  */
 (function($){
 	$.fn.formbuilder = function(options) {

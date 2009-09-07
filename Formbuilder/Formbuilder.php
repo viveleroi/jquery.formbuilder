@@ -68,9 +68,9 @@ class Formbuilder {
 
 		$form = is_array($form) ? $form : array();
 
-		if(array_key_exists('form_hash', $form)){
-			$this->_hash = $form['form_hash'];
-		}
+//		if(array_key_exists('form_hash', $form)){
+//			$this->_hash = $form['form_hash'];
+//		}
 
 		// Set the serialized structure if it's provided
 		// otherwise, store the source
@@ -78,12 +78,13 @@ class Formbuilder {
 
 			$this->_container = $form; // set the form as the container
 			$this->_structure_ser = $form['form_structure']; // pull the serialized form
+			$this->_hash = $this->hash(); // hash the current structure
 			$this->_structure = $this->retrieve(); // unserialize the form as the raw structure
 			
 		} else {
 			$this->_structure = $form; // since the form is from POST, set it as the raw array
 			$this->_structure_ser = $this->store(); // serialize it
-			$this->_hash = $ths->hash();
+			$this->_hash = $this->hash(); // hash the current structure
 			$this->rebuild_container(); // rebuild a new container
 		}
 	}
@@ -125,7 +126,7 @@ class Formbuilder {
 	 * @return string
 	 * @access private
 	 */
-	private function hash(){
+	public function hash(){
 		return sha1($this->_structure_ser);
 	}
 
@@ -138,9 +139,9 @@ class Formbuilder {
 	 * @access public
 	 */
 	public function retrieve(){
-		if(is_array($containing_form_array) && array_key_exists('form_hash', $form)){
-			if($form['form_hash'] != $this->hash($containing_form_array['form_structure'])){
-				return unserialize($containing_form_array['form_structure']);
+		if(is_array($this->_container) && array_key_exists('form_hash', $this->_container)){
+			if($this->_container['form_hash'] == $this->hash($this->_container['form_structure'])){
+				return unserialize($this->_container['form_structure']);
 			}
 		}
 		return false;
