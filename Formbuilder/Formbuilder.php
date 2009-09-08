@@ -68,10 +68,6 @@ class Formbuilder {
 
 		$form = is_array($form) ? $form : array();
 
-//		if(array_key_exists('form_hash', $form)){
-//			$this->_hash = $form['form_hash'];
-//		}
-
 		// Set the serialized structure if it's provided
 		// otherwise, store the source
 		if(array_key_exists('form_structure', $form)){
@@ -166,20 +162,20 @@ class Formbuilder {
 
 				// input type="text"
 				if($field['class'] == "input_text"){
-					$xml .= sprintf('<field type="input_text" required="%s">%s</field>'."\n", $field['required'], $this->APP->xml->encode_for_xml($field['values']));
+					$xml .= sprintf('<field type="input_text" required="%s">%s</field>'."\n", $field['required'], $this->encode_for_xml($field['values']));
 				}
 
 				// textarea
 				if($field['class'] == "textarea"){
-					$xml .= sprintf('<field type="textarea" required="%s">%s</field>'."\n", $field['required'], $this->APP->xml->encode_for_xml($field['values']));
+					$xml .= sprintf('<field type="textarea" required="%s">%s</field>'."\n", $field['required'], $this->encode_for_xml($field['values']));
 				}
 
 				// input type="checkbox"
 				if($field['class'] == "checkbox"){
-					$xml .= sprintf('<field type="checkbox" required="%s" title="%s">'."\n", $field['required'], (isset($field['title']) ? $this->APP->xml->encode_for_xml($field['title']) : ''));
+					$xml .= sprintf('<field type="checkbox" required="%s" title="%s">'."\n", $field['required'], (isset($field['title']) ? $this->encode_for_xml($field['title']) : ''));
 					if(is_array($field['values'])){
 						foreach($field['values'] as $input){
-							$xml .= sprintf('<checkbox checked="%s">%s</checkbox>'."\n", $input['default'], $this->APP->xml->encode_for_xml($input['value']));
+							$xml .= sprintf('<checkbox checked="%s">%s</checkbox>'."\n", $input['default'], $this->encode_for_xml($input['value']));
 						}
 					}
 					$xml .= '</field>'."\n";
@@ -187,10 +183,10 @@ class Formbuilder {
 
 				// input type="radio"
 				if($field['class'] == "radio"){
-					$xml .= sprintf('<field type="radio" required="%s" title="%s">'."\n", $field['required'], (isset($field['title']) ? $this->APP->xml->encode_for_xml($field['title']) : ''));
+					$xml .= sprintf('<field type="radio" required="%s" title="%s">'."\n", $field['required'], (isset($field['title']) ? $this->encode_for_xml($field['title']) : ''));
 					if(is_array($field['values'])){
 						foreach($field['values'] as $input){
-							$xml .= sprintf('<radio checked="%s">%s</radio>'."\n", $input['default'], $this->APP->xml->encode_for_xml($input['value']));
+							$xml .= sprintf('<radio checked="%s">%s</radio>'."\n", $input['default'], $this->encode_for_xml($input['value']));
 						}
 					}
 					$xml .= '</field>'."\n";
@@ -198,10 +194,10 @@ class Formbuilder {
 
 				// select
 				if($field['class'] == "select"){
-					$xml .= sprintf('<field type="select" required="%s" multiple="%s" title="%s">'."\n", $field['required'], $field['multiple'], (isset($field['title']) ? $this->APP->xml->encode_for_xml($field['title']) : ''));
+					$xml .= sprintf('<field type="select" required="%s" multiple="%s" title="%s">'."\n", $field['required'], $field['multiple'], (isset($field['title']) ? $this->encode_for_xml($field['title']) : ''));
 					if(is_array($field['values'])){
 						foreach($field['values'] as $input){
-							$xml .= sprintf('<option checked="%s">%s</option>'."\n", $input['default'], $this->APP->xml->encode_for_xml($input['value']));
+							$xml .= sprintf('<option checked="%s">%s</option>'."\n", $input['default'], $this->encode_for_xml($input['value']));
 						}
 					}
 					$xml .= '</field>'."\n";
@@ -211,9 +207,30 @@ class Formbuilder {
 
 		$xml .= '</form>'."\n";
 
-		header("Content-Type: text/xml");
-		print $xml;
+//		header("Content-Type: text/xml");
+//		print $xml;
 
+		return $xml;
+
+
+	}
+
+
+	/**
+	 * @abstract Encodes strings for xml. 
+	 * @param string $string
+	 * @return string
+	 */
+	private function encode_for_xml($string){
+
+		$string = html_entity_decode($string, ENT_NOQUOTES, 'UTF-8');
+		$string = htmlentities($string, ENT_NOQUOTES, 'UTF-8');
+
+		//	manually add back in html
+		$string = str_replace("&lt;", "<", $string);
+		$string = str_replace("&gt;", ">", $string);
+
+		return $string;
 
 	}
 

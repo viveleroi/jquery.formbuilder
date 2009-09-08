@@ -90,6 +90,23 @@ class FormbuilderTest extends PHPUnit_Framework_TestCase {
 								)
 							);
 
+	private $_form_xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<form>
+<field type="input_text" required="false">Name</field>
+<field type="input_text" required="true">E-mail Address?</field>
+<field type="checkbox" required="false" title="Choose any:">
+<checkbox checked="true">PHP</checkbox>
+<checkbox checked="true">jQuery</checkbox>
+<checkbox checked="true">XML</checkbox>
+<checkbox checked="false">Aspen</checkbox>
+</field>
+<field type="radio" required="true" title="Choose one:">
+<radio checked="true">Yes</radio>
+<radio checked="false">No</radio>
+</field>
+</form>
+';
+
 
 //	public function test_First() {
 //		$this->markTestIncomplete ( "test_First test not implemented" );
@@ -113,6 +130,12 @@ class FormbuilderTest extends PHPUnit_Framework_TestCase {
 	public function test_Retrieve() {
 		$form = new Formbuilder($this->_container);
 		$this->assertEquals($this->_form_array, $form->retrieve());
+	}
+
+
+	public function test_RenderXml() {
+		$form = new Formbuilder($this->_container);
+		$this->assertEquals($this->_form_xml, $form->render_xml());
 	}
 
 }
