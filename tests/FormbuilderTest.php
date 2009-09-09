@@ -135,7 +135,7 @@ class FormbuilderTest extends PHPUnit_Framework_TestCase {
 
 	public function test_RenderXml() {
 		$form = new Formbuilder($this->_container);
-		$this->assertEquals($this->_form_xml, $form->render_xml());
+		$this->assertEquals($this->_form_xml, $form->generate_xml());
 	}
 
 }

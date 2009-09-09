@@ -145,13 +145,22 @@ class Formbuilder {
 
 
 	/**
-	 * Builds an xml file that the jquery plugin will parse for form admin
+	 * 
+	 */
+	public function render_xml(){
+		header("Content-Type: text/xml");
+		print $this->generate_xml();
+	}
+
+
+	/**
+	 * Builds an xml structure that the jquery plugin will parse for form admin
 	 * structure. Right now we're just building the xml the old fashioned way
 	 * so that we're not dependant on DOMDocument or something.
 	 *
 	 * @access public
 	 */
-	public function render_xml(){
+	public function generate_xml(){
 
 		// begin forming the xml
 		$xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'."\n";
@@ -207,11 +216,7 @@ class Formbuilder {
 
 		$xml .= '</form>'."\n";
 
-//		header("Content-Type: text/xml");
-//		print $xml;
-
 		return $xml;
-
 
 	}
 
@@ -325,289 +330,288 @@ class Formbuilder {
 //		}
 //	}
 
-//
-//public function displaySection($section){
-//
-//		if(!empty($section['title']) && $section['show_title']){
-//			print "\n" . '<h3>' . htmlentities($section['title'], ENT_QUOTES, 'UTF-8') . '</h3>' . "\n";
-//		}
-//
-//		if(is_array($section['form'])){
-//			if(sha1($section['form']['structure']) == $section['form']['hash']){
-//
-//				if($this->validation_errors){
-//					print '<div class="frm-warning">' . "\n";
-//					print '<ol>' . "\n";
-//					print $this->validation_errors;
-//					print '</ol>' . "\n";
-//					print '</div>' . "\n";
-//				}
-//
-//				print '<form class="frm-bldr" method="post" action="'.$this->APP->cms_lib->url().'">' . "\n";
-//				printf('<input type="hidden" name="form_id" id="form_%s" value="%1$s" />'."\n", $section['form']['id']);
-//				printf('<ol id="%s">'."\n", $this->APP->router->encodeForRewriteUrl(strtolower($section['form']['title'])));
-//
-//				$form = unserialize($section['form']['structure']);
-//				if(is_array($form)){
-//					foreach($form as $field){
-//
-//						print $this->loadField($field);
-//
-//					}
-//				}
-//
-//				printf('<li class="btn-submit"><input type="submit" name="submit" value="%s" /></li>' . "\n", 'Submit');
-//				print '</ol>' . "\n";
-//				print '</form>' . "\n";
-//
-//			}
-//		}
-//	}
-//
-///**
-//	 * @abstract Loads a new field based on its type
-//	 * @param array $field
-//	 * @return string
-//	 * @access private
-//	 */
-//	private function loadField($field){
-//
-//		if(is_array($field) && isset($field['class'])){
-//
-//			switch($field['class']){
-//
-//				case 'input_text':
-//					return $this->loadInputText($field);
-//					break;
-//				case 'textarea':
-//					return $this->loadTextarea($field);
-//					break;
-//				case 'checkbox':
-//					return $this->loadCheckboxGroup($field);
-//					break;
-//				case 'radio':
-//					return $this->loadRadioGroup($field);
-//					break;
-//				case 'select':
-//					return $this->loadSelectBox($field);
-//					break;
-//			}
-//		}
-//
-//		return false;
-//
-//	}
-//
-//
-//	/**
-//	 *
-//	 * @param <type> $key
-//	 * @return <type>
-//	 */
-//	private function getPostValue($key){
-//		return $this->APP->params->post->getRaw($key);
-//	}
-//
-//
-//	/**
-//	 * @abstract Returns html for a textarea
-//	 * @param array $field Field values from database
-//	 * @return string
-//	 * @access private
-//	 */
-//	private function loadTextarea($field){
-//
-//		$field['required'] = $field['required'] == 'true' ? ' required' : false;
-//
-//		$html = '';
-//		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['values']));
-//		$html .= sprintf('<label for="%s">%s</label>' . "\n", $this->elemId($field['values']), $field['values']);
-//		$html .= sprintf('<textarea id="%s" name="%s" rows="5" cols="50">%s</textarea>' . "\n",
-//								$this->elemId($field['values']),
-//								$this->elemId($field['values']),
-//								$this->getPostValue($this->elemId($field['values'])));
-//		$html .= '</li>' . "\n";
-//
-//		return $html;
-//
-//	}
-//
-//
-//	/**
-//	 * @abstract Returns html for an input type="text"
-//	 * @param array $field Field values from database
-//	 * @return string
-//	 * @access private
-//	 */
-//	private function loadInputText($field){
-//
-//		$field['required'] = $field['required'] == 'true' ? ' required' : false;
-//
-//		$html = '';
-//		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['values']));
-//		$html .= sprintf('<label for="%s">%s</label>' . "\n", $this->elemId($field['values']), $field['values']);
-//		$html .= sprintf('<input type="text" id="%s" name="%s" value="%s" />' . "\n",
-//								$this->elemId($field['values']),
-//								$this->elemId($field['values']),
-//								$this->getPostValue($this->elemId($field['values'])));
-//		$html .= '</li>' . "\n";
-//
-//		return $html;
-//
-//	}
-//
-//
-//	/**
-//	 * @abstract Returns html for an input type="text"
-//	 * @param array $field Field values from database
-//	 * @return string
-//	 * @access private
-//	 */
-//	private function loadCheckboxGroup($field){
-//
-//		$field['required'] = $field['required'] == 'true' ? ' required' : false;
-//
-//		$html = '';
-//		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['title']));
-//
-//		if(isset($field['title']) && !empty($field['title'])){
-//			$html .= sprintf('<span class="false_label">%s</span>' . "\n", $field['title']);
-//		}
-//
-//		if(isset($field['values']) && is_array($field['values'])){
-//			$html .= sprintf('<span class="multi-row clearfix">') . "\n";
-//			foreach($field['values'] as $item){
-//
-//				// set the default checked value
-//				$checked = $item['default'] == 'true' ? true : false;
-//
-//				// load post value
-//				$val = $this->getPostValue($this->elemId($item['value']));
-//				$checked = !empty($val);
-//
-//				// if checked, set html
-//				$checked = $checked ? ' checked="checked"' : '';
-//
-//				$checkbox 	= '<span class="row clearfix"><input type="checkbox" id="%s-%s" name="%s-%s" value="%s"%s /><label for="%s-%s">%s</label></span>' . "\n";
-//				$html .= sprintf($checkbox, $this->elemId($field['title']), $this->elemId($item['value']), $this->elemId($field['title']), $this->elemId($item['value']), $item['value'], $checked, $this->elemId($field['title']), $this->elemId($item['value']), $item['value']);
-//			}
-//			$html .= sprintf('</span>') . "\n";
-//		}
-//
-//		$html .= '</li>' . "\n";
-//
-//		return $html;
-//
-//	}
-//
-//
-//	/**
-//	 * @abstract Returns html for an input type="text"
-//	 * @param array $field Field values from database
-//	 * @return string
-//	 * @access private
-//	 */
-//	private function loadRadioGroup($field){
-//
-//		$field['required'] = $field['required'] == 'true' ? ' required' : false;
-//
-//		$html = '';
-//
-//		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['title']));
-//
-//		if(isset($field['title']) && !empty($field['title'])){
-//			$html .= sprintf('<span class="false_label">%s</span>' . "\n", $field['title']);
-//		}
-//
-//		if(isset($field['values']) && is_array($field['values'])){
-//			$html .= sprintf('<span class="multi-row">') . "\n";
-//			foreach($field['values'] as $item){
-//
-//				// set the default checked value
-//				$checked = $item['default'] == 'true' ? true : false;
-//
-//				// load post value
-//				$val = $this->getPostValue($this->elemId($field['title']));
-//				$checked = !empty($val);
-//
-//				// if checked, set html
-//				$checked = $checked ? ' checked="checked"' : '';
-//
-//				$radio 		= '<span class="row clearfix"><input type="radio" id="%s-%s" name="%1$s" value="%s"%s /><label for="%1$s-%2$s">%3$s</label></span>' . "\n";
-//				$html .= sprintf($radio,
-//										$this->elemId($field['title']),
-//										$this->elemId($item['value']),
-//										$item['value'],
-//										$checked);
-//			}
-//			$html .= sprintf('</span>') . "\n";
-//		}
-//
-//		$html .= '</li>' . "\n";
-//
-//		return $html;
-//
-//	}
-//
-//
-//	/**
-//	 * @abstract Returns html for an input type="text"
-//	 * @param array $field Field values from database
-//	 * @return string
-//	 * @access private
-//	 */
-//	private function loadSelectBox($field){
-//
-//		$field['required'] = $field['required'] == 'true' ? ' required' : false;
-//
-//		$html = '';
-//
-//		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['values']));
-//
-//		if(isset($field['title']) && !empty($field['title'])){
-//			$html .= sprintf('<label for="%s">%s</label>' . "\n", $this->elemId($field['title']), $field['title']);
-//		}
-//
-//		if(isset($field['values']) && is_array($field['values'])){
-//			$multiple = $field['multiple'] == "true" ? ' multiple="multiple"' : '';
-//			$html .= sprintf('<select name="%s" id="%s"%s>' . "\n", $this->elemId($field['title']), $this->elemId($field['title']), $multiple);
-//
-//			foreach($field['values'] as $item){
-//
-//				// set the default checked value
-//				$checked = $item['default'] == 'true' ? true : false;
-//
-//				// load post value
-//				$val = $this->getPostValue($this->elemId($field['title']));
-//				$checked = !empty($val);
-//
-//				// if checked, set html
-//				$checked = $checked ? ' checked="checked"' : '';
-//
-//				$option 	= '<option value="%s"%s>%s</option>' . "\n";
-//				$html .= sprintf($option, $item['value'], $checked, $item['value']);
-//			}
-//
-//			$html .= '</select>' . "\n";
-//			$html .= '</li>' . "\n";
-//
-//		}
-//
-//		return $html;
-//
-//	}
-//
-//
-//	/**
-//	 * @abstract Generates an html-safe element id using it's label
-//	 * @param string $label
-//	 * @return string
-//	 * @access private
-//	 */
-//	private function elemId($label){
-//		return strtolower( ereg_replace("[^A-Za-z0-9_]", "", str_replace(" ", "_", $label) ) );
-//	}
 
+	/**
+	 *
+	 */
+	public function render_html(){
+		print $this->generate_html();
+	}
+
+
+	/**
+	 *
+	 * @param <type> $form_action
+	 * @return <type> 
+	 */
+	public function generate_html($form_action = false){
+
+		$html = '';
+
+		$form_action = $form_action ? $form_action : $_SERVER['PHP_SELF'];
+
+		if(is_array($this->_structure)){
+	
+			$html .= '<form class="frm-bldr" method="post" action="'.$form_action.'">' . "\n";
+			$html .= '<ol>'."\n";
+
+			foreach($this->_structure as $field){
+				$html .= $this->loadField($field);
+			}
+			
+			$html .= '<li class="btn-submit"><input type="submit" name="submit" value="Submit" /></li>' . "\n";
+			$html .=  '</ol>' . "\n";
+			$html .=  '</form>' . "\n";
+			
+		}
+
+		return $html;
+
+	}
+
+
+	/**
+	 * @abstract Loads a new field based on its type
+	 * @param array $field
+	 * @return string
+	 * @access private
+	 */
+	private function loadField($field){
+
+		if(is_array($field) && isset($field['class'])){
+
+			switch($field['class']){
+
+				case 'input_text':
+					return $this->loadInputText($field);
+					break;
+				case 'textarea':
+					return $this->loadTextarea($field);
+					break;
+				case 'checkbox':
+					return $this->loadCheckboxGroup($field);
+					break;
+				case 'radio':
+					return $this->loadRadioGroup($field);
+					break;
+				case 'select':
+					return $this->loadSelectBox($field);
+					break;
+			}
+		}
+
+		return false;
+
+	}
+
+
+	/**
+	 *
+	 * @param <type> $key
+	 * @return <type>
+	 */
+	private function getPostValue($key){
+		return array_key_exists($key, $_POST) ? $_POST[$key] : false;
+	}
+
+
+	/**
+	 * @abstract Returns html for a textarea
+	 * @param array $field Field values from database
+	 * @return string
+	 * @access private
+	 */
+	private function loadTextarea($field){
+
+		$field['required'] = $field['required'] == 'true' ? ' required' : false;
+
+		$html = '';
+		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['values']));
+		$html .= sprintf('<label for="%s">%s</label>' . "\n", $this->elemId($field['values']), $field['values']);
+		$html .= sprintf('<textarea id="%s" name="%s" rows="5" cols="50">%s</textarea>' . "\n",
+								$this->elemId($field['values']),
+								$this->elemId($field['values']),
+								$this->getPostValue($this->elemId($field['values'])));
+		$html .= '</li>' . "\n";
+
+		return $html;
+
+	}
+
+
+	/**
+	 * @abstract Returns html for an input type="text"
+	 * @param array $field Field values from database
+	 * @return string
+	 * @access private
+	 */
+	private function loadInputText($field){
+
+		$field['required'] = $field['required'] == 'true' ? ' required' : false;
+
+		$html = '';
+		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['values']));
+		$html .= sprintf('<label for="%s">%s</label>' . "\n", $this->elemId($field['values']), $field['values']);
+		$html .= sprintf('<input type="text" id="%s" name="%s" value="%s" />' . "\n",
+								$this->elemId($field['values']),
+								$this->elemId($field['values']),
+								$this->getPostValue($this->elemId($field['values'])));
+		$html .= '</li>' . "\n";
+
+		return $html;
+
+	}
+
+
+	/**
+	 * @abstract Returns html for an input type="text"
+	 * @param array $field Field values from database
+	 * @return string
+	 * @access private
+	 */
+	private function loadCheckboxGroup($field){
+
+		$field['required'] = $field['required'] == 'true' ? ' required' : false;
+
+		$html = '';
+		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['title']));
+
+		if(isset($field['title']) && !empty($field['title'])){
+			$html .= sprintf('<span class="false_label">%s</span>' . "\n", $field['title']);
+		}
+
+		if(isset($field['values']) && is_array($field['values'])){
+			$html .= sprintf('<span class="multi-row clearfix">') . "\n";
+			foreach($field['values'] as $item){
+
+				// set the default checked value
+				$checked = $item['default'] == 'true' ? true : false;
+
+				// load post value
+				$val = $this->getPostValue($this->elemId($item['value']));
+				$checked = !empty($val);
+
+				// if checked, set html
+				$checked = $checked ? ' checked="checked"' : '';
+
+				$checkbox 	= '<span class="row clearfix"><input type="checkbox" id="%s-%s" name="%s-%s" value="%s"%s /><label for="%s-%s">%s</label></span>' . "\n";
+				$html .= sprintf($checkbox, $this->elemId($field['title']), $this->elemId($item['value']), $this->elemId($field['title']), $this->elemId($item['value']), $item['value'], $checked, $this->elemId($field['title']), $this->elemId($item['value']), $item['value']);
+			}
+			$html .= sprintf('</span>') . "\n";
+		}
+
+		$html .= '</li>' . "\n";
+
+		return $html;
+
+	}
+
+
+	/**
+	 * @abstract Returns html for an input type="text"
+	 * @param array $field Field values from database
+	 * @return string
+	 * @access private
+	 */
+	private function loadRadioGroup($field){
+
+		$field['required'] = $field['required'] == 'true' ? ' required' : false;
+
+		$html = '';
+
+		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['title']));
+
+		if(isset($field['title']) && !empty($field['title'])){
+			$html .= sprintf('<span class="false_label">%s</span>' . "\n", $field['title']);
+		}
+
+		if(isset($field['values']) && is_array($field['values'])){
+			$html .= sprintf('<span class="multi-row">') . "\n";
+			foreach($field['values'] as $item){
+
+				// set the default checked value
+				$checked = $item['default'] == 'true' ? true : false;
+
+				// load post value
+				$val = $this->getPostValue($this->elemId($field['title']));
+				$checked = !empty($val);
+
+				// if checked, set html
+				$checked = $checked ? ' checked="checked"' : '';
+
+				$radio 		= '<span class="row clearfix"><input type="radio" id="%s-%s" name="%1$s" value="%s"%s /><label for="%1$s-%2$s">%3$s</label></span>' . "\n";
+				$html .= sprintf($radio,
+										$this->elemId($field['title']),
+										$this->elemId($item['value']),
+										$item['value'],
+										$checked);
+			}
+			$html .= sprintf('</span>') . "\n";
+		}
+
+		$html .= '</li>' . "\n";
+
+		return $html;
+
+	}
+
+
+	/**
+	 * @abstract Returns html for an input type="text"
+	 * @param array $field Field values from database
+	 * @return string
+	 * @access private
+	 */
+	private function loadSelectBox($field){
+
+		$field['required'] = $field['required'] == 'true' ? ' required' : false;
+
+		$html = '';
+
+		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['values']));
+
+		if(isset($field['title']) && !empty($field['title'])){
+			$html .= sprintf('<label for="%s">%s</label>' . "\n", $this->elemId($field['title']), $field['title']);
+		}
+
+		if(isset($field['values']) && is_array($field['values'])){
+			$multiple = $field['multiple'] == "true" ? ' multiple="multiple"' : '';
+			$html .= sprintf('<select name="%s" id="%s"%s>' . "\n", $this->elemId($field['title']), $this->elemId($field['title']), $multiple);
+
+			foreach($field['values'] as $item){
+
+				// set the default checked value
+				$checked = $item['default'] == 'true' ? true : false;
+
+				// load post value
+				$val = $this->getPostValue($this->elemId($field['title']));
+				$checked = !empty($val);
+
+				// if checked, set html
+				$checked = $checked ? ' checked="checked"' : '';
+
+				$option 	= '<option value="%s"%s>%s</option>' . "\n";
+				$html .= sprintf($option, $item['value'], $checked, $item['value']);
+			}
+
+			$html .= '</select>' . "\n";
+			$html .= '</li>' . "\n";
+
+		}
+
+		return $html;
+
+	}
+
+
+	/**
+	 * @abstract Generates an html-safe element id using it's label
+	 * @param string $label
+	 * @return string
+	 * @access private
+	 */
+	private function elemId($label){
+		return strtolower( ereg_replace("[^A-Za-z0-9_]", "", str_replace(" ", "_", $label) ) );
+	}
 }
-
 ?>

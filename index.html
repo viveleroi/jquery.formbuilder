@@ -12,7 +12,7 @@
 			$(document).ready(function(){
 				$('#form-builder').formbuilder({
 					'save_url': 'example-save.php',
-					'load_url': 'example-form.xml'
+					'load_url': 'example-load.php'
 				});
 			});
 		</script>
@@ -53,6 +53,8 @@
 		<p>This entire form builder is generated for us &ndash; all we needed to do give it the id of UL and a location for where to load/save the data. Just check out the source!</p>
 		
 		<p>For the nice scrolling, formbuilder uses the jQuery.scrollTo plugin. The demo css we're using here is not compatible with IE.</p>
+
+		<p><a href="example-html.php">View sample rendered html</a>.</p>
 		
 		<div id="form-wrap">
 			<ul id="form-builder">
