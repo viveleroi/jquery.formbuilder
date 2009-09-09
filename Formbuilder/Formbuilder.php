@@ -1,12 +1,22 @@
 <?php
 
-// please note, this class is currently in heavy development. It will not work yet. We;re
-// moving over custom code and changing it to be cleaner, more secure, and framework/site
-// independent.
-
-
 /**
- * 
+ * @package 	jquery.Formbuilder
+ * @author 		Michael Botsko
+ * @copyright 	2009 Trellis Development, LLC
+ *
+ * This PHP object is the server-side component of the jquery formbuilder
+ * plugin. The Formbuilder allows you to provide users with a way of
+ * creating a formand saving that structure to the database.
+ *
+ * Using this class you can easily prepare the structure for storage,
+ * rendering the xml file needed for the builder, or render the html of the form.
+ *
+ * This package is licensed using the Mozilla Public License 1.1
+ *
+ * We encourage comments and suggestion be sent to mbotsko@trellisdev.com.
+ * Please feel free to file issues at http://github.com/botskonet/jquery.formbuilder/issues
+ * Please feel free to fork the project and provide patches back.
  */
 
 
@@ -17,27 +27,27 @@ class Formbuilder {
 
 	/**
 	 * @var array Contains the form_hash and serialized form_structure from an external source (db)
-	 * @access private
+	 * @access protected
 	 */
-	private $_container;
+	protected $_container;
 
 	/**
 	 * @var array Holds the form source in raw array form
-	 * @access private
+	 * @access protected
 	 */
-	private $_structure;
+	protected $_structure;
 
 	/**
 	 * @var array Holds the form source in serialized form
-	 * @access private
+	 * @access protected
 	 */
-	private $_structure_ser;
+	protected $_structure_ser;
 
 	/**
 	 * @var array Holds the hash of the serialized form
-	 * @access private
+	 * @access protected
 	 */
-	private $_hash;
+	protected $_hash;
 
 	// process:
 	// - load form array (likely from POST, but up to user), validate it
@@ -78,10 +88,12 @@ class Formbuilder {
 			$this->_structure = $this->retrieve(); // unserialize the form as the raw structure
 			
 		} else {
+
 			$this->_structure = $form; // since the form is from POST, set it as the raw array
 			$this->_structure_ser = $this->store(); // serialize it
 			$this->_hash = $this->hash(); // hash the current structure
 			$this->rebuild_container(); // rebuild a new container
+			
 		}
 	}
 
@@ -89,9 +101,9 @@ class Formbuilder {
 	/**
 	 * Wipes and re-saves the structure and hash to the containing array.
 	 *
-	 * @access private
+	 * @access protected
 	 */
-	private function rebuild_container(){
+	protected function rebuild_container(){
 		$this->_container = array();
 		$this->_container['form_hash'] = $this->_hash;
 		$this->_container['form_structure'] = $this->_structure_ser;
@@ -120,7 +132,7 @@ class Formbuilder {
 	 * Creates a hash that's used to check the contents
 	 * have not changed from what was saved.
 	 * @return string
-	 * @access private
+	 * @access protected
 	 */
 	public function hash(){
 		return sha1($this->_structure_ser);
@@ -226,7 +238,7 @@ class Formbuilder {
 	 * @param string $string
 	 * @return string
 	 */
-	private function encode_for_xml($string){
+	protected function encode_for_xml($string){
 
 		$string = html_entity_decode($string, ENT_NOQUOTES, 'UTF-8');
 		$string = htmlentities($string, ENT_NOQUOTES, 'UTF-8');
@@ -240,7 +252,7 @@ class Formbuilder {
 	}
 
 
-//private function processSubmission(){
+//protected function processSubmission(){
 //
 //		$results = false;
 //		$error = '';
@@ -342,7 +354,8 @@ class Formbuilder {
 	/**
 	 *
 	 * @param <type> $form_action
-	 * @return <type> 
+	 * @return <type>
+	 * @access protected
 	 */
 	public function generate_html($form_action = false){
 
@@ -370,13 +383,18 @@ class Formbuilder {
 	}
 
 
+	//+++++++++++++++++++++++++++++++++++++++++++++++++
+	// NON-PUBLIC FUNCTIONS
+	//+++++++++++++++++++++++++++++++++++++++++++++++++
+
+
 	/**
 	 * @abstract Loads a new field based on its type
 	 * @param array $field
 	 * @return string
-	 * @access private
+	 * @access protected
 	 */
-	private function loadField($field){
+	protected function loadField($field){
 
 		if(is_array($field) && isset($field['class'])){
 
@@ -406,12 +424,26 @@ class Formbuilder {
 
 
 	/**
-	 *
-	 * @param <type> $key
-	 * @return <type>
+	 * @abstract Returns html for an input type="text"
+	 * @param array $field Field values from database
+	 * @return string
+	 * @access protected
 	 */
-	private function getPostValue($key){
-		return array_key_exists($key, $_POST) ? $_POST[$key] : false;
+	protected function loadInputText($field){
+
+		$field['required'] = $field['required'] == 'true' ? ' required' : false;
+
+		$html = '';
+		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['values']));
+		$html .= sprintf('<label for="%s">%s</label>' . "\n", $this->elemId($field['values']), $field['values']);
+		$html .= sprintf('<input type="text" id="%s" name="%s" value="%s" />' . "\n",
+								$this->elemId($field['values']),
+								$this->elemId($field['values']),
+								$this->getPostValue($this->elemId($field['values'])));
+		$html .= '</li>' . "\n";
+
+		return $html;
+
 	}
 
 
@@ -419,9 +451,9 @@ class Formbuilder {
 	 * @abstract Returns html for a textarea
 	 * @param array $field Field values from database
 	 * @return string
-	 * @access private
+	 * @access protected
 	 */
-	private function loadTextarea($field){
+	protected function loadTextarea($field){
 
 		$field['required'] = $field['required'] == 'true' ? ' required' : false;
 
@@ -443,33 +475,9 @@ class Formbuilder {
 	 * @abstract Returns html for an input type="text"
 	 * @param array $field Field values from database
 	 * @return string
-	 * @access private
+	 * @access protected
 	 */
-	private function loadInputText($field){
-
-		$field['required'] = $field['required'] == 'true' ? ' required' : false;
-
-		$html = '';
-		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['values']));
-		$html .= sprintf('<label for="%s">%s</label>' . "\n", $this->elemId($field['values']), $field['values']);
-		$html .= sprintf('<input type="text" id="%s" name="%s" value="%s" />' . "\n",
-								$this->elemId($field['values']),
-								$this->elemId($field['values']),
-								$this->getPostValue($this->elemId($field['values'])));
-		$html .= '</li>' . "\n";
-
-		return $html;
-
-	}
-
-
-	/**
-	 * @abstract Returns html for an input type="text"
-	 * @param array $field Field values from database
-	 * @return string
-	 * @access private
-	 */
-	private function loadCheckboxGroup($field){
+	protected function loadCheckboxGroup($field){
 
 		$field['required'] = $field['required'] == 'true' ? ' required' : false;
 
@@ -511,9 +519,9 @@ class Formbuilder {
 	 * @abstract Returns html for an input type="text"
 	 * @param array $field Field values from database
 	 * @return string
-	 * @access private
+	 * @access protected
 	 */
-	private function loadRadioGroup($field){
+	protected function loadRadioGroup($field){
 
 		$field['required'] = $field['required'] == 'true' ? ' required' : false;
 
@@ -560,9 +568,9 @@ class Formbuilder {
 	 * @abstract Returns html for an input type="text"
 	 * @param array $field Field values from database
 	 * @return string
-	 * @access private
+	 * @access protected
 	 */
-	private function loadSelectBox($field){
+	protected function loadSelectBox($field){
 
 		$field['required'] = $field['required'] == 'true' ? ' required' : false;
 
@@ -608,10 +616,20 @@ class Formbuilder {
 	 * @abstract Generates an html-safe element id using it's label
 	 * @param string $label
 	 * @return string
-	 * @access private
+	 * @access protected
 	 */
-	private function elemId($label){
+	protected function elemId($label){
 		return strtolower( ereg_replace("[^A-Za-z0-9_]", "", str_replace(" ", "_", $label) ) );
+	}
+
+
+	/**
+	 * @abstract Attempts to load the POST value into the field if it's set (errors)
+	 * @param <type> $key
+	 * @return <type>
+	 */
+	protected function getPostValue($key){
+		return array_key_exists($key, $_POST) ? $_POST[$key] : false;
 	}
 }
 ?>

@@ -108,6 +108,38 @@ class FormbuilderTest extends PHPUnit_Framework_TestCase {
 ';
 
 
+	private $_form_html = '<form class="frm-bldr" method="post" action="%s">
+<ol>
+<li class="input_text" id="fld-name">
+<label for="name">Name</label>
+<input type="text" id="name" name="name" value="" />
+</li>
+<li class="input_text required" id="fld-email_address">
+<label for="email_address">E-mail Address?</label>
+<input type="text" id="email_address" name="email_address" value="" />
+</li>
+<li class="checkbox" id="fld-choose_any">
+<span class="false_label">Choose any:</span>
+<span class="multi-row clearfix">
+<span class="row clearfix"><input type="checkbox" id="choose_any-php" name="choose_any-php" value="PHP" /><label for="choose_any-php">PHP</label></span>
+<span class="row clearfix"><input type="checkbox" id="choose_any-jquery" name="choose_any-jquery" value="jQuery" /><label for="choose_any-jquery">jQuery</label></span>
+<span class="row clearfix"><input type="checkbox" id="choose_any-xml" name="choose_any-xml" value="XML" /><label for="choose_any-xml">XML</label></span>
+<span class="row clearfix"><input type="checkbox" id="choose_any-aspen" name="choose_any-aspen" value="Aspen" /><label for="choose_any-aspen">Aspen</label></span>
+</span>
+</li>
+<li class="radio required" id="fld-choose_one">
+<span class="false_label">Choose one:</span>
+<span class="multi-row">
+<span class="row clearfix"><input type="radio" id="choose_one-yes" name="choose_one" value="Yes" /><label for="choose_one-yes">Yes</label></span>
+<span class="row clearfix"><input type="radio" id="choose_one-no" name="choose_one" value="No" /><label for="choose_one-no">No</label></span>
+</span>
+</li>
+<li class="btn-submit"><input type="submit" name="submit" value="Submit" /></li>
+</ol>
+</form>
+';
+
+
 //	public function test_First() {
 //		$this->markTestIncomplete ( "test_First test not implemented" );
 //		include('arrayConstruct.php');
@@ -133,9 +165,22 @@ class FormbuilderTest extends PHPUnit_Framework_TestCase {
 	}
 
 
-	public function test_RenderXml() {
+	public function test_GenerateXml() {
 		$form = new Formbuilder($this->_container);
 		$this->assertEquals($this->_form_xml, $form->generate_xml());
+	}
+
+
+	public function test_GenerateHtml() {
+		$form = new Formbuilder($this->_container);
+		$this->_form_html = sprintf($this->_form_html, $_SERVER['PHP_SELF']);
+		$this->assertEquals($this->_form_html, $form->generate_html());
+	}
+
+	public function test_GenerateHtml_customAction() {
+		$form = new Formbuilder($this->_container);
+		$this->_form_html = sprintf($this->_form_html, 'fake/url/to/post/to');
+		$this->assertEquals($this->_form_html, $form->generate_html('fake/url/to/post/to'));
 	}
 
 }
