@@ -1,0 +1,13 @@
+This PHP object is the server-side component of the jquery formbuilder
+plugin. The Formbuilder allows you to provide users with a way of
+creating a formand saving that structure to the database.
+
+Using this class you can easily prepare the structure for storage,
+rendering the xml file needed for the builder, or render the html of the form.
+
+This package is licensed using the Mozilla Public License 1.1
+
+We encourage comments and suggestion be sent to mbotsko@trellisdev.com.
+Please feel free to file issues at http://github.com/botskonet/jquery.formbuilder/issues
+Please feel free to fork the project and provide patches back.
+Please let us know how you're using this product!
