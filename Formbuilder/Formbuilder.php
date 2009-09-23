@@ -19,6 +19,10 @@
  * Please feel free to fork the project and provide patches back.
  */
 
+ // Uncomment these for debug
+//error_reporting(E_ALL);
+//ini_set('display_errors', true);
+
 
 /**
  * @abstract This class is the server-side component that handles interaction with
@@ -289,95 +293,76 @@ class Formbuilder {
 	}
 
 
-	//protected function processSubmission(){
-//
-//		$results = false;
-//		$error = '';
-//
-//		if($this->APP->params->post->getInt('form_id')){
-//
-//			if($form_db = $this->APP->model->quickSelectSingle('forms', $this->APP->params->post->getInt('form_id'))){
-//
-//				if(sha1($form_db['structure']) == $form_db['hash']){
-//
-//					$results 	= array();
-//					$form 		= unserialize($form_db['structure']);
-//
-//					// Put together an array of all expected indices
-//					if(is_array($form)){
-//						foreach($form as $field){
-//
-//							$field['required'] = $field['required'] == 'true' ? true : false;
-//
-//							if($field['class'] == 'input_text' || $field['class'] == 'textarea'){
-//
-//								$val = $this->APP->params->post->getRaw( $this->elemId($field['values']));
-//
-//								if($field['required'] && empty($val)){
-//									$error .= '<li>Please complete the ' . $field['values'] . ' field.</li>' . "\n";
-//								} else {
-//									$results[ $this->elemId($field['values']) ] = $val;
-//								}
-//
-//							}
-//							elseif($field['class'] == 'radio' || $field['class'] == 'select'){
-//
-//								$val = $this->APP->params->post->getRaw( $this->elemId($field['title']));
-//
-//								if($field['required'] && empty($val)){
-//									$error .= '<li>Please complete the ' . $field['title'] . ' field.</li>' . "\n";
-//								} else {
-//									$results[ $this->elemId($field['title']) ] = $val;
-//								}
-//
-//							}
-//							elseif($field['class'] == 'checkbox'){
-//								if(is_array($field['values'])){
-//
-//									$at_least_one_checked = false;
-//
-//									foreach($field['values'] as $item){
-//
-//										$val = $this->APP->params->post->getRaw( $this->elemId($item['value']));
-//
-//										if(!empty($val)){
-//											$at_least_one_checked = true;
-//										}
-//
-//										$results[ $this->elemId($item['value']) ] = $this->APP->params->post->getRaw( $this->elemId($item['value']) );
-//									}
-//
-//									if(!$at_least_one_checked && $field['required']){
-//										$error .= '<li>Please check at least one ' . $field['title'] . ' choice.</li>' . "\n";
-//									}
-//
-//								}
-//							} else { }
-//						}
-//					}
-//
-//					// if results is array, send email
-//					if(!$error && is_array($results) && count($results)){
-//						$this->emailFormResults_staff($results, $form_db);
-//
-//						if($form_db['email_to_user']){
-//							$this->emailFormResults_user($results, $form_db);
-//						}
-//
-//						$return = $this->APP->cms_lib->url($form_db['return_page']);
-//						if($return){
-//							header("Location: " . $return);
-//							exit;
-//						}
-//					} else {
-//
-//						$this->validation_errors = $error;
-//
-//					}
-//				}
-//			}
-//		}
-//	}
+	/**
+	 * Parses the POST data for the results of the speific form values. Checks
+	 * for required fields and returns an array of any errors.
+	 *
+	 * @access public
+	 * @returns array
+	 */
+	public function process(){
+
+		$error		= '';
+		$results 	= array();
+
+		// Put together an array of all expected indices
+		if(is_array($this->_structure)){
+			foreach($this->_structure as $field){
+
+				$field['required'] = $field['required'] == 'true' ? true : false;
+
+				if($field['class'] == 'input_text' || $field['class'] == 'textarea'){
+
+					$val = $this->getPostValue( $this->elemId($field['values']));
+
+					if($field['required'] && empty($val)){
+						$error .= '<li>Please complete the ' . $field['values'] . ' field.</li>' . "\n";
+					} else {
+						$results[ $this->elemId($field['values']) ] = $val;
+					}
+				}
+				elseif($field['class'] == 'radio' || $field['class'] == 'select'){
+
+					$val = $this->getPostValue( $this->elemId($field['title']));
+
+					if($field['required'] && empty($val)){
+						$error .= '<li>Please complete the ' . $field['title'] . ' field.</li>' . "\n";
+					} else {
+						$results[ $this->elemId($field['title']) ] = $val;
+					}
+				}
+				elseif($field['class'] == 'checkbox'){
+					if(is_array($field['values'])){
+
+						$at_least_one_checked = false;
+
+						foreach($field['values'] as $item){
+
+							$elem_id = $this->elemId($item['value'], $field['title']);
+
+							$val = $this->getPostValue( $elem_id );
+
+							if(!empty($val)){
+								$at_least_one_checked = true;
+							}
+
+							$results[ $this->elemId($item['value']) ] = $this->getPostValue( $elem_id );
+						}
+
+						if(!$at_least_one_checked && $field['required']){
+							$error .= '<li>Please check at least one ' . $field['title'] . ' choice.</li>' . "\n";
+						}
+					}
+				} else { }
+			}
+		}
+
+		$success = empty($error);
+
+		// if results is array, send email
+		return array('success'=>$success,'results'=>$results,'errors'=>$error);
+		
+	}
 
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++
@@ -578,7 +563,7 @@ class Formbuilder {
 
 		$html = '';
 
-		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['values']));
+		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['title']));
 
 		if(isset($field['title']) && !empty($field['title'])){
 			$html .= sprintf('<label for="%s">%s</label>' . "\n", $this->elemId($field['title']), $field['title']);
@@ -621,10 +606,13 @@ class Formbuilder {
 	 * @return string
 	 * @access protected
 	 */
-	protected function elemId($label){
-		return strtolower( ereg_replace("[^A-Za-z0-9_]", "", str_replace(" ", "_", $label) ) );
+	private function elemId($label, $prepend = false){
+		if(is_string($label)){
+			$prepend = is_string($prepend) ? $this->elemId($prepend).'-' : false;
+			return $prepend.strtolower( preg_replace("/[^A-Za-z0-9_]/", "", str_replace(" ", "_", $label) ) );
+		}
+		return false;
 	}
-
 
 	/**
 	 * Attempts to load the POST value into the field if it's set (errors)
