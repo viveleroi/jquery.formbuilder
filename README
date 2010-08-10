@@ -19,11 +19,12 @@ Note: Currently, an upgrade to jQuery 1.4.2 will not be enabled until
 problems with the scroll.to plugin are resolved.
 
 
-Version 0.2 - 20100720
+Version 0.2 - 20100806
 - Upgraded to scroll.to 1.4.2
 - Added ability to sort form fields.
 - Added in basic build scripts for easier releases
 - Minor code cleanup
+- Hash bug fix
 
 Version 0.1 - 20090922
 - Complete initial release using much of the functionality copied

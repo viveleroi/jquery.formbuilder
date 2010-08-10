@@ -78,7 +78,6 @@ class Formbuilder {
 
 			$this->_structure = $form; // since the form is from POST, set it as the raw array
 			$this->_structure_ser = $this->store(); // serialize it
-			$this->_hash = $this->hash(); // hash the current structure
 			$this->rebuild_container(); // rebuild a new container
 			
 		}
