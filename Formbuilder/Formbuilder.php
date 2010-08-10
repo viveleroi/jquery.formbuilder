@@ -14,7 +14,7 @@
  *
  * This package is licensed using the Mozilla Public License 1.1
  *
- * We encourage comments and suggestion be sent to mbotsko@trellisdev.com.
+ * We encourage comments and suggestion to be sent to mbotsko@trellisdev.com.
  * Please feel free to file issues at http://github.com/botskonet/jquery.formbuilder/issues
  * Please feel free to fork the project and provide patches back.
  */
