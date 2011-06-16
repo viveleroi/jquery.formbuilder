@@ -1,13 +1,15 @@
 The jquery.Formbuilder plugin is a script that allows you integrate
 a jquery and php-based form-creation tool into your application.
 
+Please report all issues, bugs, and feature suggestions
+to: https://snowy-evening.com/botsko/jquery-form-builder/
+
 The tool interface is constructed using form data presented in xml format
 by the server. The php class assists you with storing the data,
 generating the xml, generating the html form, and processing the data.
 
 A demo of this version may be found at http://experiments.botsko.net/tests/formbuilder/
 
-Please feel free to file issues at http://github.com/botskonet/jquery.formbuilder/issues
 Please feel free to fork the project and provide patches back.
 Please let us know how you're using this product!
 
