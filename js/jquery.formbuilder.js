@@ -30,7 +30,7 @@
 				title				: "Title",
 				select_options		: "Select Options",
 				add					: "Add",
-				checkboxe_group		: "Checkbox Group",
+				checkbox_group		: "Checkbox Group",
 				remove_message		: "Are you sure you want to remove this element?",
 				remove				: "Remove",
 				radio_group			: "Radio Group",
@@ -234,11 +234,7 @@
 					field += '</div>';
 					field += '</div>';
 					help = '';
-					appendFieldLi(opts.messages.checkboxe_group, field, required, help);
-					$('.add_ck').live('click', function () {
-						$(this).parent().before(checkboxFieldHtml());
-						return false;
-					});
+					appendFieldLi(opts.messages.checkbox_group, field, required, help);
 				};
 			// Checkbox field html, since there may be multiple
 			var checkboxFieldHtml = function (values) {
@@ -280,10 +276,6 @@
 					field += '</div>';
 					help = '';
 					appendFieldLi(opts.messages.radio_group, field, required, help);
-					$('.add_rd').live('click', function () {
-						$(this).parent().before(radioFieldHtml(false, $(this).parents('.frm-holder').attr('id')));
-						return false;
-					});
 				};
 			// Radio field html, since there may be multiple
 			var radioFieldHtml = function (values, name) {
@@ -330,10 +322,6 @@
 					field += '</div>';
 					help = '';
 					appendFieldLi(opts.messages.select, field, required, help);
-					$('.add_opt').live('click', function () {
-						$(this).parent().before(selectFieldHtml('', multiple));
-						return false;
-					});
 				};
 			// Select field html, since there may be multiple
 			var selectFieldHtml = function (values, multiple) {
@@ -414,6 +402,21 @@
 						$(this).remove();
 					});
 				}
+				return false;
+			});
+			// Attach a callback to add new checkboxes
+			$('.add_ck').live('click', function () {
+				$(this).parent().before(checkboxFieldHtml());
+				return false;
+			});
+			// Attach a callback to add new options
+			$('.add_opt').live('click', function () {
+				$(this).parent().before(selectFieldHtml('', false));
+				return false;
+			});
+			// Attach a callback to add new radio fields
+			$('.add_rd').live('click', function () {
+				$(this).parent().before(radioFieldHtml(false, $(this).parents('.frm-holder').attr('id')));
 				return false;
 			});
 			// saves the serialized data to the server 
