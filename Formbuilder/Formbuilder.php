@@ -158,7 +158,6 @@ class Formbuilder {
 		print $this->generate_xml();
 	}
 
-
 	/**
 	 * Builds an xml structure that the jquery plugin will parse for form admin
 	 * structure. Right now we're just building the xml the old fashioned way
@@ -226,6 +225,25 @@ class Formbuilder {
 
 	}
 
+	/**
+	 * Prints out the generated json file with a content-type of application/json
+	 *
+	 * @access public
+	 * @uses generate_json
+	 */
+	public function render_json(){
+		header("Content-Type: application/json");
+		print $this->generate_json();
+	}
+
+	/**
+	 * Builds a json object that the jquery plugin will parse
+	 *
+	 * @access public
+	 */
+	public function generate_json(){
+		return json_encode( $this->_structure );
+	}
 
 	/**
 	 * @abstract Encodes strings for xml. 

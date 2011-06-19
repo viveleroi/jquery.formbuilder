@@ -7,7 +7,6 @@
 
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="http://flesler-plugins.googlecode.com/svn/trunk/jquery.scrollTo/jquery.scrollTo.js"></script>
 		<script type="text/javascript" src="js/jquery.formbuilder.js"></script>
 		<link href="css/jquery.formbuilder.css" media="screen" rel="stylesheet" type="text/css" />
 		<style type="text/css">
@@ -17,7 +16,8 @@
 			$(document).ready(function(){
 				$('#my-form-builder').formbuilder({
 					'save_url': 'example-save.php',
-					'load_url': 'example-load.php'
+					'load_url': 'example-json.php',
+					'useJson' : true
 				});
 				$(function() {
 					$("#my-form-builder ul").sortable({ opacity: 0.6, cursor: 'move'});

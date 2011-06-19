@@ -13,6 +13,8 @@
 			save_url: false,
 			load_url: false,
 			control_box_target: false,
+			useJson: true, // XML as fallback
+			serialize_prefix: 'frmb',
 			messages: {
 				save				: "Save",
 				add_new_field		: "Add New Field...",
@@ -52,50 +54,11 @@
 				$.ajax({
 					type: "GET",
 					url: opts.load_url,
-					success: function (xml) {
-						var values = '';
-						var options = false;
-						var required = false;
-						$(xml).find('field').each(function () {
-							// checkbox type
-							if ($(this).attr('type') == 'checkbox') {
-								options = new Array;
-								options[0] = $(this).attr('title');
-								values = new Array;
-								$(this).find('checkbox').each(function (a) {
-									values[a] = new Array(2);
-									values[a][0] = $(this).text();
-									values[a][1] = $(this).attr('checked');
-								});
-							}
-							// radio type
-							else if ($(this).attr('type') == 'radio') {
-								options = new Array;
-								options[0] = $(this).attr('title');
-								values = new Array;
-								$(this).find('radio').each(function (a) {
-									values[a] = new Array(2);
-									values[a][0] = $(this).text();
-									values[a][1] = $(this).attr('checked');
-								});
-							}
-							// select type
-							else if ($(this).attr('type') == 'select') {
-								options = new Array;
-								options[0] = $(this).attr('title');
-								options[1] = $(this).attr('multiple');
-								values = new Array;
-								$(this).find('option').each(function (a) {
-									values[a] = new Array(2);
-									values[a][0] = $(this).text();
-									values[a][1] = $(this).attr('checked');
-								});
-							}
-							else {
-								values = $(this).text();
-							}
-							appendNewField($(this).attr('type'), values, options, $(this).attr('required'));
-						});
+					success: function(data) {
+						if(opts.useJson)
+							fromJson(data);
+						else
+							fromXml(data);
 					}
 				});
 			}
@@ -136,9 +99,92 @@
 					}, 500);
 					return false;
 				});
+			}(opts.control_box_target);
+			// XML parser to build the form builder
+			var fromXml = function (xml) {
+				var values = '';
+				var options = false;
+				var required = false;
+				$(xml).find('field').each(function () {
+					// checkbox type
+					if ($(this).attr('type') == 'checkbox') {
+						options = new Array;
+						options[0] = $(this).attr('title');
+						values = new Array;
+						$(this).find('checkbox').each(function (a) {
+							values[a] = new Array(2);
+							values[a][0] = $(this).text();
+							values[a][1] = $(this).attr('checked');
+						});
+					}
+					// radio type
+					else if ($(this).attr('type') == 'radio') {
+						options = new Array;
+						options[0] = $(this).attr('title');
+						values = new Array;
+						$(this).find('radio').each(function (a) {
+							values[a] = new Array(2);
+							values[a][0] = $(this).text();
+							values[a][1] = $(this).attr('checked');
+						});
+					}
+					// select type
+					else if ($(this).attr('type') == 'select') {
+						options = new Array;
+						options[0] = $(this).attr('title');
+						options[1] = $(this).attr('multiple');
+						values = new Array;
+						$(this).find('option').each(function (a) {
+							values[a] = new Array(2);
+							values[a][0] = $(this).text();
+							values[a][1] = $(this).attr('checked');
+						});
+					}
+					else {
+						values = $(this).text();
+					}
+					appendNewField($(this).attr('type'), values, options, $(this).attr('required'));
+				});
 			}
-			// Create the control box
-			controlBox(opts.control_box_target);
+			// Json parser to build the form builder
+			var fromJson = function (json) {
+				var values = '';
+				var options = false;
+				var required = false;
+				// Parse json
+				$(json).each(function () {
+					// checkbox type
+					if (this.class == 'checkbox') {
+						options = [this.title];
+						values = new Array;
+						$.each(this.values, function () {
+							values.push([this.value, this.default]);
+						});
+					}
+					
+					// radio type
+					else if (this.class == 'radio') {
+						options = [this.title];
+						values = new Array;
+						$.each(this.values, function () {
+							values.push([this.value, this.default]);
+						});
+					}
+					
+					// select type
+					else if (this.class == 'select') {
+						options = [this.title, this.multiple];
+						values = new Array;
+						$(this).find('option').each(function () {
+							values.push([this.value, this.default]);
+						});
+					}
+					else {
+						values = [this.values];
+					}
+					appendNewField(this.class, values, options, this.required);
+				});
+			}
 			
 			// Wrapper for adding a new field
 			var appendNewField = function (type, values, options, required) {
@@ -394,7 +440,7 @@
 						$.ajax({
 							type: "POST",
 							url: opts.save_url,
-							data: $(ul_obj).serializeFormList(),
+							data: $(ul_obj).serializeFormList({prepend: opts.serialize_prefix}),
 							success: function (xml) {}
 						});
 					}
@@ -420,10 +466,10 @@
 			attributes: ['class']
 		};
 		var opts = $.extend(defaults, options);
-		var serialStr = '';
 		if (!opts.is_child) {
 			opts.prepend = '&' + opts.prepend;
 		}
+		var serialStr = '';
 		// Begin the core plugin
 		this.each(function () {
 			var ul_obj = this;
