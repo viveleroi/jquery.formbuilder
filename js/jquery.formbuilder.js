@@ -41,7 +41,7 @@
 		var opts = $.extend(defaults, options);
 		var frmb_id = 'frmb-' + $('ul[id^=frmb-]').length++;
 		return this.each(function () {
-			var ul_obj = $(this).append('<ul id="' + frmb_id + '"></ul>').find('ul');
+			var ul_obj = $(this).append('<ul id="' + frmb_id + '" class="frmb"></ul>').find('ul');
 			var field = '';
 			var field_type = '';
 			var last_id = 1;
@@ -115,15 +115,15 @@
 				select += '<option value="radio">' + opts.messages.radio + '</option>';
 				select += '<option value="select">' + opts.messages.select + '</option>';
 				// Build the control box and search button content
-				box_content = '<select id="' + box_id + '" class="field_control">' + select + '</select>';
-				save_button = '<input type="submit" id="' + save_id + '" name="submit" value="' + opts.messages.save + '"/>';
+				box_content = '<select id="' + box_id + '" class="frmb-control">' + select + '</select>';
+				save_button = '<input type="submit" id="' + save_id + '" class="frmb-submit" value="' + opts.messages.save + '"/>';
 				// Insert the control box into page
 				if( !target )
 					$(ul_obj).before(box_content);
 				else
 					$(target).append(box_content);
 				// Insert the search button
-				$(ul_obj).append(save_button);
+				$(ul_obj).after(save_button);
 				// Set the form save action
 				$('#' + save_id).click(function () { save(); return false; });
 				// Add a callback to the select element
