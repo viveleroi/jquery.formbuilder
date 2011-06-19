@@ -101,7 +101,7 @@
 			}
 			
 			// Create form control select box and add into the editor
-			var controlBox = function ( target, scrollTo ) {
+			var controlBox = function (target) {
 				var select = '';
 				var box_content = '';
 				var save_button = '';
@@ -130,13 +130,15 @@
 				$('#' + box_id).change(function () {
 					appendNewField($(this).val());
 					$(this).val(0).blur();
-					if( typeof (scrollTo) == 'function' )
-						$().scrollTo($('#frm-' + (last_id - 1) + '-item'), 800);
+					// This solves the scrollTo dependency
+					$('body').animate({
+						scrollTop: $('#frm-' + (last_id - 1) + '-item').offset().top
+					}, 500);
 					return false;
 				});
 			}
 			// Create the control box
-			controlBox(opts.control_box_target, $().scrollTo );
+			controlBox(opts.control_box_target);
 			
 			// Wrapper for adding a new field
 			var appendNewField = function (type, values, options, required) {
