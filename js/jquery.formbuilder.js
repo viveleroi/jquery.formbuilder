@@ -27,7 +27,6 @@
 				text_field			: "Text Field",
 				label				: "Label",
 				paragraph_field		: "Paragraph Field",
-				title				: "Title",
 				select_options		: "Select Options",
 				add					: "Add",
 				checkbox_group		: "Checkbox Group",
@@ -56,8 +55,11 @@
 					type: "GET",
 					url: opts.load_url,
 					success: function (data) {
-						if (opts.useJson) fromJson(data);
-						else fromXml(data);
+						if (opts.useJson) {
+							fromJson(data);
+						} else {
+							fromXml(data);
+						}
 					}
 				});
 			}
@@ -79,8 +81,11 @@
 					box_content = '<select id="' + box_id + '" class="frmb-control">' + select + '</select>';
 					save_button = '<input type="submit" id="' + save_id + '" class="frmb-submit" value="' + opts.messages.save + '"/>';
 					// Insert the control box into page
-					if (!target) $(ul_obj).before(box_content);
-					else $(target).append(box_content);
+					if (!target) {
+						$(ul_obj).before(box_content);
+					} else {
+						$(target).append(box_content);
+					}
 					// Insert the search button
 					$(ul_obj).after(save_button);
 					// Set the form save action
@@ -106,7 +111,7 @@
 					var required = false;
 					$(xml).find('field').each(function () {
 						// checkbox type
-						if ($(this).attr('type') == 'checkbox') {
+						if ($(this).attr('type') === 'checkbox') {
 							options = [$(this).attr('title')];
 							values = [];
 							$(this).find('checkbox').each(function () {
@@ -114,7 +119,7 @@
 							});
 						}
 						// radio type
-						else if ($(this).attr('type') == 'radio') {
+						else if ($(this).attr('type') === 'radio') {
 							options = [$(this).attr('title')];
 							values = [];
 							$(this).find('radio').each(function () {
@@ -122,7 +127,7 @@
 							});
 						}
 						// select type
-						else if ($(this).attr('type') == 'select') {
+						else if ($(this).attr('type') === 'select') {
 							options = [$(this).attr('title'), $(this).attr('multiple')];
 							values = [];
 							$(this).find('option').each(function () {
@@ -143,7 +148,7 @@
 					// Parse json
 					$(json).each(function () {
 						// checkbox type
-						if (this.class == 'checkbox') {
+						if (this.class === 'checkbox') {
 							options = [this.title];
 							values = [];
 							$.each(this.values, function () {
@@ -151,7 +156,7 @@
 							});
 						}
 						// radio type
-						else if (this.class == 'radio') {
+						else if (this.class === 'radio') {
 							options = [this.title];
 							values = [];
 							$.each(this.values, function () {
@@ -159,7 +164,7 @@
 							});
 						}
 						// select type
-						else if (this.class == 'select') {
+						else if (this.class === 'select') {
 							options = [this.title, this.multiple];
 							values = [];
 							$.each(this.values, function () {
@@ -176,7 +181,7 @@
 			var appendNewField = function (type, values, options, required) {
 					field = '';
 					field_type = type;
-					if (typeof (values) == 'undefined') {
+					if (typeof (values) === 'undefined') {
 						values = '';
 					}
 					switch (type) {
@@ -214,7 +219,7 @@
 			// adds a checkbox element
 			var appendCheckboxGroup = function (values, options, required) {
 					var title = '';
-					if (typeof (options) == 'object') {
+					if (typeof (options) === 'object') {
 						title = options[0];
 					}
 					field += '<div class="chk_group">';
@@ -222,8 +227,8 @@
 					field += '<input type="text" name="title" value="' + title + '" /></div>';
 					field += '<div class="false-label">' + opts.messages.select_options + '</div>';
 					field += '<div class="fields">';
-					if (typeof (values) == 'object') {
-						for (var i = 0; i < values.length; i++) {
+					if (typeof (values) === 'object') {
+						for (i = 0; i < values.length; i++) {
 							field += checkboxFieldHtml(values[i]);
 						}
 					}
@@ -240,9 +245,9 @@
 			var checkboxFieldHtml = function (values) {
 					var checked = false;
 					var value = '';
-					if (typeof (values) == 'object') {
+					if (typeof (values) === 'object') {
 						value = values[0];
-						checked = values[1] == 'false' ? false : true;
+						checked = values[1] === 'false' ? false : true;
 					}
 					field = '';
 					field += '<div>';
@@ -255,7 +260,7 @@
 			// adds a radio element
 			var appendRadioGroup = function (values, options, required) {
 					var title = '';
-					if (typeof (options) == 'object') {
+					if (typeof (options) === 'object') {
 						title = options[0];
 					}
 					field += '<div class="rd_group">';
@@ -263,8 +268,8 @@
 					field += '<input type="text" name="title" value="' + title + '" /></div>';
 					field += '<div class="false-label">' + opts.messages.select_options + '</div>';
 					field += '<div class="fields">';
-					if (typeof (values) == 'object') {
-						for (var i = 0; i < values.length; i++) {
+					if (typeof (values) === 'object') {
+						for (i = 0; i < values.length; i++) {
 							field += radioFieldHtml(values[i], 'frm-' + last_id + '-fld');
 						}
 					}
@@ -281,9 +286,9 @@
 			var radioFieldHtml = function (values, name) {
 					var checked = false;
 					var value = '';
-					if (typeof (values) == 'object') {
+					if (typeof (values) === 'object') {
 						value = values[0];
-						checked = values[1] == 'false' ? false : true;
+						checked = values[1] === 'false' ? false : true;
 					}
 					field = '';
 					field += '<div>';
@@ -297,9 +302,9 @@
 			var appendSelectList = function (values, options, required) {
 					var multiple = false;
 					var title = '';
-					if (typeof (options) == 'object') {
+					if (typeof (options) === 'object') {
 						title = options[0];
-						multiple = options[1] == 'true' ? true : false;
+						multiple = options[1] === 'true' ? true : false;
 					}
 					field += '<div class="opt_group">';
 					field += '<div class="frm-fld"><label>' + opts.messages.title + '</label>';
@@ -309,8 +314,8 @@
 					field += '<div class="fields">';
 					field += '<input type="checkbox" name="multiple"' + (multiple ? 'checked="checked"' : '') + '>';
 					field += '<label class="auto">' + opts.messages.selections_message + '</label>';
-					if (typeof (values) == 'object') {
-						for (var i = 0; i < values.length; i++) {
+					if (typeof (values) === 'object') {
+						for (i = 0; i < values.length; i++) {
 							field += selectFieldHtml(values[i], multiple);
 						}
 					}
@@ -335,7 +340,7 @@
 			// Appends the new field markup to the editor
 			var appendFieldLi = function (title, field_html, required, help) {
 					if (required) {
-						required = required == 'true' ? true : false;
+						required = required === 'true' ? true : false;
 					}
 					var li = '';
 					li += '<li id="frm-' + last_id + '-item" class="' + field_type + '">';
@@ -372,7 +377,7 @@
 			// handle field display/hide
 			$('.toggle-form').live('click', function () {
 				var target = $(this).attr("id");
-				if ($(this).html() == opts.messages.hide) {
+				if ($(this).html() === opts.messages.hide) {
 					$(this).removeClass('open').addClass('closed').html(opts.messages.show);
 					$('#' + target + '-fld').animate({
 						opacity: 'hide',
@@ -380,7 +385,7 @@
 					}, 'slow');
 					return false;
 				}
-				if ($(this).html() == opts.messages.show) {
+				if ($(this).html() === opts.messages.show) {
 					$(this).removeClass('closed').addClass('open').html(opts.messages.hide);
 					$('#' + target + '-fld').animate({
 						opacity: 'show',
@@ -463,10 +468,10 @@
 			var li_count = 0;
 			var c = 1;
 			$(this).children().each(function () {
-				for (var att = 0; att < opts.attributes.length; att++) {
+				for (att = 0; att < opts.attributes.length; att++) {
 					serialStr += opts.prepend + '[' + li_count + '][' + opts.attributes[att] + ']=' + escape($(this).attr(opts.attributes[att]));
 					// append the form field values
-					if (opts.attributes[att] == 'class') {
+					if (opts.attributes[att] === 'class') {
 						serialStr += opts.prepend + '[' + li_count + '][required]=' + escape($('#' + $(this).attr('id') + ' input.required').attr('checked'));
 						switch ($(this).attr(opts.attributes[att])) {
 						case 'input_text':
@@ -478,7 +483,7 @@
 						case 'checkbox':
 							c = 1;
 							$('#' + $(this).attr('id') + ' input[type=text]').each(function () {
-								if ($(this).attr('name') == 'title') {
+								if ($(this).attr('name') === 'title') {
 									serialStr += opts.prepend + '[' + li_count + '][title]=' + escape($(this).val());
 								}
 								else {
@@ -491,7 +496,7 @@
 						case 'radio':
 							c = 1;
 							$('#' + $(this).attr('id') + ' input[type=text]').each(function () {
-								if ($(this).attr('name') == 'title') {
+								if ($(this).attr('name') === 'title') {
 									serialStr += opts.prepend + '[' + li_count + '][title]=' + escape($(this).val());
 								}
 								else {
@@ -505,7 +510,7 @@
 							c = 1;
 							serialStr += opts.prepend + '[' + li_count + '][multiple]=' + $('#' + $(this).attr('id') + ' input[name=multiple]').attr('checked');
 							$('#' + $(this).attr('id') + ' input[type=text]').each(function () {
-								if ($(this).attr('name') == 'title') {
+								if ($(this).attr('name') === 'title') {
 									serialStr += opts.prepend + '[' + li_count + '][title]=' + escape($(this).val());
 								}
 								else {
