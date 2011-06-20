@@ -344,7 +344,9 @@
 					}
 					var li = '';
 					li += '<li id="frm-' + last_id + '-item" class="' + field_type + '">';
-					li += '<div class="legend"><a id="frm-' + last_id + '" class="toggle-form" href="#">' + opts.messages.hide + '</a> ';
+					li += '<div class="legend">';
+					li += '<a id="frm-' + last_id + '" class="toggle-form" href="#">' + opts.messages.hide + '</a> ';
+					li += '<a id="del_' + last_id + '" class="del-button delete-confirm" href="#" title="' + opts.messages.remove_message + '"><span>' + opts.messages.remove + '</span></a>';
 					li += '<strong id="txt-title-' + last_id + '">' + title + '</strong></div>';
 					li += '<div id="frm-' + last_id + '-fld" class="frm-holder">';
 					li += '<div class="frm-elements">';
@@ -352,7 +354,6 @@
 					li += '<input class="required" type="checkbox" value="1" name="required-' + last_id + '" id="required-' + last_id + '"' + (required ? ' checked="checked"' : '') + ' /></div>';
 					li += field;
 					li += '</div>';
-					li += '<a id="del_' + last_id + '" class="del-button delete-confirm" href="#"  title="' + opts.messages.remove_message + '"><span>' + opts.messages.remove + '</span></a>';
 					li += '</div>';
 					li += '</li>';
 					$(ul_obj).append(li);
