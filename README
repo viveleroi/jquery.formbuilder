@@ -10,12 +10,13 @@ generating the xml, generating the html form, and processing the data.
 
 A demo of this version may be found at http://experiments.botsko.net/tests/formbuilder/
 
+Use of the JSON-encoding backend requires PHP 5.2+.
+
 Please feel free to fork the project and provide patches back.
 Please let us know how you're using this product!
 
 The source contains all example files, javascripts necessary, php files,
 any documentation, and some PHPUnit unit tests for the class.
-
 
 Note: Currently, an upgrade to jQuery 1.4.2 will not be enabled until
 problems with the scroll.to plugin are resolved.
@@ -29,6 +30,7 @@ Version 0.3-beta - 20110619
 - Improved dynamic loading, unique ID handling for multiple formbuilder-instances
 - Removed scrollTo dependency in favour of jQuery.animate()
 - Added json backend, to replace/as alternative to xml
+- Example html switched to latest html doctype
 
 Version 0.2 - 20100806
 - Upgraded to scroll.to 1.4.2
