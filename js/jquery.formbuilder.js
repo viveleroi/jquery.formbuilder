@@ -98,7 +98,7 @@
 						appendNewField($(this).val());
 						$(this).val(0).blur();
 						// This solves the scrollTo dependency
-						$('body').animate({
+						$('html, body').animate({
 							scrollTop: $('#frm-' + (last_id - 1) + '-item').offset().top
 						}, 500);
 						return false;
