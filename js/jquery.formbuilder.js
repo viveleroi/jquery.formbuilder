@@ -247,7 +247,7 @@
 					var value = '';
 					if (typeof (values) === 'object') {
 						value = values[0];
-						checked = values[1] === 'false' ? false : true;
+						checked = ( values[1] === 'false' || values[1] === 'undefined' ) ? false : true;
 					}
 					field = '';
 					field += '<div>';
@@ -288,7 +288,7 @@
 					var value = '';
 					if (typeof (values) === 'object') {
 						value = values[0];
-						checked = values[1] === 'false' ? false : true;
+						checked = ( values[1] === 'false' || values[1] === 'undefined' ) ? false : true;
 					}
 					field = '';
 					field += '<div>';
