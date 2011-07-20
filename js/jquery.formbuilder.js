@@ -476,19 +476,19 @@
 						serialStr += opts.prepend + '[' + li_count + '][required]=' + escape($('#' + $(this).attr('id') + ' input.required').attr('checked'));
 						switch ($(this).attr(opts.attributes[att])) {
 						case 'input_text':
-							serialStr += opts.prepend + '[' + li_count + '][values]=' + escape($('#' + $(this).attr('id') + ' input[type=text]').val());
+							serialStr += opts.prepend + '[' + li_count + '][values]=' + encodeURIComponent($('#' + $(this).attr('id') + ' input[type=text]').val());
 							break;
 						case 'textarea':
-							serialStr += opts.prepend + '[' + li_count + '][values]=' + escape($('#' + $(this).attr('id') + ' input[type=text]').val());
+							serialStr += opts.prepend + '[' + li_count + '][values]=' + encodeURIComponent($('#' + $(this).attr('id') + ' input[type=text]').val());
 							break;
 						case 'checkbox':
 							c = 1;
 							$('#' + $(this).attr('id') + ' input[type=text]').each(function () {
 								if ($(this).attr('name') === 'title') {
-									serialStr += opts.prepend + '[' + li_count + '][title]=' + escape($(this).val());
+									serialStr += opts.prepend + '[' + li_count + '][title]=' + encodeURIComponent($(this).val());
 								}
 								else {
-									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][value]=' + escape($(this).val());
+									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][value]=' + encodeURIComponent($(this).val());
 									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][default]=' + $(this).prev().attr('checked');
 								}
 								c++;
@@ -498,10 +498,10 @@
 							c = 1;
 							$('#' + $(this).attr('id') + ' input[type=text]').each(function () {
 								if ($(this).attr('name') === 'title') {
-									serialStr += opts.prepend + '[' + li_count + '][title]=' + escape($(this).val());
+									serialStr += opts.prepend + '[' + li_count + '][title]=' + encodeURIComponent($(this).val());
 								}
 								else {
-									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][value]=' + escape($(this).val());
+									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][value]=' + encodeURIComponent($(this).val());
 									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][default]=' + $(this).prev().attr('checked');
 								}
 								c++;
@@ -512,10 +512,10 @@
 							serialStr += opts.prepend + '[' + li_count + '][multiple]=' + $('#' + $(this).attr('id') + ' input[name=multiple]').attr('checked');
 							$('#' + $(this).attr('id') + ' input[type=text]').each(function () {
 								if ($(this).attr('name') === 'title') {
-									serialStr += opts.prepend + '[' + li_count + '][title]=' + escape($(this).val());
+									serialStr += opts.prepend + '[' + li_count + '][title]=' + encodeURIComponent($(this).val());
 								}
 								else {
-									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][value]=' + escape($(this).val());
+									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][value]=' + encodeURIComponent($(this).val());
 									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][default]=' + $(this).prev().attr('checked');
 								}
 								c++;
