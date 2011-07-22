@@ -1,5 +1,7 @@
 /* jquery.formbuilder css */
 
+h1 { display: none; }
+
 .frmb-control { }
 
 .frmb-submit { }

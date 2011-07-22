@@ -148,33 +148,33 @@
 					// Parse json
 					$(json).each(function () {
 						// checkbox type
-						if (this.class === 'checkbox') {
+						if (this.cssClass === 'checkbox') {
 							options = [this.title];
 							values = [];
 							$.each(this.values, function () {
-								values.push([this.value, this.default]);
+								values.push([this.value, this.baseline]);
 							});
 						}
 						// radio type
-						else if (this.class === 'radio') {
+						else if (this.cssClass === 'radio') {
 							options = [this.title];
 							values = [];
 							$.each(this.values, function () {
-								values.push([this.value, this.default]);
+								values.push([this.value, this.baseline]);
 							});
 						}
 						// select type
-						else if (this.class === 'select') {
+						else if (this.cssClass === 'select') {
 							options = [this.title, this.multiple];
 							values = [];
 							$.each(this.values, function () {
-								values.push([this.value, this.default]);
+								values.push([this.value, this.baseline]);
 							});
 						}
 						else {
 							values = [this.values];
 						}
-						appendNewField(this.class, values, options, this.required);
+						appendNewField(this.cssClass, values, options, this.required);
 					});
 				};
 			// Wrapper for adding a new field
@@ -470,10 +470,11 @@
 			var c = 1;
 			$(this).children().each(function () {
 				for (att = 0; att < opts.attributes.length; att++) {
-					serialStr += opts.prepend + '[' + li_count + '][' + opts.attributes[att] + ']=' + escape($(this).attr(opts.attributes[att]));
+					var key = (opts.attributes[att] === 'class' ? 'cssClass' : opts.attributes[att]);
+					serialStr += opts.prepend + '[' + li_count + '][' + key + ']=' + encodeURIComponent($(this).attr(opts.attributes[att]));
 					// append the form field values
 					if (opts.attributes[att] === 'class') {
-						serialStr += opts.prepend + '[' + li_count + '][required]=' + escape($('#' + $(this).attr('id') + ' input.required').attr('checked'));
+						serialStr += opts.prepend + '[' + li_count + '][required]=' + encodeURIComponent($('#' + $(this).attr('id') + ' input.required').attr('checked'));
 						switch ($(this).attr(opts.attributes[att])) {
 						case 'input_text':
 							serialStr += opts.prepend + '[' + li_count + '][values]=' + encodeURIComponent($('#' + $(this).attr('id') + ' input[type=text]').val());
@@ -489,7 +490,7 @@
 								}
 								else {
 									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][value]=' + encodeURIComponent($(this).val());
-									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][default]=' + $(this).prev().attr('checked');
+									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][baseline]=' + $(this).prev().attr('checked');
 								}
 								c++;
 							});
@@ -502,7 +503,7 @@
 								}
 								else {
 									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][value]=' + encodeURIComponent($(this).val());
-									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][default]=' + $(this).prev().attr('checked');
+									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][baseline]=' + $(this).prev().attr('checked');
 								}
 								c++;
 							});
@@ -516,7 +517,7 @@
 								}
 								else {
 									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][value]=' + encodeURIComponent($(this).val());
-									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][default]=' + $(this).prev().attr('checked');
+									serialStr += opts.prepend + '[' + li_count + '][values][' + c + '][baseline]=' + $(this).prev().attr('checked');
 								}
 								c++;
 							});

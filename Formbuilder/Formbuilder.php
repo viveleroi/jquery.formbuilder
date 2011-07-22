@@ -139,9 +139,9 @@ class Formbuilder {
 	 */
 	public function retrieve(){
 		if(is_array($this->_container) && array_key_exists('form_hash', $this->_container)){
-			if($this->_container['form_hash'] == $this->hash($this->_container['form_structure'])){
+		 	if($this->_container['form_hash'] == $this->hash($this->_container['form_structure'])){
 				return unserialize($this->_container['form_structure']);
-			}
+		  }
 		}
 		return false;
 	}
