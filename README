@@ -18,9 +18,6 @@ Please let us know how you're using this product!
 The source contains all example files, javascripts necessary, php files,
 any documentation, and some PHPUnit unit tests for the class.
 
-Note: Currently, an upgrade to jQuery 1.4.2 will not be enabled until
-problems with the scroll.to plugin are resolved.
-
 
 Version 0.3.1 - 20110722
 - Corrected issue with reserved words breaking support for Safari, Opera, IE
