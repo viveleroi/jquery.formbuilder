@@ -21,7 +21,12 @@ any documentation, and some PHPUnit unit tests for the class.
 Note: Currently, an upgrade to jQuery 1.4.2 will not be enabled until
 problems with the scroll.to plugin are resolved.
 
-Version 0.3-beta - 20110619
+
+Version 0.3.1 - 20110722
+- Corrected issue with reserved words breaking support for Safari, Opera, IE
+- Corrected issue with example-save expecting old POST key
+
+Version 0.3 - 20110619
 - Compatible with latest jQuery, jQueryUI and jquery.scrollTo
 - CSS moved into a separate file
 - Applied jsbeautifier and jshint on code
