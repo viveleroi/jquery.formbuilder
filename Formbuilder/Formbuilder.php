@@ -175,17 +175,17 @@ class Formbuilder {
 			foreach($this->_structure as $field){
 
 				// input type="text"
-				if($field['class'] == "input_text"){
+				if($field['cssClass'] == "input_text"){
 					$xml .= sprintf('<field type="input_text" required="%s">%s</field>'."\n", $field['required'], $this->encode_for_xml($field['values']));
 				}
 
 				// textarea
-				if($field['class'] == "textarea"){
+				if($field['cssClass'] == "textarea"){
 					$xml .= sprintf('<field type="textarea" required="%s">%s</field>'."\n", $field['required'], $this->encode_for_xml($field['values']));
 				}
 
 				// input type="checkbox"
-				if($field['class'] == "checkbox"){
+				if($field['cssClass'] == "checkbox"){
 					$xml .= sprintf('<field type="checkbox" required="%s" title="%s">'."\n", $field['required'], (isset($field['title']) ? $this->encode_for_xml($field['title']) : ''));
 					if(is_array($field['values'])){
 						foreach($field['values'] as $input){
@@ -196,7 +196,7 @@ class Formbuilder {
 				}
 
 				// input type="radio"
-				if($field['class'] == "radio"){
+				if($field['cssClass'] == "radio"){
 					$xml .= sprintf('<field type="radio" required="%s" title="%s">'."\n", $field['required'], (isset($field['title']) ? $this->encode_for_xml($field['title']) : ''));
 					if(is_array($field['values'])){
 						foreach($field['values'] as $input){
@@ -207,7 +207,7 @@ class Formbuilder {
 				}
 
 				// select
-				if($field['class'] == "select"){
+				if($field['cssClass'] == "select"){
 					$xml .= sprintf('<field type="select" required="%s" multiple="%s" title="%s">'."\n", $field['required'], $field['multiple'], (isset($field['title']) ? $this->encode_for_xml($field['title']) : ''));
 					if(is_array($field['values'])){
 						foreach($field['values'] as $input){
@@ -328,7 +328,7 @@ class Formbuilder {
 
 				$field['required'] = $field['required'] == 'true' ? true : false;
 
-				if($field['class'] == 'input_text' || $field['class'] == 'textarea'){
+				if($field['cssClass'] == 'input_text' || $field['cssClass'] == 'textarea'){
 
 					$val = $this->getPostValue( $this->elemId($field['values']));
 
@@ -338,7 +338,7 @@ class Formbuilder {
 						$results[ $this->elemId($field['values']) ] = $val;
 					}
 				}
-				elseif($field['class'] == 'radio' || $field['class'] == 'select'){
+				elseif($field['cssClass'] == 'radio' || $field['cssClass'] == 'select'){
 
 					$val = $this->getPostValue( $this->elemId($field['title']));
 
@@ -348,7 +348,7 @@ class Formbuilder {
 						$results[ $this->elemId($field['title']) ] = $val;
 					}
 				}
-				elseif($field['class'] == 'checkbox'){
+				elseif($field['cssClass'] == 'checkbox'){
 					if(is_array($field['values'])){
 
 						$at_least_one_checked = false;
@@ -396,9 +396,9 @@ class Formbuilder {
 	 */
 	protected function loadField($field){
 
-		if(is_array($field) && isset($field['class'])){
+		if(is_array($field) && isset($field['cssClass'])){
 
-			switch($field['class']){
+			switch($field['cssClass']){
 
 				case 'input_text':
 					return $this->loadInputText($field);
@@ -435,7 +435,7 @@ class Formbuilder {
 		$field['required'] = $field['required'] == 'true' ? ' required' : false;
 
 		$html = '';
-		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['values']));
+		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['cssClass']), $field['required'], $this->elemId($field['values']));
 		$html .= sprintf('<label for="%s">%s</label>' . "\n", $this->elemId($field['values']), $field['values']);
 		$html .= sprintf('<input type="text" id="%s" name="%s" value="%s" />' . "\n",
 								$this->elemId($field['values']),
@@ -460,7 +460,7 @@ class Formbuilder {
 		$field['required'] = $field['required'] == 'true' ? ' required' : false;
 
 		$html = '';
-		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['values']));
+		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['cssClass']), $field['required'], $this->elemId($field['values']));
 		$html .= sprintf('<label for="%s">%s</label>' . "\n", $this->elemId($field['values']), $field['values']);
 		$html .= sprintf('<textarea id="%s" name="%s" rows="5" cols="50">%s</textarea>' . "\n",
 								$this->elemId($field['values']),
@@ -485,7 +485,7 @@ class Formbuilder {
 		$field['required'] = $field['required'] == 'true' ? ' required' : false;
 
 		$html = '';
-		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['title']));
+		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['cssClass']), $field['required'], $this->elemId($field['title']));
 
 		if(isset($field['title']) && !empty($field['title'])){
 			$html .= sprintf('<span class="false_label">%s</span>' . "\n", $field['title']);
@@ -530,7 +530,7 @@ class Formbuilder {
 
 		$html = '';
 
-		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['title']));
+		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['cssClass']), $field['required'], $this->elemId($field['title']));
 
 		if(isset($field['title']) && !empty($field['title'])){
 			$html .= sprintf('<span class="false_label">%s</span>' . "\n", $field['title']);
@@ -580,7 +580,7 @@ class Formbuilder {
 
 		$html = '';
 
-		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['class']), $field['required'], $this->elemId($field['title']));
+		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['cssClass']), $field['required'], $this->elemId($field['title']));
 
 		if(isset($field['title']) && !empty($field['title'])){
 			$html .= sprintf('<label for="%s">%s</label>' . "\n", $this->elemId($field['title']), $field['title']);
