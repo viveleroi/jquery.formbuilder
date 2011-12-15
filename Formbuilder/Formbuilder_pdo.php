@@ -57,7 +57,7 @@ class Formbuilder_pdo extends Formbuilder {
 	 * Save the data to the database, but still returns the $for_db array.
 	 */
 	public function save_form(){
-		$for_db = parent::store();
+		$for_db = parent::get_encoded_form_array();
 		if($for_db['form_id']){
 			$stmt = $this->_db->prepare("UPDATE fb_savedforms SET form_structure = :struct WHERE id = :id");
 			$stmt->bindParam(':id', $for_db['form_id'], PDO::PARAM_INT);

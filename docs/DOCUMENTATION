@@ -60,7 +60,7 @@ To save the POST request from the jquery object, just invoke the following:
 	$form = new Formbuilder($form_data);
 
 	// Return the array for saving to a database
-	$for_db = $form->store();
+	$for_db = $form->get_encoded_form_array();
 
 The $for_db variable is an array and will contain a hash value, and the
 serialized form value. Save these two values to your database. They both need

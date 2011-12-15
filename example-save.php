@@ -7,14 +7,14 @@ require('Formbuilder/Formbuilder.php');
 // pass POST directly, but DO NOT use POST without
 // proper security in place.
 
-// The store() method returns an array that should be
+// The get_encoded_form_array() method returns an array that should be
 // used to store the values in the database. This array
 // is also what's passed to the class when rendering
 // or editing the form.
 
-//$form_data = isset($_POST['frmb']) ? $_POST : false;
-//$form = new Formbuilder($form_data);
-//$for_db = $form->store();
+$form_data = isset($_POST['frmb']) ? $_POST : false;
+$form = new Formbuilder($form_data);
+$for_db = $form->get_encoded_form_array();
 
 
 //------------------------------------------------------------------------------
@@ -32,11 +32,13 @@ $form->save_form();
 
 //------------------------------------------------------------------------------
 
-// Here's the example output of store()
+// Here's the example output of get_encoded_form_array()
 
-//print_r($for_db);
-//Array(
-//    [form_structure] => [{"cssClass":"input_text","required":"undefined","values":"First Name"},{"cssClass":"checkbox","required":"undefined","title":"Favorite programming language?","values":{"2":{"value":"PHP","baseline":"checked"},"3":{"value":"Ruby","baseline":"undefined"},"4":{"value":"Java","baseline":"undefined"}}}]
+print_r($for_db);
+//Array
+//(
+//    [form_id] => 1
+//    [form_structure] => [{"cssClass":"input_text","required":"undefined","values":"First Name"},{"cssClass":"input_text","required":"undefined","values":"Last Name"},{"cssClass":"textarea","required":"undefined","values":"Bio"},{"cssClass":"checkbox","required":"undefined","title":"What's on your pizza?","values":{"2":{"value":"Extra Cheese","baseline":"undefined"},"3":{"value":"Pepperoni","baseline":"undefined"},"4":{"value":"Beef","baseline":"undefined"}}}]
 //)
 
 ?>
