@@ -211,7 +211,7 @@ class Formbuilder {
 		if(is_array($this->_structure)){
 			foreach($this->_structure as $field){
 
-				$field['required'] = $field['required'] == 'true' ? true : false;
+				$field['required'] = $field['required'] == 'checked' ? ' required' : false;
 
 				if($field['cssClass'] == 'input_text' || $field['cssClass'] == 'textarea'){
 
@@ -317,7 +317,7 @@ class Formbuilder {
 	 */
 	protected function loadInputText($field){
 
-		$field['required'] = $field['required'] == 'true' ? ' required' : false;
+		$field['required'] = $field['required'] == 'checked' ? ' required' : false;
 
 		$html = '';
 		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['cssClass']), $field['required'], $this->elemId($field['values']));
@@ -342,7 +342,7 @@ class Formbuilder {
 	 */
 	protected function loadTextarea($field){
 
-		$field['required'] = $field['required'] == 'true' ? ' required' : false;
+		$field['required'] = $field['required'] == 'checked' ? ' required' : false;
 
 		$html = '';
 		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['cssClass']), $field['required'], $this->elemId($field['values']));
@@ -367,7 +367,7 @@ class Formbuilder {
 	 */
 	protected function loadCheckboxGroup($field){
 
-		$field['required'] = $field['required'] == 'true' ? ' required' : false;
+		$field['required'] = $field['required'] == 'checked' ? ' required' : false;
 
 		$html = '';
 		$html .= sprintf('<li class="%s%s" id="fld-%s">' . "\n", $this->elemId($field['cssClass']), $field['required'], $this->elemId($field['title']));
@@ -411,7 +411,7 @@ class Formbuilder {
 	 */
 	protected function loadRadioGroup($field){
 
-		$field['required'] = $field['required'] == 'true' ? ' required' : false;
+		$field['required'] = $field['required'] == 'checked' ? ' required' : false;
 
 		$html = '';
 
@@ -461,7 +461,7 @@ class Formbuilder {
 	 */
 	protected function loadSelectBox($field){
 
-		$field['required'] = $field['required'] == 'true' ? ' required' : false;
+		$field['required'] = $field['required'] == 'checked' ? ' required' : false;
 
 		$html = '';
 
@@ -474,7 +474,8 @@ class Formbuilder {
 		if(isset($field['values']) && is_array($field['values'])){
 			$multiple = $field['multiple'] == "true" ? ' multiple="multiple"' : '';
 			$html .= sprintf('<select name="%s" id="%s"%s>' . "\n", $this->elemId($field['title']), $this->elemId($field['title']), $multiple);
-
+			if($field['required']){ $html .= '<option value="">Selection Required</label>'; }
+			
 			foreach($field['values'] as $item){
 
 				// set the default checked value
