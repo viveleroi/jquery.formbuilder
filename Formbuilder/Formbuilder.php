@@ -141,8 +141,10 @@ class Formbuilder {
 		// Put together an array of all expected indices
 		if(is_array($this->_form_array['form_structure'])){
 			foreach($this->_form_array['form_structure'] as $field){
+				
+				$field = (array)$field;
 
-				$field['required'] = $field['required'] == 'checked' ? ' required' : false;
+				$field['required'] = ($field['required'] == 'checked');
 
 				if($field['cssClass'] == 'input_text' || $field['cssClass'] == 'textarea'){
 
@@ -165,12 +167,13 @@ class Formbuilder {
 					}
 				}
 				elseif($field['cssClass'] == 'checkbox'){
-					if(is_array($field['values'])){
+					$field['values'] = (array)$field['values'];
+					if(is_array($field['values']) && !empty($field['values'])){
 
 						$at_least_one_checked = false;
 
 						foreach($field['values'] as $item){
-
+							$item = (array)$item;
 							$elem_id = $this->elemId($item['value'], $field['title']);
 
 							$val = $this->getPostValue( $elem_id );
@@ -192,7 +195,6 @@ class Formbuilder {
 
 		$success = empty($error);
 
-		// if results is array, send email
 		return array('success'=>$success,'results'=>$results,'errors'=>$error);
 		
 	}

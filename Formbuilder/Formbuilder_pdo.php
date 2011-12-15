@@ -101,6 +101,22 @@ class Formbuilder_pdo extends Formbuilder {
 	
 	
 	/**
+	 *
+	 * @param type $form_db_id
+	 * @param type $form_action 
+	 */
+	public function process( $form_db_id = false ){
+		if($form_db_id){
+			$form = $this->loadFormRecord($form_db_id);
+			if($form){
+				parent::__construct($form);
+			}
+		}
+		return parent::process();
+	}
+	
+	
+	/**
 	 * Query the database for the form
 	 * @param type $form_db_id
 	 * @return boolean 

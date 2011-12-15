@@ -16,8 +16,15 @@ require('Formbuilder/Formbuilder.php');
 // the $form->get_encoded_form_array() method.
 include('fake-form-db-vals.php');
 
-$form = new Formbuilder($fake_db_vals);
-$results = $form->process();
+//$form = new Formbuilder($fake_db_vals);
+//$results = $form->process();
+
+// OR to process a form saved to the db:
+
+require('Formbuilder/Formbuilder_pdo.php');
+$form = new Formbuilder_pdo();
+$form->connect();
+$results = $form->process(1);
 
 print '<pre>';
 var_dump($results);

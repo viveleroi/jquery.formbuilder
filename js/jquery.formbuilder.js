@@ -292,7 +292,7 @@
 			// Appends the new field markup to the editor
 			var appendFieldLi = function (title, field_html, required, help) {
 					if (required) {
-						required = required === 'true' ? true : false;
+						required = required === 'checked' ? true : false;
 					}
 					var li = '';
 					li += '<li id="frm-' + last_id + '-item" class="' + field_type + '">';
