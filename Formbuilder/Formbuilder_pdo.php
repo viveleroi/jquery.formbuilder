@@ -74,19 +74,51 @@ class Formbuilder_pdo extends Formbuilder {
 	 */
 	public function render_json( $form_db_id = false ){
 		if($form_db_id){
+			$form = $this->loadFormRecord($form_db_id);
+			if($form){
+				header("Content-Type: application/json");
+				$ret = array("form_id" => $form['id'], "form_structure" => json_decode($form['form_structure']) );
+				print json_encode( $ret );
+			}
+		}
+	}
+	
+	
+	/**
+	 *
+	 * @param type $form_db_id
+	 * @param type $form_action 
+	 */
+	public function render_html( $form_db_id = false, $form_action = "" ){
+		if($form_db_id){
+			$form = $this->loadFormRecord($form_db_id);
+			if($form){
+				parent::__construct($form);
+			}
+		}
+		parent::render_html($form_action);
+	}
+	
+	
+	/**
+	 * Query the database for the form
+	 * @param type $form_db_id
+	 * @return boolean 
+	 */
+	protected function loadFormRecord($form_db_id = false){
+		if($form_db_id){
 			$stmt = $this->_db->prepare("SELECT * FROM fb_savedforms WHERE id = :id");
 			$stmt->bindParam(':id', $form_db_id, PDO::PARAM_INT);
 			$stmt->execute();
 			if($stmt->rowCount()){
 				while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-					header("Content-Type: application/json");
-					$ret = array("form_id" => $row['id'], "form_structure" => json_decode($row['form_structure']) );
-					print json_encode( $ret );
+					return $row;
 					break;
 				}
 			}
 			exit;
 		}
+		return false;
 	}
 }
 ?>

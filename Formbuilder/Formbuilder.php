@@ -112,7 +112,7 @@ class Formbuilder {
 			$html .= '<ol>'."\n";
 
 			foreach($this->_form_array['form_structure'] as $field){
-				$html .= $this->loadField($field);
+				$html .= $this->loadField((array)$field);
 			}
 			
 			$html .= '<li class="btn-submit"><input type="submit" name="submit" value="Submit" /></li>' . "\n";
@@ -306,10 +306,12 @@ class Formbuilder {
 		if(isset($field['title']) && !empty($field['title'])){
 			$html .= sprintf('<span class="false_label">%s</span>' . "\n", $field['title']);
 		}
-
+		$field['values'] = (array)$field['values'];
 		if(isset($field['values']) && is_array($field['values'])){
 			$html .= sprintf('<span class="multi-row clearfix">') . "\n";
 			foreach($field['values'] as $item){
+				
+				$item = (array)$item;
 
 				// set the default checked value
 				$checked = $item['default'] == 'true' ? true : false;
@@ -351,10 +353,12 @@ class Formbuilder {
 		if(isset($field['title']) && !empty($field['title'])){
 			$html .= sprintf('<span class="false_label">%s</span>' . "\n", $field['title']);
 		}
-
+		$field['values'] = (array)$field['values'];
 		if(isset($field['values']) && is_array($field['values'])){
 			$html .= sprintf('<span class="multi-row">') . "\n";
 			foreach($field['values'] as $item){
+				
+				$item = (array)$item;
 
 				// set the default checked value
 				$checked = $item['default'] == 'true' ? true : false;
@@ -401,13 +405,15 @@ class Formbuilder {
 		if(isset($field['title']) && !empty($field['title'])){
 			$html .= sprintf('<label for="%s">%s</label>' . "\n", $this->elemId($field['title']), $field['title']);
 		}
-
+		$field['values'] = (array)$field['values'];
 		if(isset($field['values']) && is_array($field['values'])){
 			$multiple = $field['multiple'] == "true" ? ' multiple="multiple"' : '';
 			$html .= sprintf('<select name="%s" id="%s"%s>' . "\n", $this->elemId($field['title']), $this->elemId($field['title']), $multiple);
 			if($field['required']){ $html .= '<option value="">Selection Required</label>'; }
 			
 			foreach($field['values'] as $item){
+				
+				$item = (array)$item;
 
 				// set the default checked value
 				$checked = $item['default'] == 'true' ? true : false;
