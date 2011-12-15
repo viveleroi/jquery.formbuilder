@@ -16,15 +16,15 @@ require('Formbuilder/Formbuilder.php');
 // the $form->get_encoded_form_array() method.
 include('fake-form-db-vals.php');
 
-//$form = new Formbuilder($fake_db_vals);
-//$results = $form->process();
+$form = new Formbuilder($fake_db_vals);
+$results = $form->process();
 
 // OR you can process form based on the one stored in the db
 
-require('Formbuilder/Formbuilder_pdo.php');
-$form = new Formbuilder_pdo();
-$form->connect();
-$results = $form->save_response(1);
+//require('Formbuilder/Formbuilder_pdo.php');
+//$form = new Formbuilder_pdo();
+//$form->connect();
+//$results = $form->save_response(1);
 
 // At this point though, there are a few choices to save this to a DB
 // It's harder to store the values because the fields change and are more

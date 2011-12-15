@@ -1,22 +1,21 @@
-The jquery.Formbuilder plugin is a script that allows you integrate
-a jquery and php-based form-creation tool into your application.
+The jquery.Formbuilder plugin is a jQuery plugin that allows you add
+a form-creation, display, and basic validation tool into your application.
+
+The API and example code has been left open for you to override, assuming that
+you want complete control over how the form data is saved and loaded. However
+we have provided some basic database loading/saving examples using PDO for MySQL.
 
 Please report all issues, bugs, and feature suggestions
 to: https://snowy-evening.com/botsko/jquery-form-builder/
 
-The tool interface is constructed using form data presented in xml format
+The tool interface is constructed using form data presented in JSON format
 by the server. The php class assists you with storing the data,
-generating the xml, generating the html form, and processing the data.
+generating the json, generating the html form, and processing the data.
 
 A demo of this version may be found at http://experiments.botsko.net/tests/formbuilder/
 
-Use of the JSON-encoding backend requires PHP 5.2+.
-
 Please feel free to fork the project and provide patches back.
 Please let us know how you're using this product!
-
-The source contains all example files, javascripts necessary, php files,
-any documentation, and some PHPUnit unit tests for the class.
 
 
 Version 0.4 - 20111215
@@ -26,6 +25,7 @@ Version 0.4 - 20111215
 - Incorporated a required attribute bug fix: https://snowy-evening.com/botsko/jquery-form-builder/8/
 - Dumped a ton of unnecessary complexity of encoding/decoding and array vars
 - Changed process() to return an array of errors, not a string
+- Added sample response saves to db, only on good validation
 
 Version 0.3.1 - 20110722
 - Corrected issue with reserved words breaking support for Safari, Opera, IE
