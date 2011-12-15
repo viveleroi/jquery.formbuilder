@@ -101,6 +101,23 @@ class Formbuilder_pdo extends Formbuilder {
 	
 	
 	/**
+	 * 
+	 * @param type $form_db_id
+	 * @return type 
+	 */
+	public function save_response( $form_db_id = false ){
+		$results = $this->process($form_db_id);
+		if($results['success']){
+			$stmt = $this->_db->prepare("INSERT INTO fb_savedresponses (response_json,date_created) VALUES (:json,:date)");
+			$stmt->bindParam(':json', json_encode($results['results']), PDO::PARAM_STR);
+			$stmt->bindParam(':date', date("Y-m-d H:i:s"), PDO::PARAM_STR);
+		$stmt->execute();
+		}
+		return $results;
+	}
+	
+	
+	/**
 	 *
 	 * @param type $form_db_id
 	 * @param type $form_action 

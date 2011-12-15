@@ -135,7 +135,7 @@ class Formbuilder {
 	 */
 	public function process(){
 
-		$error		= '';
+		$error		= array();
 		$results 	= array();
 
 		// Put together an array of all expected indices
@@ -151,7 +151,7 @@ class Formbuilder {
 					$val = $this->getPostValue( $this->elemId($field['values']));
 
 					if($field['required'] && empty($val)){
-						$error .= '<li>Please complete the ' . $field['values'] . ' field.</li>' . "\n";
+						$error[] = 'Please complete the ' . $field['values'] . ' field.';
 					} else {
 						$results[ $this->elemId($field['values']) ] = $val;
 					}
@@ -161,7 +161,7 @@ class Formbuilder {
 					$val = $this->getPostValue( $this->elemId($field['title']));
 
 					if($field['required'] && empty($val)){
-						$error .= '<li>Please complete the ' . $field['title'] . ' field.</li>' . "\n";
+						$error[] = 'Please complete the ' . $field['title'] . ' field.';
 					} else {
 						$results[ $this->elemId($field['title']) ] = $val;
 					}
@@ -186,7 +186,7 @@ class Formbuilder {
 						}
 
 						if(!$at_least_one_checked && $field['required']){
-							$error .= '<li>Please check at least one ' . $field['title'] . ' choice.</li>' . "\n";
+							$error[] = 'Please check at least one ' . $field['title'] . ' choice.';
 						}
 					}
 				} else { }

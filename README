@@ -25,6 +25,7 @@ Version 0.4 - 20111215
 - Adding example mysql storage methods to the load, save process (PDO-based so other databases may be used)
 - Incorporated a required attribute bug fix: https://snowy-evening.com/botsko/jquery-form-builder/8/
 - Dumped a ton of unnecessary complexity of encoding/decoding and array vars
+- Changed process() to return an array of errors, not a string
 
 Version 0.3.1 - 20110722
 - Corrected issue with reserved words breaking support for Safari, Opera, IE
