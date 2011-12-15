@@ -19,6 +19,11 @@ The source contains all example files, javascripts necessary, php files,
 any documentation, and some PHPUnit unit tests for the class.
 
 
+Version 0.4 - 20111215
+- Removing old XML-based form loading system, moving to pure JSON
+- Removing internal serialization system in favor of json formatting
+- Adding example mysql storage methods to the load, save process (PDO-based so other databases may be used)
+
 Version 0.3.1 - 20110722
 - Corrected issue with reserved words breaking support for Safari, Opera, IE
 - Corrected issue with example-save expecting old POST key
