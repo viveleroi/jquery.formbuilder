@@ -46,7 +46,7 @@ class Formbuilder {
 		// Set the serialized structure if it's provided
 		// otherwise, store the source
 		if(array_key_exists('form_structure', $form)){
-			$form['form_structure'] = json_decode($form['form_structure']);
+			$form['form_structure'] = $this->objectToArray( json_decode($form['form_structure']) );
 			$this->_form_array = $form;
 		}
 		else if(array_key_exists('frmb', $form)){
@@ -109,7 +109,7 @@ class Formbuilder {
 		if(is_array($this->_form_array['form_structure'])){
 	
 			$html .= '<form class="frm-bldr" method="post" action="'.$form_action.'">' . "\n";
-			$html .= '<ol>'."\n";
+			$html .= '<ol class="frmb">'."\n";
 
 			foreach($this->_form_array['form_structure'] as $field){
 				$html .= $this->loadField((array)$field);
@@ -448,7 +448,7 @@ class Formbuilder {
 	 * @return string
 	 * @access protected
 	 */
-	private function elemId($label, $prepend = false){
+	protected function elemId($label, $prepend = false){
 		if(is_string($label)){
 			$prepend = is_string($prepend) ? $this->elemId($prepend).'-' : false;
 			return $prepend.strtolower( preg_replace("/[^A-Za-z0-9_]/", "", str_replace(" ", "_", $label) ) );
@@ -465,6 +465,33 @@ class Formbuilder {
 	 */
 	protected function getPostValue($key){
 		return array_key_exists($key, $_POST) ? $_POST[$key] : false;
+	}
+	
+	
+	/**
+	 * Converts an object into an array
+	 * @param type $object
+	 * @return type 
+	 */
+	protected function objectToArray($object) {
+		if (is_object($object)) {
+			foreach ($object as $key => $value) {
+				if(is_object($value)){
+					$array[$key] = $this->objectToArray($value);
+				} else {
+					$array[$key] = $value;
+				}
+			}
+		}
+		else if(is_array($object)){
+			foreach ($object as $key => $value) {
+				$array[$key] = $this->objectToArray($value);
+			}
+		}
+		else {
+			$array = $object;
+		}
+		return $array;
 	}
 }
 ?>

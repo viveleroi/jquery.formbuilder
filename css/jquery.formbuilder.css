@@ -115,3 +115,6 @@ ul.frmb {
 	float: right;
 	margin-right: 10px;
 }
+
+/* html display helpers */
+textarea, .multi-row span { display: block; }

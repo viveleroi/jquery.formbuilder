@@ -3,6 +3,7 @@
 	<head>
 		<title>jQuery FormBuilder Demo (Output)</title>
 		<meta charset="utf-8" />
+		<link href="../../../css/jquery.formbuilder.css" media="screen" rel="stylesheet" />
 	</head>
 	<body>
 
