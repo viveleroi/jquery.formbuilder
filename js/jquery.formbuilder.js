@@ -14,6 +14,7 @@
 			load_url: false,
 			control_box_target: false,
 			serialize_prefix: 'frmb',
+			css_ul_sortable_class : 'ul_opt_sortable',
 			messages: {
 				save				: "Save",
 				add_new_field		: "Add New Field...",
@@ -242,12 +243,13 @@
 						value = values[0];
 						checked = ( values[1] === 'false' || values[1] === 'undefined' ) ? false : true;
 					}
-					field = '';
+					field = '<li>'; // sortable list item
 					field += '<div>';
 					field += '<input type="radio"' + (checked ? ' checked="checked"' : '') + ' name="radio_' + name + '" />';
 					field += '<input type="text" value="' + value + '" />';
 					field += '<a href="#" class="remove" title="' + opts.messages.remove_message + '">' + opts.messages.remove + '</a>';
-					field += '</div>';
+					field += '</div></li>';
+
 					return field;
 				};
 			// adds a select/option element
@@ -266,19 +268,27 @@
 					field += '<div class="fields">';
 					field += '<input type="checkbox" name="multiple"' + (multiple ? 'checked="checked"' : '') + '>';
 					field += '<label class="auto">' + opts.messages.selections_message + '</label>';
-					if (typeof (values) === 'object') {
-						for (i = 0; i < values.length; i++) {
-							field += selectFieldHtml(values[i], multiple);
+
+					field += '<div><ul class="' + opts.css_ul_sortable_class + '">';
+
+						if (typeof (values) === 'object') {
+							for (i = 0; i < values.length; i++) {
+								field += selectFieldHtml(values[i], multiple);
+							}
 						}
-					}
-					else {
-						field += selectFieldHtml('', multiple);
-					}
+						else {
+							field += selectFieldHtml('', multiple);
+						}
+
+					field += '</ul></div>';
+
 					field += '<div class="add-area"><a href="#" class="add add_opt">' + opts.messages.add + '</a></div>';
 					field += '</div>';
 					field += '</div>';
 					help = '';
 					appendFieldLi(opts.messages.select, field, required, help);
+
+					$('.'+ opts.css_ul_sortable_class).sortable(); // making the dynamically added option fields sortable.  
 				};
 			// Select field html, since there may be multiple
 			var selectFieldHtml = function (values, multiple) {
@@ -318,7 +328,7 @@
 				};
 			// handle field delete links
 			$('.remove').live('click', function () {
-				$(this).parent('div').animate({
+				$(this).parent('div').parent('li').animate({
 					opacity: 'hide',
 					height: 'hide',
 					marginBottom: '0px'
@@ -369,7 +379,19 @@
 			});
 			// Attach a callback to add new options
 			$('.add_opt').live('click', function () {
-				$(this).parent().before(selectFieldHtml('', false));
+
+				/*
+				<div class="fields">
+					<div>
+						<ul>...</ul> // find this and append selectFieldHtml
+					</div>
+					<div class="add-area">
+						<a class="add add_opt" href="#">Add</a> // selected item [$(this)]
+					</div>
+				</div>
+				*/
+				
+				$(this).parent().parent().find('ul').append(selectFieldHtml('', false));
 				return false;
 			});
 			// Attach a callback to add new radio fields
