@@ -399,7 +399,7 @@
 				/*
 				<div class="fields">
 					<div>
-						<ul>...</ul> // find this and append selectFieldHtml
+						<ol>...</ol> // find this and append selectFieldHtml
 					</div>
 					<div class="add-area">
 						<a class="add add_opt" href="#">Add</a> // selected item [$(this)]
