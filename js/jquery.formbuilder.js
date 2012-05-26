@@ -14,7 +14,7 @@
 			load_url: false,
 			control_box_target: false,
 			serialize_prefix: 'frmb',
-			css_ul_sortable_class : 'ul_opt_sortable',
+			css_ol_sortable_class : 'ol_opt_sortable',
 			messages: {
 				save				: "Save",
 				add_new_field		: "Add New Field...",
@@ -181,7 +181,7 @@
 					field += '<div class="false-label">' + opts.messages.select_options + '</div>';
 					field += '<div class="fields">';
 
-					field += '<div><ol class="' + opts.css_ul_sortable_class + '">';
+					field += '<div><ol class="' + opts.css_ol_sortable_class + '">';
 
 					if (typeof (values) === 'object') {
 						for (i = 0; i < values.length; i++) {
@@ -200,7 +200,7 @@
 					help = '';
 					appendFieldLi(opts.messages.checkbox_group, field, required, help);
 
-					$('.'+ opts.css_ul_sortable_class).sortable(); // making the dynamically added option fields sortable.
+					$('.'+ opts.css_ol_sortable_class).sortable(); // making the dynamically added option fields sortable.
 				};
 			// Checkbox field html, since there may be multiple
 			var checkboxFieldHtml = function (values) {
@@ -230,7 +230,7 @@
 					field += '<div class="false-label">' + opts.messages.select_options + '</div>';
 					field += '<div class="fields">';
 
-					field += '<div><ol class="' + opts.css_ul_sortable_class + '">';
+					field += '<div><ol class="' + opts.css_ol_sortable_class + '">';
 
 					if (typeof (values) === 'object') {
 						for (i = 0; i < values.length; i++) {
@@ -249,7 +249,7 @@
 					help = '';
 					appendFieldLi(opts.messages.radio_group, field, required, help);
 
-					$('.'+ opts.css_ul_sortable_class).sortable(); // making the dynamically added option fields sortable. 
+					$('.'+ opts.css_ol_sortable_class).sortable(); // making the dynamically added option fields sortable. 
 				};
 			// Radio field html, since there may be multiple
 			var radioFieldHtml = function (values, name) {
@@ -285,7 +285,7 @@
 					field += '<input type="checkbox" name="multiple"' + (multiple ? 'checked="checked"' : '') + '>';
 					field += '<label class="auto">' + opts.messages.selections_message + '</label>';
 
-					field += '<div><ol class="' + opts.css_ul_sortable_class + '">';
+					field += '<div><ol class="' + opts.css_ol_sortable_class + '">';
 
 						if (typeof (values) === 'object') {
 							for (i = 0; i < values.length; i++) {
@@ -304,7 +304,7 @@
 					help = '';
 					appendFieldLi(opts.messages.select, field, required, help);
 
-					$('.'+ opts.css_ul_sortable_class).sortable(); // making the dynamically added option fields sortable.  
+					$('.'+ opts.css_ol_sortable_class).sortable(); // making the dynamically added option fields sortable.  
 				};
 			// Select field html, since there may be multiple
 			var selectFieldHtml = function (values, multiple) {
