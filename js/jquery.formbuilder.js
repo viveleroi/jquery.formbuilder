@@ -180,6 +180,9 @@
 					field += '<input type="text" name="title" value="' + title + '" /></div>';
 					field += '<div class="false-label">' + opts.messages.select_options + '</div>';
 					field += '<div class="fields">';
+
+					field += '<div><ol class="' + opts.css_ul_sortable_class + '">';
+
 					if (typeof (values) === 'object') {
 						for (i = 0; i < values.length; i++) {
 							field += checkboxFieldHtml(values[i]);
@@ -188,11 +191,16 @@
 					else {
 						field += checkboxFieldHtml('');
 					}
+
+					field += '</ol></div>';
+
 					field += '<div class="add-area"><a href="#" class="add add_ck">' + opts.messages.add + '</a></div>';
 					field += '</div>';
 					field += '</div>';
 					help = '';
 					appendFieldLi(opts.messages.checkbox_group, field, required, help);
+
+					$('.'+ opts.css_ul_sortable_class).sortable(); // making the dynamically added option fields sortable.
 				};
 			// Checkbox field html, since there may be multiple
 			var checkboxFieldHtml = function (values) {
@@ -202,12 +210,12 @@
 						value = values[0];
 						checked = ( values[1] === 'false' || values[1] === 'undefined' ) ? false : true;
 					}
-					field = '';
+					field = '<li>';
 					field += '<div>';
 					field += '<input type="checkbox"' + (checked ? ' checked="checked"' : '') + ' />';
 					field += '<input type="text" value="' + value + '" />';
 					field += '<a href="#" class="remove" title="' + opts.messages.remove_message + '">' + opts.messages.remove + '</a>';
-					field += '</div>';
+					field += '</div></li>';
 					return field;
 				};
 			// adds a radio element
@@ -221,6 +229,9 @@
 					field += '<input type="text" name="title" value="' + title + '" /></div>';
 					field += '<div class="false-label">' + opts.messages.select_options + '</div>';
 					field += '<div class="fields">';
+
+					field += '<div><ol class="' + opts.css_ul_sortable_class + '">';
+
 					if (typeof (values) === 'object') {
 						for (i = 0; i < values.length; i++) {
 							field += radioFieldHtml(values[i], 'frm-' + last_id + '-fld');
@@ -229,11 +240,16 @@
 					else {
 						field += radioFieldHtml('', 'frm-' + last_id + '-fld');
 					}
+
+					field += '</ol></div>';
+
 					field += '<div class="add-area"><a href="#" class="add add_rd">' + opts.messages.add + '</a></div>';
 					field += '</div>';
 					field += '</div>';
 					help = '';
 					appendFieldLi(opts.messages.radio_group, field, required, help);
+
+					$('.'+ opts.css_ul_sortable_class).sortable(); // making the dynamically added option fields sortable. 
 				};
 			// Radio field html, since there may be multiple
 			var radioFieldHtml = function (values, name) {
@@ -243,7 +259,7 @@
 						value = values[0];
 						checked = ( values[1] === 'false' || values[1] === 'undefined' ) ? false : true;
 					}
-					field = '<li>'; // sortable list item
+					field = '<li>'; 
 					field += '<div>';
 					field += '<input type="radio"' + (checked ? ' checked="checked"' : '') + ' name="radio_' + name + '" />';
 					field += '<input type="text" value="' + value + '" />';
@@ -269,7 +285,7 @@
 					field += '<input type="checkbox" name="multiple"' + (multiple ? 'checked="checked"' : '') + '>';
 					field += '<label class="auto">' + opts.messages.selections_message + '</label>';
 
-					field += '<div><ul class="' + opts.css_ul_sortable_class + '">';
+					field += '<div><ol class="' + opts.css_ul_sortable_class + '">';
 
 						if (typeof (values) === 'object') {
 							for (i = 0; i < values.length; i++) {
@@ -280,7 +296,7 @@
 							field += selectFieldHtml('', multiple);
 						}
 
-					field += '</ul></div>';
+					field += '</ol></div>';
 
 					field += '<div class="add-area"><a href="#" class="add add_opt">' + opts.messages.add + '</a></div>';
 					field += '</div>';
@@ -374,7 +390,7 @@
 			});
 			// Attach a callback to add new checkboxes
 			$('.add_ck').live('click', function () {
-				$(this).parent().before(checkboxFieldHtml());
+				$(this).parent().parent().find('ol').append(checkboxFieldHtml());
 				return false;
 			});
 			// Attach a callback to add new options
@@ -391,12 +407,13 @@
 				</div>
 				*/
 				
-				$(this).parent().parent().find('ul').append(selectFieldHtml('', false));
+				$(this).parent().parent().find('ol').append(selectFieldHtml('', false));
 				return false;
 			});
 			// Attach a callback to add new radio fields
 			$('.add_rd').live('click', function () {
-				$(this).parent().before(radioFieldHtml(false, $(this).parents('.frm-holder').attr('id')));
+
+				$(this).parent().parent().find('ol').append(radioFieldHtml(false, $(this).parents('.frm-holder').attr('id')));
 				return false;
 			});
 			// saves the serialized data to the server 
