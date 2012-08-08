@@ -46,7 +46,7 @@ class Formbuilder {
 		// Set the serialized structure if it's provided
 		// otherwise, store the source
 		if(array_key_exists('form_structure', $form)){
-			$form['form_structure'] = $this->objectToArray( json_decode($form['form_structure']) );
+			$form['form_structure'] = json_decode($form['form_structure'], true);
 			$this->_form_array = $form;
 		}
 		else if(array_key_exists('frmb', $form)){
@@ -465,33 +465,6 @@ class Formbuilder {
 	 */
 	protected function getPostValue($key){
 		return array_key_exists($key, $_POST) ? $_POST[$key] : false;
-	}
-	
-	
-	/**
-	 * Converts an object into an array
-	 * @param type $object
-	 * @return type 
-	 */
-	protected function objectToArray($object) {
-		if (is_object($object)) {
-			foreach ($object as $key => $value) {
-				if(is_object($value)){
-					$array[$key] = $this->objectToArray($value);
-				} else {
-					$array[$key] = $value;
-				}
-			}
-		}
-		else if(is_array($object)){
-			foreach ($object as $key => $value) {
-				$array[$key] = $this->objectToArray($value);
-			}
-		}
-		else {
-			$array = $object;
-		}
-		return $array;
 	}
 }
 ?>
