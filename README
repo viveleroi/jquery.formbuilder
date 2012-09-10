@@ -12,7 +12,7 @@ The tool interface is constructed using form data presented in JSON format
 by the server. The php class assists you with storing the data,
 generating the json, generating the html form, and processing the data.
 
-A demo of this version may be found at http://experiments.botsko.net/tests/formbuilder/
+A demo of this version may be found at http://botsko.net/Demos/formbuilder/
 
 Please feel free to fork the project and provide patches back.
 Please let us know how you're using this product!
