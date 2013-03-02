@@ -2,3 +2,4 @@
 *.tmproj
 nbproject
 .ftpssh_settings
+.idea
