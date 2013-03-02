@@ -1,26 +1,22 @@
 jQuery.FormBuilder
 ==================
-The jquery.Formbuilder plugin is a jQuery plugin that allows you add a
-form-creation, display, and basic validation tool into your application.
 
-The API and example code has been left open for you to override,
-assuming that you want complete control over how the form data is saved
-and loaded. However we have provided some basic database loading/saving
-examples using PDO for MySQL.
+The jquery.Formbuilder plugin is a jQuery plugin that allows you add a form-creation, display, and basic validation tool into your application.
 
-Please report all issues, bugs, and feature suggestions
-to: https://snowy-evening.com/botsko/jquery-form-builder/
+The API and example code has been left open for you to override, assuming that you want complete control over how the form data is saved and loaded. However we have provided some basic database loading/saving examples using PDO for MySQL.
 
-The tool interface is constructed using form data presented in JSON
-format by the server. The php class assists you with storing the data,
-generating the json, generating the html form, and processing the data.
+Please report all issues, bugs, and feature suggestions to: https://snowy-evening.com/botsko/jquery-form-builder/
 
-A demo of this version may be found at
-http://botsko.net/Demos/formbuilder/
+The tool interface is constructed using form data presented in JSON format by the server. The php class assists you with storing the data, generating the json, generating the html form, and processing the data.
 
-Please feel free to fork the project and provide patches back.
-Please let us know how you're using this product!
+A demo of this version may be found at http://botsko.net/Demos/formbuilder/
 
+Please feel free to fork the project and provide patches back. Please let us know how you're using this product!
+
+### Version 0.4.1 - 20130302
+
+- Fixing required/baseline checked state being read incorrectly
+- Adding ability to sort/reorder fields, PR by anjana-somathilake
 
 ### Version 0.4 - 20111215
 - Removing old XML-based form loading system, moving to pure JSON
