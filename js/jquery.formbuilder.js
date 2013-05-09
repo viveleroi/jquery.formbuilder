@@ -192,9 +192,8 @@
 						field += checkboxFieldHtml('');
 					}
 
-					field += '</ol></div>';
-
 					field += '<div class="add-area"><a href="#" class="add add_ck">' + opts.messages.add + '</a></div>';
+					field += '</ol></div>';
 					field += '</div>';
 					field += '</div>';
 					help = '';
@@ -241,9 +240,8 @@
 						field += radioFieldHtml('', 'frm-' + last_id + '-fld');
 					}
 
-					field += '</ol></div>';
-
 					field += '<div class="add-area"><a href="#" class="add add_rd">' + opts.messages.add + '</a></div>';
+					field += '</ol></div>';
 					field += '</div>';
 					field += '</div>';
 					help = '';
@@ -296,9 +294,8 @@
 							field += selectFieldHtml('', multiple);
 						}
 
-					field += '</ol></div>';
-
 					field += '<div class="add-area"><a href="#" class="add add_opt">' + opts.messages.add + '</a></div>';
+					field += '</ol></div>';
 					field += '</div>';
 					field += '</div>';
 					help = '';
