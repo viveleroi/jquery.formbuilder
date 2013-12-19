@@ -192,7 +192,7 @@
 						field += checkboxFieldHtml('');
 					}
 
-					field += '<div class="add-area"><a href="#" class="add add_ck">' + opts.messages.add + '</a></div>';
+					field += '<li class="add-area"><a href="#" class="add add_ck">' + opts.messages.add + '</a></li>';
 					field += '</ol></div>';
 					field += '</div>';
 					field += '</div>';
@@ -341,7 +341,7 @@
 				};
 			// handle field delete links
 			$('.frmb').delegate('.remove', 'click', function () {
-				$(this).parent('div').animate({
+				$(this).parents('li:eq(0)').animate({
 					opacity: 'hide',
 					height: 'hide',
 					marginBottom: '0px'

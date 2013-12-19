@@ -66,8 +66,7 @@ ul.frmb {
 .frm-elements .fields { margin-top: 10px }
 
 .frm-elements .fields div {
-	clear: both;
-	float: left;
+	overflow: hidden;
 	width: 99%;
 }
 
@@ -88,8 +87,8 @@ ul.frmb {
 .frm-elements .fields .add-area {
 	position: relative;
 	left: -30px;
-	line-height: 0;
-	margin-top: -13px;
+	list-style: none;
+	border: 0;
 }
 
 .frm-elements .fields .add-area .add {
