@@ -20,7 +20,7 @@ ul.frmb {
 	background: #FFFEEB;
 }
 
-.frmb .legend {
+.ui-sortable > li {
 	cursor: move;
 }
 

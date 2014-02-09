@@ -45,7 +45,7 @@
 		var opts = $.extend(defaults, options);
 		var frmb_id = 'frmb-' + $('ul[id^=frmb-]').length++;
 		return this.each(function () {
-			var ul_obj = $(this).append('<ul id="' + frmb_id + '" class="frmb"></ul>').find('ul');
+			var ul_obj = $(this).append('<ul id="' + frmb_id + '" class="frmb"></ul>').find('ul').sortable();
 			var field = '', field_type = '', last_id = 1, help, form_db_id;
 			// Add a unique class to the current element
 			$(ul_obj).addClass(frmb_id);
