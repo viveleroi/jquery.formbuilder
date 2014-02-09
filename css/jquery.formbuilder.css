@@ -20,6 +20,10 @@ ul.frmb {
 	background: #FFFEEB;
 }
 
+.frmb .legend {
+	cursor: move;
+}
+
 .frmb .legend .toggle-form {
 	float: right;
 }
