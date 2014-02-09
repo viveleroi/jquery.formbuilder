@@ -37,7 +37,10 @@
 				hide				: "Hide",
 				required			: "Required",
 				show				: "Show"
-			}
+			},
+			loaded: function() {},
+			saving: function() {},
+			saved: function() {}
 		};
 		var opts = $.extend(defaults, options);
 		var frmb_id = 'frmb-' + $('ul[id^=frmb-]').length++;
@@ -51,25 +54,29 @@
 				$.getJSON(opts.load_url, function(json) {
 					form_db_id = json.form_id;
 					fromJson(json.form_structure);
+					opts.loaded(json);
+					var controlBox = setupControlBox(opts.control_box_target);
 				});
+			} else {
+				var controlBox = setupControlBox(opts.control_box_target);
 			}
 			// Create form control select box and add into the editor
-			var controlBox = function (target) {
+			var setupControlBox = function (target) {
 					var select = '';
 					var box_content = '';
 					var save_button = '';
 					var box_id = frmb_id + '-control-box';
 					var save_id = frmb_id + '-save-button';
 					// Add the available options
-					select += '<option value="0">' + opts.messages.add_new_field + '</option>';
+					select += '<option value="0" disabled selected>' + opts.messages.add_new_field + '</option>';
 					select += '<option value="input_text">' + opts.messages.text + '</option>';
 					select += '<option value="textarea">' + opts.messages.paragraph + '</option>';
 					select += '<option value="checkbox">' + opts.messages.checkboxes + '</option>';
 					select += '<option value="radio">' + opts.messages.radio + '</option>';
 					select += '<option value="select">' + opts.messages.select + '</option>';
 					// Build the control box and search button content
-					box_content = '<select id="' + box_id + '" class="frmb-control">' + select + '</select>';
-					save_button = '<input type="submit" id="' + save_id + '" class="frmb-submit" value="' + opts.messages.save + '"/>';
+					box_content = '<select id="' + box_id + '" class="frmb-control form-control">' + select + '</select>';
+					save_button = '<button type="submit" id="' + save_id + '" class="frmb-submit btn btn-primary">' + opts.messages.save + '</button>';
 					// Insert the control box into page
 					if (!target) {
 						$(ul_obj).before(box_content);
@@ -80,7 +87,8 @@
 					$(ul_obj).after(save_button);
 					// Set the form save action
 					$('#' + save_id).click(function () {
-						save();
+						opts.saving.call(this);
+						save.call(this);
 						return false;
 					});
 					// Add a callback to the select element
@@ -93,7 +101,7 @@
 						}, 500);
 						return false;
 					});
-				}(opts.control_box_target);
+				};
 			// Json parser to build the form builder
 			var fromJson = function (json) {
 					var values = '';
@@ -158,14 +166,14 @@
 			// single line input type="text"
 			var appendTextInput = function (values, required) {
 					field += '<label>' + opts.messages.label + '</label>';
-					field += '<input class="fld-title" id="title-' + last_id + '" type="text" value="' + values + '" />';
+					field += '<input class="fld-title form-control" id="title-' + last_id + '" type="text" value="' + values + '" />';
 					help = '';
 					appendFieldLi(opts.messages.text, field, required, help);
 				};
 			// multi-line textarea
 			var appendTextarea = function (values, required) {
 					field += '<label>' + opts.messages.label + '</label>';
-					field += '<input type="text" value="' + values + '" />';
+					field += '<input type="text" class="form-control" value="' + values + '" />';
 					help = '';
 					appendFieldLi(opts.messages.paragraph_field, field, required, help);
 				};
@@ -177,7 +185,7 @@
 					}
 					field += '<div class="chk_group">';
 					field += '<div class="frm-fld"><label>' + opts.messages.title + '</label>';
-					field += '<input type="text" name="title" value="' + title + '" /></div>';
+					field += '<input type="text" name="title" class="form-control" value="' + title + '" /></div>';
 					field += '<div class="false-label">' + opts.messages.select_options + '</div>';
 					field += '<div class="fields">';
 
@@ -212,7 +220,7 @@
 					field = '<li>';
 					field += '<div>';
 					field += '<input type="checkbox"' + (checked ? ' checked="checked"' : '') + ' />';
-					field += '<input type="text" value="' + value + '" />';
+					field += '<input type="text" class="form-control" value="' + value + '" />';
 					field += '<a href="#" class="remove" title="' + opts.messages.remove_message + '">' + opts.messages.remove + '</a>';
 					field += '</div></li>';
 					return field;
@@ -225,7 +233,7 @@
 					}
 					field += '<div class="rd_group">';
 					field += '<div class="frm-fld"><label>' + opts.messages.title + '</label>';
-					field += '<input type="text" name="title" value="' + title + '" /></div>';
+					field += '<input type="text" class="form-control" name="title" value="' + title + '" /></div>';
 					field += '<div class="false-label">' + opts.messages.select_options + '</div>';
 					field += '<div class="fields">';
 
@@ -260,7 +268,7 @@
 					field = '<li>'; 
 					field += '<div>';
 					field += '<input type="radio"' + (checked ? ' checked="checked"' : '') + ' name="radio_' + name + '" />';
-					field += '<input type="text" value="' + value + '" />';
+					field += '<input type="text" class="form-control" value="' + value + '" />';
 					field += '<a href="#" class="remove" title="' + opts.messages.remove_message + '">' + opts.messages.remove + '</a>';
 					field += '</div></li>';
 
@@ -276,7 +284,7 @@
 					}
 					field += '<div class="opt_group">';
 					field += '<div class="frm-fld"><label>' + opts.messages.title + '</label>';
-					field += '<input type="text" name="title" value="' + title + '" /></div>';
+					field += '<input type="text" class="form-control" name="title" value="' + title + '" /></div>';
 					field += '';
 					field += '<div class="false-label">' + opts.messages.select_options + '</div>';
 					field += '<div class="fields">';
@@ -315,7 +323,7 @@
 			// Appends the new field markup to the editor
 			var appendFieldLi = function (title, field_html, required, help) {
 					if (required) {
-						required = required === 'checked' ? true : false;
+						required = required === 'true' ? true : false;
 					}
 					var li = '';
 					li += '<li id="frm-' + last_id + '-item" class="' + field_type + '">';
@@ -402,6 +410,7 @@
 			});
 			// saves the serialized data to the server
 			var save = function () {
+				var self = this;
 					if (opts.save_url) {
 						$.ajax({
 							type: "POST",
@@ -409,7 +418,9 @@
 							data: $(ul_obj).serializeFormList({
 								prepend: opts.serialize_prefix
 							}) + "&form_id=" + form_db_id,
-							success: function () {}
+							success: function () {
+								opts.saved.call(self);
+							}
 						});
 					}
 				};
