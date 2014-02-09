@@ -348,7 +348,7 @@
 					last_id++;
 				};
 			// handle field delete links
-			$('.frmb').delegate('.remove', 'click', function () {
+			$('.frmb').on('click', '.remove', function () {
 				$(this).parents('li:eq(0)').animate({
 					opacity: 'hide',
 					height: 'hide',
@@ -359,7 +359,7 @@
 				return false;
 			});
 			// handle field display/hide
-			$('.frmb').delegate('.toggle-form', 'click', function () {
+			$('.frmb').on('click', '.toggle-form', function () {
 				var target = $(this).attr("id");
 				if ($(this).html() === opts.messages.hide) {
 					$(this).removeClass('open').addClass('closed').html(opts.messages.show);
@@ -380,7 +380,7 @@
 				return false;
 			});
 			// handle delete confirmation
-			$('.frmb').delegate('.delete-confirm', 'click', function () {
+			$('.frmb').on('click', '.delete-confirm', function () {
 				var delete_id = $(this).attr("id").replace(/del_/, '');
 				if (confirm($(this).attr('title'))) {
 					$('#frm-' + delete_id + '-item').animate({
@@ -394,17 +394,17 @@
 				return false;
 			});
 			// Attach a callback to add new checkboxes
-			$('.frmb').delegate('.add_ck', 'click', function () {
+			$('.frmb').on('click', '.add_ck', function () {
 				$(this).parent().before(checkboxFieldHtml());
 				return false;
 			});
 			// Attach a callback to add new options
-			$('.frmb').delegate('.add_opt', 'click', function () {
+			$('.frmb').on('click', '.add_opt', function () {
 				$(this).parent().before(selectFieldHtml('', false));
 				return false;
 			});
 			// Attach a callback to add new radio fields
-			$('.frmb').delegate('.add_rd', 'click', function () {
+			$('.frmb').on('click', '.add_rd', function () {
 				$(this).parent().before(radioFieldHtml(false, $(this).parents('.frm-holder').attr('id')));
 				return false;
 			});
