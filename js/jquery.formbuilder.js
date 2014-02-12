@@ -48,7 +48,7 @@
 			var ul_obj = $(this).append('<ul id="' + frmb_id + '" class="frmb"></ul>').find('ul').sortable();
 			var field = '', field_type = '', last_id = 1, help, form_db_id;
 			// Add a unique class to the current element
-			$(ul_obj).addClass(frmb_id);
+			ul_obj.addClass(frmb_id);
 			// load existing form data
 			if (opts.load_url) {
 				$.getJSON(opts.load_url, function(json) {
@@ -313,12 +313,7 @@
 				};
 			// Select field html, since there may be multiple
 			var selectFieldHtml = function (values, multiple) {
-					if (multiple) {
-						return checkboxFieldHtml(values);
-					}
-					else {
-						return radioFieldHtml(values);
-					}
+					return (multiple ? checkboxFieldHtml(values) : radioFieldHtml(values));
 				};
 			// Appends the new field markup to the editor
 			var appendFieldLi = function (title, field_html, required, help) {
@@ -348,7 +343,8 @@
 					last_id++;
 				};
 			// handle field delete links
-			$('.frmb').on('click', '.remove', function () {
+			ul_obj.on('click', '.remove', function(event){
+				event.preventDefault();
 				$(this).parents('li:eq(0)').animate({
 					opacity: 'hide',
 					height: 'hide',
@@ -359,31 +355,29 @@
 				return false;
 			});
 			// handle field display/hide
-			$('.frmb').on('click', '.toggle-form', function () {
-				var target = $(this).attr("id");
-				if ($(this).html() === opts.messages.hide) {
+			ul_obj.on('click', '.toggle-form', function(event){
+				event.preventDefault();
+				var holder = $(this).parents('li:eq(0)').find('.frm-holder');
+				if( holder.is(':visible') ){
 					$(this).removeClass('open').addClass('closed').html(opts.messages.show);
-					$('#' + target + '-fld').animate({
+					holder.animate({
 						opacity: 'hide',
 						height: 'hide'
 					}, 'slow');
-					return false;
-				}
-				if ($(this).html() === opts.messages.show) {
+				} else {
 					$(this).removeClass('closed').addClass('open').html(opts.messages.hide);
-					$('#' + target + '-fld').animate({
+					holder.animate({
 						opacity: 'show',
 						height: 'show'
 					}, 'slow');
-					return false;
 				}
 				return false;
 			});
 			// handle delete confirmation
-			$('.frmb').on('click', '.delete-confirm', function () {
-				var delete_id = $(this).attr("id").replace(/del_/, '');
+			ul_obj.on('click', '.delete-confirm', function(event){
+				event.preventDefault();
 				if (confirm($(this).attr('title'))) {
-					$('#frm-' + delete_id + '-item').animate({
+					$(this).parents('li:eq(0)').animate({
 						opacity: 'hide',
 						height: 'hide',
 						marginBottom: '0px'
@@ -394,22 +388,25 @@
 				return false;
 			});
 			// Attach a callback to add new checkboxes
-			$('.frmb').on('click', '.add_ck', function () {
+			ul_obj.on('click', '.add_ck', function(event){
+				event.preventDefault();
 				$(this).parent().before(checkboxFieldHtml());
 				return false;
 			});
 			// Attach a callback to add new options
-			$('.frmb').on('click', '.add_opt', function () {
+			ul_obj.on('click', '.add_opt', function(event){
+				event.preventDefault();
 				$(this).parent().before(selectFieldHtml('', false));
 				return false;
 			});
 			// Attach a callback to add new radio fields
-			$('.frmb').on('click', '.add_rd', function () {
+			ul_obj.on('click', '.add_rd', function(event){
+				event.preventDefault();
 				$(this).parent().before(radioFieldHtml(false, $(this).parents('.frm-holder').attr('id')));
 				return false;
 			});
 			// saves the serialized data to the server
-			var save = function () {
+			var save = function(){
 				var self = this;
 					if (opts.save_url) {
 						$.ajax({
