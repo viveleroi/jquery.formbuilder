@@ -12,3 +12,9 @@ The tool interface is constructed using form data presented in JSON format by th
 A demo of this version may be found at http://botsko.net/Demos/formbuilder/
 
 Please feel free to fork the project and provide patches back. Please let us know how you're using this product!
+
+
+### Development
+
+We use [Grunt](http://gruntjs.com/ ) for packaging and testing. After cloning the repo, run `npm install` once, and then
+`grunt` to check the source code and prepare the distribution copy.
