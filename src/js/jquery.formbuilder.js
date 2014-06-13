@@ -15,15 +15,33 @@
 			control_box_target: false,
 			serialize_prefix: 'frmb',
 			css_ol_sortable_class : 'ol_opt_sortable',
+			field_types: {
+				input_text: {
+					label: "Text Field",
+					types: {
+						text: "Text",
+						email: "Email",
+						url: "URL",
+						tel: "Telephone"
+					}
+				},
+				textarea: {
+					label: "Paragraph"
+				},
+				checkbox: {
+					label: "Checkboxes"
+				},
+				radio: {
+					label: "Radio"
+				},
+				select: {
+					label: "Select List"
+				}
+			},
 			messages: {
 				save								: "Save",
 				add_new_field				: "Add New Field...",
-				text								: "Text Field",
 				title								: "Title",
-				paragraph						: "Paragraph",
-				checkboxes					: "Checkboxes",
-				radio								: "Radio",
-				select							: "Select List",
 				text_field					: "Text Field",
 				label								: "Label",
 				paragraph_field			: "Paragraph Field",
@@ -69,11 +87,9 @@
 					var save_id = frmb_id + '-save-button';
 					// Add the available options
 					select += '<option value="0" disabled selected>' + opts.messages.add_new_field + '</option>';
-					select += '<option value="input_text">' + opts.messages.text + '</option>';
-					select += '<option value="textarea">' + opts.messages.paragraph + '</option>';
-					select += '<option value="checkbox">' + opts.messages.checkboxes + '</option>';
-					select += '<option value="radio">' + opts.messages.radio + '</option>';
-					select += '<option value="select">' + opts.messages.select + '</option>';
+					for (key in opts.field_types) {
+						select += '<option value="' + key + '">' + opts.field_types[key].label + '</option>';
+					}
 					// Build the control box and search button content
 					box_content = '<select id="' + box_id + '" class="frmb-control form-control">' + select + '</select>';
 					save_button = '<button type="submit" id="' + save_id + '" class="frmb-submit btn btn-primary">' + opts.messages.save + '</button>';
@@ -133,6 +149,9 @@
 							});
 						}
 						else {
+							if (this.hasOwnProperty('type')) {
+								options = this.type;
+							}
 							values = [this.values];
 						}
 						appendNewField(this.cssClass, values, options, this.required);
@@ -147,7 +166,7 @@
 					}
 					switch (type) {
 					case 'input_text':
-						appendTextInput(values, required);
+						appendTextInput(values, options, required);
 						break;
 					case 'textarea':
 						appendTextarea(values, required);
@@ -164,18 +183,30 @@
 					}
 				};
 			// single line input type="text"
-			var appendTextInput = function (values, required) {
-					field += '<label>' + opts.messages.label + '</label>';
-					field += '<input class="fld-title form-control" id="title-' + last_id + '" type="text" value="' + values + '" />';
+			var appendTextInput = function (values, options, required) {
+					field += '<div class="frm-fld"><label>' + opts.messages.label + '</label>';
+					field += '<input class="fld-title form-control" id="title-' + last_id + '" type="text" value="' + values + '" /></div>';
+					field += '<div class="frm-fld"><label>Type</label>';
+
+					if (typeof options == 'undefined' || options == false) {
+						options = 'text';
+					}
+
+					field += '<select id="input-type-' + last_id + '">';
+					for (key in opts.field_types.input_text.types) {
+						field += '<option value="' + key + '"' + (options == key ? ' selected' : '') + '>' + opts.field_types.input_text.types[key] + '</option>';
+					}
+					field += '</select></div>';
+
 					help = '';
-					appendFieldLi(opts.messages.text, field, required, help);
+					appendFieldLi(opts.field_types.input_text.label, field, required, help);
 				};
 			// multi-line textarea
 			var appendTextarea = function (values, required) {
 					field += '<label>' + opts.messages.label + '</label>';
 					field += '<input type="text" class="form-control" value="' + values + '" />';
 					help = '';
-					appendFieldLi(opts.messages.paragraph_field, field, required, help);
+					appendFieldLi(opts.field_types.textarea.label, field, required, help);
 				};
 			// adds a checkbox element
 			var appendCheckboxGroup = function (values, options, required) {
@@ -255,7 +286,7 @@
 					help = '';
 					appendFieldLi(opts.messages.radio_group, field, required, help);
 
-					$('.'+ opts.css_ol_sortable_class).sortable(); // making the dynamically added option fields sortable. 
+					$('.'+ opts.css_ol_sortable_class).sortable(); // making the dynamically added option fields sortable.
 				};
 			// Radio field html, since there may be multiple
 			var radioFieldHtml = function (values, name) {
@@ -265,7 +296,7 @@
 						value = values[0];
 						checked = ( values[1] === 'false' || values[1] === 'undefined' ) ? false : true;
 					}
-					field = '<li>'; 
+					field = '<li>';
 					field += '<div>';
 					field += '<input type="radio"' + (checked ? ' checked="checked"' : '') + ' name="radio_' + name + '" />';
 					field += '<input type="text" class="form-control" value="' + value + '" />';
@@ -309,7 +340,7 @@
 					help = '';
 					appendFieldLi(opts.messages.select, field, required, help);
 
-					$('.'+ opts.css_ol_sortable_class).sortable(); // making the dynamically added option fields sortable.  
+					$('.'+ opts.css_ol_sortable_class).sortable(); // making the dynamically added option fields sortable.
 				};
 			// Select field html, since there may be multiple
 			var selectFieldHtml = function (values, multiple) {
@@ -461,6 +492,7 @@
 						switch ($(this).attr(opts.attributes[att])) {
 						case 'input_text':
 							serialStr += opts.prepend + '[' + li_count + '][values]=' + encodeURIComponent($('#' + $(this).attr('id') + ' input[type=text]').val());
+							serialStr += opts.prepend + '[' + li_count + '][type]=' + encodeURIComponent($('#' + $(this).attr('id') + ' select').val());
 							break;
 						case 'textarea':
 							serialStr += opts.prepend + '[' + li_count + '][values]=' + encodeURIComponent($('#' + $(this).attr('id') + ' input[type=text]').val());
