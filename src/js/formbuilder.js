@@ -60,14 +60,26 @@ dust.onLoad = function(name, callback) {
             label: '',
             required: false
           }
-        },
-        {
+        },{
           key: 'textarea',
           label: 'Textarea',
           schema: {
             name: false,
             label: '',
             required: false
+          }
+        },{
+          key: 'select',
+          label: 'Select',
+          template: 'choices',
+          schema: {
+            name: false,
+            label: '',
+            required: false,
+            choices: [{
+              selected: false,
+              label: ''
+            }]
           }
         }
       ]
@@ -93,6 +105,20 @@ dust.onLoad = function(name, callback) {
         $(this).val('');
       });
 
+      // Add a choice entry
+      targets.on('click', '.frmb-add-choice', function(e){
+        e.preventDefault();
+        var elem = $(this);
+        var parent = elem.parents('.frmb-group').last();
+        var id = parent.attr('id');
+
+        var fieldType = engine.getFieldTypeByName( engine._model[id].type );
+
+        engine.appendFieldToFormElementEditor( parent, fieldType );
+
+        return false;
+      });
+
       // Remove a form element editor
       targets.on('click', '.frmb-remove', function(e){
         e.preventDefault();
@@ -109,7 +135,7 @@ dust.onLoad = function(name, callback) {
 
         // specific field editor container
         var elem = $(this);
-        var parent = elem.parents('.frmb-group:eq(0)');
+        var parent = elem.parents('.frmb-group').last();
         var id = parent.attr('id');
         var type = elem.attr('name').replace(id+'_', '');
 
@@ -122,7 +148,7 @@ dust.onLoad = function(name, callback) {
 
         // specific field editor container
         var elem = $(this);
-        var parent = elem.parents('.frmb-group:eq(0)');
+        var parent = elem.parents('.frmb-group').last();
         var id = parent.attr('id');
         var type = elem.attr('name').replace(id+'_', '');
 
@@ -208,8 +234,41 @@ dust.onLoad = function(name, callback) {
 
       // Render base element (all fields need these base values)
       dust.render('element-base', bodyObj, function(err, out){
-        self._opts.targets.find('.frmb-group:last-of-type').after( out );
+
+        var elem = $(out);
+
+        // append base
+        self._opts.targets.find('.frmb-group:last-of-type').after( elem );
+
+        self.appendFieldToFormElementEditor( elem, field, name );
+
       });
+    },
+
+    /**
+     * Appends secondary details to an existing form editor
+     * @param  {element} frmb_group Form group description to append to
+     * @param  {object} field      Field type schema to use
+     */
+    appendFieldToFormElementEditor: function( frmb_group, field, name ){
+
+      if( !name ) name = _.isString(field.name) ? field.name : field.key + '_' + _.now();
+
+      var bodyObj = {
+        name: name
+      };
+
+      // load additional details template
+      if( _.has(field,'template') ){
+
+        if( _.has(this._model[name],'choices') ){
+          bodyObj.name += '_choices.0';
+        }
+
+        dust.render(field.template, bodyObj, function(err, out){
+          frmb_group.append( out );
+        });
+      }
     },
 
     /**
@@ -220,12 +279,45 @@ dust.onLoad = function(name, callback) {
      */
     setModelValue: function( id, type, val ){
 
+      // Some paths are namespaced
+      var path = false;
+      if( type.indexOf('.') !== false ){
+        path = type.split('.');
+        type = path[0];
+      }
+
       if( !_.isObject( this._model[id] ) ){
         throw new Error('Model has no entry for ' + id);
       }
 
       if( !_.has( this._model[id], type ) ){
         throw new Error('Invalid schema field ' + type + ' for model ' + id);
+      }
+
+      var fieldType = this.getFieldTypeByName( this._model[id].type );
+
+      // Special handling for choice
+      if( type === 'choices' ){
+
+        var index = _.parseInt(path[1]);
+
+        // exists?
+        var existing = [];
+        if( !_.has( this._model[id][type], index ) ){
+          // create new choice entry
+          this._model[id][type][index] = fieldType.choices[0];
+        }
+
+        // verify field is in schema
+        if( !_.has( this._model[id][type][index], path[2] ) ){
+          throw new Error('Invalid choice schema field ' + path[2] + ' for model ' + id);
+        }
+
+        // set value
+        this._model[id][type][index][path[2]] = val;
+
+        return;
+
       }
 
       this._model[id][type] = val;
