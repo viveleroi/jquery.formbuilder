@@ -76,10 +76,11 @@ dust.onLoad = function(name, callback) {
             name: false,
             label: '',
             required: false,
-            choices: [{
+            choices: [],
+            choiceSchema: {
               selected: false,
               label: ''
-            }]
+            }
           }
         }
       ]
@@ -114,7 +115,7 @@ dust.onLoad = function(name, callback) {
 
         var fieldType = engine.getFieldTypeByName( engine._model[id].type );
 
-        engine.appendFieldToFormElementEditor( parent, fieldType );
+        engine.appendFieldToFormElementEditor( parent, fieldType, engine._model[id] );
 
         return false;
       });
@@ -240,7 +241,7 @@ dust.onLoad = function(name, callback) {
         // append base
         self._opts.targets.find('.frmb-group:last-of-type').after( elem );
 
-        self.appendFieldToFormElementEditor( elem, field, name );
+        self.appendFieldToFormElementEditor( elem, field, self._model[name] );
 
       });
     },
@@ -250,24 +251,32 @@ dust.onLoad = function(name, callback) {
      * @param  {element} frmb_group Form group description to append to
      * @param  {object} field      Field type schema to use
      */
-    appendFieldToFormElementEditor: function( frmb_group, field, name ){
-
-      if( !name ) name = _.isString(field.name) ? field.name : field.key + '_' + _.now();
+    appendFieldToFormElementEditor: function( frmb_group, field, parentModel ){
 
       var bodyObj = {
-        name: name
+        name: parentModel.name
       };
 
       // load additional details template
       if( _.has(field,'template') ){
 
-        if( _.has(this._model[name],'choices') ){
-          bodyObj.name += '_choices.0';
-        }
+        // choices
+        if( _.has(parentModel,'choices') && _.isArray(parentModel.choices) ){
 
-        dust.render(field.template, bodyObj, function(err, out){
-          frmb_group.append( out );
-        });
+          // new index
+          var index = parentModel.choices.length;
+          bodyObj.name += '_choices.'+index;
+        
+          dust.render(field.template, bodyObj, function(err, out){
+
+            // make a new model
+            parentModel['choices'].push( _.clone(field.schema.choiceSchema) );
+
+            // append dom
+            frmb_group.append( out );
+
+          });
+        }
       }
     },
 
@@ -301,13 +310,6 @@ dust.onLoad = function(name, callback) {
 
         var index = _.parseInt(path[1]);
 
-        // exists?
-        var existing = [];
-        if( !_.has( this._model[id][type], index ) ){
-          // create new choice entry
-          this._model[id][type][index] = fieldType.choices[0];
-        }
-
         // verify field is in schema
         if( !_.has( this._model[id][type][index], path[2] ) ){
           throw new Error('Invalid choice schema field ' + path[2] + ' for model ' + id);
@@ -330,8 +332,17 @@ dust.onLoad = function(name, callback) {
      */
     removeModel: function( id ){
 
-      if( !_.isObject( this._model[id] ) ){
-        throw new Error('Model has no entry for ' + id);
+      if( id.indexOf('.') !== false ){
+
+        // we're deleting a sub model
+        var _tmp = id.replace(/.*_/,'');
+        var path = _tmp.split('.');
+        var index = _.parseInt(path[1]);
+        id = id.replace('_'+_tmp,'');
+
+        delete this._model[id][path[0]][index];
+        return;
+
       }
 
       delete this._model[id];
