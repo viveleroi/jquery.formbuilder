@@ -1,0 +1,14 @@
+{
+  "name": "formbuilder",
+  "version": "2.0",
+  "homepage": "https://github.com/botskonet/jquery.formbuilder",
+  "authors": [
+    "Mike Botsko <botsko@gmail.com>"
+  ],
+  "description": "Dynamic form builder and processing",
+  "license": "MIT",
+  "devDependencies": {
+    "lodash": "~2.4.1",
+    "dustjs": "~0.3.0"
+  }
+}

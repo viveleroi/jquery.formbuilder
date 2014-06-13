@@ -1,0 +1,18 @@
+{
+  "node": true,
+  "browser": true,
+  "bitwise": true,
+  "curly": true,
+  "eqeqeq": true,
+  "es3": true,
+  "freeze": true,
+  "immed": true,
+  "indent": 2,
+  "latedef": true,
+  "noarg": true,
+  "quotmark": "single",
+  "unused": false,
+  "trailing": true,
+  "smarttabs": true,
+  "multistr": true
+}

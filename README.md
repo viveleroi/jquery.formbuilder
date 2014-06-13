@@ -1,18 +1,29 @@
-jQuery.FormBuilder
+FormBuilder v2
 ==================
 
-The jquery.Formbuilder plugin is a jQuery plugin that allows you add a form-creation, display, and basic validation tool into your application.
+Formbuilder is a component for your web-application that allows users to build web forms. We provide
+basic logic for rendering the resulting form, and processing/validating the input. 
 
-The API and example code has been left open for you to override, assuming that you want complete control over how the form data is saved and loaded. However we have provided some basic database loading/saving examples using PDO for MySQL.
+Think of it like a CMS for forms.
 
-Please report all issues, bugs, and feature suggestions to: https://snowy-evening.com/botsko/jquery-form-builder/
 
-The tool interface is constructed using form data presented in JSON format by the server. The php class assists you with storing the data, generating the json, generating the html form, and processing the data.
+### Requirements
 
-A demo of this version may be found at http://botsko.net/Demos/formbuilder/
+Formbuilder 2 requires a few tools, but we include them in the `dist` package for your convenience.
 
-Please feel free to fork the project and provide patches back. Please let us know how you're using this product!
+- `lodash` - An excellent (fast/light-weight) javascript utility library
+- `jQuery` *or* `simpleDOM` - A DOM library is required. If it matches the jQuery DOM api, it'll work.
 
+**Optional:**
+
+Formbuilder works well with popular frameworks like Bootstrap, so we've added them here. However, you do not
+need these for Formbuilder to work.
+
+### Issues/Feedback
+
+Please report all issues, bugs, and feature suggestions to our [issue tracker](https://snowy-evening.com/botsko/jquery-form-builder/)
+
+Frombuilder is open source, we encourage you to submit improvements!
 
 ### Development
 

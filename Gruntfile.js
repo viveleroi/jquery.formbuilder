@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
 
+  require('load-grunt-tasks')(grunt);
+
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -9,21 +11,23 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'src/js/jquery.formbuilder.min.js': ['src/js/*.js']
+          'src/js/formbuilder.min.js': ['src/js/*.js']
         }
       }
     },
     jshint: {
+      options: {
+        jshintrc: '.jshintrc',
+        reporter: require('jshint-stylish')
+      },
       all: ['Gruntfile.js','src/js/*.js']
     }
+
   });
 
-  // grunt.loadNpmTasks('grunt-contrib-cssmin');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-
   // Default task(s).
-  grunt.registerTask('default', ['uglify']);
-  // @todo jshint temp disabled. I'd really like to rewrite this
+  grunt.registerTask('default', ['jshint']);
+
+  // @todo add proper dist/uglify build
 
 };
