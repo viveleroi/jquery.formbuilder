@@ -67,6 +67,46 @@
 			var field = '', field_type = '', last_id = 1, help, form_db_id;
 			// Add a unique class to the current element
 			ul_obj.addClass(frmb_id);
+			// Create form control select box and add into the editor
+			var setupControlBox = function (target) {
+				var select = '';
+				var box_content = '';
+				var save_button = '';
+				var box_id = frmb_id + '-control-box';
+				var save_id = frmb_id + '-save-button';
+				// Add the available options
+				select += '<option value="0" disabled selected>' + opts.messages.add_new_field + '</option>';
+				for (key in opts.field_types) {
+					select += '<option value="' + key + '">' + opts.field_types[key].label + '</option>';
+				}
+				// Build the control box and search button content
+				box_content = '<select id="' + box_id + '" class="frmb-control form-control">' + select + '</select>';
+				save_button = '<button type="submit" id="' + save_id + '" class="frmb-submit btn btn-primary">' + opts.messages.save + '</button>';
+				// Insert the control box into page
+				if (!target) {
+					$(ul_obj).before(box_content);
+				} else {
+					$(target).append(box_content);
+				}
+				// Insert the search button
+				$(ul_obj).after(save_button);
+				// Set the form save action
+				$('#' + save_id).click(function () {
+					opts.saving.call(this);
+					save.call(this);
+					return false;
+				});
+				// Add a callback to the select element
+				$('#' + box_id).change(function () {
+					appendNewField($(this).val());
+					$(this).val(0).blur();
+					// This solves the scrollTo dependency
+					$('html, body').animate({
+						scrollTop: $('#frm-' + (last_id - 1) + '-item').offset().top
+					}, 500);
+					return false;
+				});
+			};
 			// load existing form data
 			if (opts.load_url) {
 				$.getJSON(opts.load_url, function(json) {
@@ -78,46 +118,6 @@
 			} else {
 				var controlBox = setupControlBox(opts.control_box_target);
 			}
-			// Create form control select box and add into the editor
-			var setupControlBox = function (target) {
-					var select = '';
-					var box_content = '';
-					var save_button = '';
-					var box_id = frmb_id + '-control-box';
-					var save_id = frmb_id + '-save-button';
-					// Add the available options
-					select += '<option value="0" disabled selected>' + opts.messages.add_new_field + '</option>';
-					for (key in opts.field_types) {
-						select += '<option value="' + key + '">' + opts.field_types[key].label + '</option>';
-					}
-					// Build the control box and search button content
-					box_content = '<select id="' + box_id + '" class="frmb-control form-control">' + select + '</select>';
-					save_button = '<button type="submit" id="' + save_id + '" class="frmb-submit btn btn-primary">' + opts.messages.save + '</button>';
-					// Insert the control box into page
-					if (!target) {
-						$(ul_obj).before(box_content);
-					} else {
-						$(target).append(box_content);
-					}
-					// Insert the search button
-					$(ul_obj).after(save_button);
-					// Set the form save action
-					$('#' + save_id).click(function () {
-						opts.saving.call(this);
-						save.call(this);
-						return false;
-					});
-					// Add a callback to the select element
-					$('#' + box_id).change(function () {
-						appendNewField($(this).val());
-						$(this).val(0).blur();
-						// This solves the scrollTo dependency
-						$('html, body').animate({
-							scrollTop: $('#frm-' + (last_id - 1) + '-item').offset().top
-						}, 500);
-						return false;
-					});
-				};
 			// Json parser to build the form builder
 			var fromJson = function (json) {
 					var values = '';
