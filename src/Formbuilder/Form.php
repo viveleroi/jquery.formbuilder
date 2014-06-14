@@ -32,4 +32,12 @@ class Form {
     public function getJSON(){
         return $this->json;
     }
+
+    /**
+     * Prints the json
+     * @return string [description]
+     */
+    public function __toString(){
+        return json_encode($this->json);
+    }
 }

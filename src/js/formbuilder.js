@@ -432,11 +432,8 @@ dust.onLoad = function(name, callback) {
         contentType : 'application/json',
         type: 'post',
         success: function(resp){
-          console.log(resp);
         }
       });
-
-      console.log(this._model);
     }
   };
 

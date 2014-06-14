@@ -2,14 +2,12 @@
 
 require('Formbuilder/Formbuilder.php');
 
-// At this stage, we simulate getting an array of the
-// form_structure and hash from our database. This is
-// how the form data would have been saved using
-// the $form->get_encoded_form_array() method.
+// At this stage, we simulate loading JSON from the db. 
+// Remove these few lines when you have a real DB in place
+$form = Formbuilder::readFromFile( dirname(__FILE__).'/fake-form-db-vals.json' );
+print $form;
+exit;
 
-
-// Grab the incoming form JSON
-//$form = Formbuilder::readFromFile( 'fake-form-db-vals.json' );
 
 /**
  * Load the JSON from a database, identified by a form_id

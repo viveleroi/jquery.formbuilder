@@ -33,7 +33,7 @@ class Formbuilder {
      * @throws Exception
      */
     public static function readFromFile( $file ){
-        if( file_exists($file) ){
+        if( !file_exists($file) ){
             throw new Exception('File does not exist.');
         }
         $json = json_decode(file_get_contents($file), true);

@@ -1,3 +1,37 @@
 {
-  "fields": []
+    "form_id" : "frmb-1402703162109",
+    "model" : {
+        "text_1402703164059" : {
+            "name" : "text_1402703164059",
+            "label" : "aaa",
+            "required" : false,
+            "type" : "text"
+        },
+        "textarea_1402703169041" : {
+            "name" : "textarea_1402703169041",
+            "label" : "bbb",
+            "required" : true,
+            "type" : "textarea"
+        },
+        "select_1402706449688" : {
+            "name" : "select_1402706449688",
+            "label" : "cccc",
+            "required" : false,
+            "choices" : [ 
+                {
+                    "selected" : true,
+                    "label" : "aaaa"
+                }, 
+                {
+                    "selected" : false,
+                    "label" : "bbbb"
+                }, 
+                {
+                    "selected" : true,
+                    "label" : "cccc"
+                }
+            ],
+            "type" : "select"
+        }
+    }
 }

@@ -2,6 +2,11 @@
 
 require('Formbuilder/Formbuilder.php');
 
+
+// IF you have a db setup, remove the following line. it's for demo only
+exit;
+
+
 // Grab the incoming form JSON
 $form = Formbuilder::readFromStream();
 

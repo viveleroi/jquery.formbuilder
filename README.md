@@ -56,7 +56,6 @@ For those using `node`-based servers, you can use javascript all the way around 
 ### To-Do
 
 - fix json sorting error with jquery/browsers
-- convert load/save to fake json file
 - validate labels are not empty
 - restore sortable elements
 - add propert dist grunt methods
