@@ -305,8 +305,8 @@ dust.onLoad = function(name, callback) {
 
         // Load choices already present
         if( _.has(existingModel,'choices') ){
-          _.each(existingModel.choices,function(choice){
-            self.appendFieldToFormElementEditor( elem, field, existingModel, choice );
+          _.each(existingModel.choices,function(choice,key){
+            self.appendFieldToFormElementEditor( elem, field, existingModel, choice, key );
           });
           return;
         }
@@ -322,7 +322,7 @@ dust.onLoad = function(name, callback) {
      * @param  {element} frmb_group Form group description to append to
      * @param  {object} field      Field type schema to use
      */
-    appendFieldToFormElementEditor: function( frmb_group, field, parentModel, existingModel ){
+    appendFieldToFormElementEditor: function( frmb_group, field, parentModel, existingModel, index ){
 
       // load additional details template
       if( _.has(field,'template') ){
@@ -342,7 +342,7 @@ dust.onLoad = function(name, callback) {
           };
 
           // new index
-          var index = parentModel.choices.length;
+          index = _.isNumber(index) ? index : parentModel.choices.length;
           bodyObj.name += '_choices.'+index;
         
           dust.render(field.template, bodyObj, function(err, out){
