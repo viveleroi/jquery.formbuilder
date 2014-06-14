@@ -135,15 +135,9 @@ dust.onLoad = function(name, callback) {
         
         // Iterate model and render proper editors
         _.each(engine._model,function(model,id){
-
           var field = engine.getFieldTypeByName( model.type );
           engine.addFormElementEditor( field, model );
-
-          // console.log(field);
-          // console.log(model);
-          // console.log(id);
-        })
-
+        });
       }
 
       /**
@@ -430,7 +424,7 @@ dust.onLoad = function(name, callback) {
       var save = {
         form_id: this._opts.form_id,
         model: this._model
-      }
+      };
 
       $.ajax({
         url: this._opts.save_url,
