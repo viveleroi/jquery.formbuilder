@@ -356,7 +356,7 @@ dust.onLoad = function(name, callback) {
 
       // Some paths are namespaced
       var path = false;
-      if( type.indexOf('.') !== false ){
+      if( type.indexOf('.') > -1 ){
         path = type.split('.');
         type = path[0];
       }
@@ -398,7 +398,7 @@ dust.onLoad = function(name, callback) {
      */
     removeModel: function( id ){
 
-      if( id.indexOf('.') !== false ){
+      if( id.indexOf('.') > -1 ){
 
         // we're deleting a sub model
         var _tmp = id.replace(/.*_/,'');
