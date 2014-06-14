@@ -132,7 +132,7 @@ dust.onLoad = function(name, callback) {
 
         engine._model = engine._opts.startingModel;
         // @todo validate against the field schema
-        
+
         // Iterate model and render proper editors
         _.each(engine._model,function(model,id){
           var field = engine.getFieldTypeByName( model.type );
@@ -143,7 +143,7 @@ dust.onLoad = function(name, callback) {
       /**
        * Event listeners
        */
-      
+
       // New form element editor
       targets.on('change', '.frmb-add-elem', function(){
         var val = $(this).val();
@@ -203,7 +203,7 @@ dust.onLoad = function(name, callback) {
       });
 
       // Save
-      targets.on('click', '.frmb-save', function(e){
+      targets.on('submit', '.frmb-save', function(e){
         e.preventDefault();
         engine.save();
         return false;
@@ -297,6 +297,8 @@ dust.onLoad = function(name, callback) {
         // append base
         self._opts.targets.find('.frmb-group:last-of-type').after( elem );
 
+        $('#' + bodyObj.name + '_label').attr('required', true);
+
         // Load choices already present
         if( _.has(existingModel,'choices') ){
           _.each(existingModel.choices,function(choice,key){
@@ -338,7 +340,7 @@ dust.onLoad = function(name, callback) {
           // new index
           index = _.isNumber(index) ? index : parentModel.choices.length;
           bodyObj.name += '_choices.'+index;
-        
+
           dust.render(field.template, bodyObj, function(err, out){
             frmb_group.append( out );
           });
