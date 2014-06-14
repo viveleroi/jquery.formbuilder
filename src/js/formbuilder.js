@@ -295,7 +295,7 @@ dust.onLoad = function(name, callback) {
         var elem = $(out);
 
         // append base
-        self._opts.targets.find('.frmb-group:last-of-type').after( elem );
+        self._opts.targets.find('.frmb-group:last').after( elem );
 
         $('#' + bodyObj.name + '_label').attr('required', true);
 
