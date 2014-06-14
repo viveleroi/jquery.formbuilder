@@ -41,14 +41,18 @@ dust.onLoad = function(name, callback) {
     // Define all default options
     var defaultOptions = {
 
+      // A unique ID shared with the server-side code
+      form_id: 'frmb-'+_.now(),
+
+      // Injected model, allows us to start with an
+      // existing form
+      startingModel: false,
+
       // A dom-lib wrapped element
       targets: false,
 
       // A url we'll POST form data to on save
       save_url: false,
-
-      // A url we'll load (GET) form data from on page load
-      load_url: false,
 
       // Description of allowed field types
       field_types: [
@@ -76,24 +80,71 @@ dust.onLoad = function(name, callback) {
             name: false,
             label: '',
             required: false,
-            choices: [],
-            choiceSchema: {
-              selected: false,
-              label: ''
-            }
+            choices: []
+          },
+          choiceSchema: {
+            selected: false,
+            label: ''
+          }
+        },{
+          key: 'radio',
+          label: 'Radio',
+          template: 'choices',
+          schema: {
+            name: false,
+            label: '',
+            required: false,
+            choices: []
+          },
+          choiceSchema: {
+            selected: false,
+            label: ''
+          }
+        },{
+          key: 'checkbox',
+          label: 'Checkbox',
+          template: 'choices',
+          schema: {
+            name: false,
+            label: '',
+            required: false,
+            choices: []
+          },
+          choiceSchema: {
+            selected: false,
+            label: ''
           }
         }
       ]
-
     };
 
     this._opts = _.assign(defaultOptions,opts);
+
 
     (function(engine){
 
       var targets = engine._opts.targets;
 
       engine.render();
+
+          // Load the starting model
+      if( _.isObject(engine._opts.startingModel) ){
+
+        engine._model = engine._opts.startingModel;
+        // @todo validate against the field schema
+        
+        // Iterate model and render proper editors
+        _.each(engine._model,function(model,id){
+
+          var field = engine.getFieldTypeByName( model.type );
+          engine.addFormElementEditor( field, model );
+
+          // console.log(field);
+          // console.log(model);
+          // console.log(id);
+        })
+
+      }
 
       /**
        * Event listeners
@@ -211,7 +262,7 @@ dust.onLoad = function(name, callback) {
     /**
      * Add a new form element editing box
      */
-    addFormElementEditor: function( field ){
+    addFormElementEditor: function( field, existingModel ){
 
       var self = this;
 
@@ -219,17 +270,28 @@ dust.onLoad = function(name, callback) {
         throw new Error('Failed to add form element editor: Invalid field object');
       }
 
-      var name = _.isString(field.name) ? field.name : field.key + '_' + _.now();
+      // Determine field name
+      var name = field.key + '_' + _.now();
+      if( _.has(existingModel,'name') && _.isString(existingModel.name) ){
+        name = existingModel.name;
+      }
+      else if( _.isString(field.name) ){
+        name = field.name;
+      }
 
       // Create a new model entry
-      self._model[name] = _.assign(field.schema, {
-        name: name,
-        type: field.key
-      });
+      if( !_.isObject(existingModel) ){
+        self._model[name] = _.assign(field.schema, {
+          name: name,
+          type: field.key
+        });
+        existingModel = self._model[name];
+      }
 
       // Prep data for template
       var bodyObj = {
-        name: name
+        name: name,
+        model: existingModel
       };
       bodyObj = _.assign(bodyObj,field);
 
@@ -241,7 +303,16 @@ dust.onLoad = function(name, callback) {
         // append base
         self._opts.targets.find('.frmb-group:last-of-type').after( elem );
 
-        self.appendFieldToFormElementEditor( elem, field, self._model[name] );
+        // Load choices already present
+        if( _.has(existingModel,'choices') ){
+          _.each(existingModel.choices,function(choice){
+            self.appendFieldToFormElementEditor( elem, field, existingModel, choice );
+          });
+          return;
+        }
+
+        // Add a default/empty one
+        self.appendFieldToFormElementEditor( elem, field, existingModel );
 
       });
     },
@@ -251,11 +322,7 @@ dust.onLoad = function(name, callback) {
      * @param  {element} frmb_group Form group description to append to
      * @param  {object} field      Field type schema to use
      */
-    appendFieldToFormElementEditor: function( frmb_group, field, parentModel ){
-
-      var bodyObj = {
-        name: parentModel.name
-      };
+    appendFieldToFormElementEditor: function( frmb_group, field, parentModel, existingModel ){
 
       // load additional details template
       if( _.has(field,'template') ){
@@ -263,18 +330,23 @@ dust.onLoad = function(name, callback) {
         // choices
         if( _.has(parentModel,'choices') && _.isArray(parentModel.choices) ){
 
+          // Create a new model
+          if( !_.isObject(existingModel) ){
+            existingModel = _.clone(field.choiceSchema);
+            parentModel.choices.push( existingModel);
+          }
+
+          var bodyObj = {
+            name: parentModel.name,
+            model: existingModel
+          };
+
           // new index
           var index = parentModel.choices.length;
           bodyObj.name += '_choices.'+index;
         
           dust.render(field.template, bodyObj, function(err, out){
-
-            // make a new model
-            parentModel['choices'].push( _.clone(field.schema.choiceSchema) );
-
-            // append dom
             frmb_group.append( out );
-
           });
         }
       }
@@ -354,6 +426,22 @@ dust.onLoad = function(name, callback) {
      * code.
      */
     save: function(){
+
+      var save = {
+        form_id: this._opts.form_id,
+        model: this._model
+      }
+
+      $.ajax({
+        url: this._opts.save_url,
+        data: JSON.stringify(save),
+        contentType : 'application/json',
+        type: 'post',
+        success: function(resp){
+          console.log(resp);
+        }
+      });
+
       console.log(this._model);
     }
   };

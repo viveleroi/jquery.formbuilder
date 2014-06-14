@@ -9,6 +9,6 @@
   "license": "MIT",
   "devDependencies": {
     "lodash": "~2.4.1",
-    "dustjs": "~0.3.0"
+    "dustjs-linkedin": "~2.4.0"
   }
 }
