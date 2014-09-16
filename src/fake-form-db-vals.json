@@ -5,13 +5,15 @@
             "name" : "text_1402703164059",
             "label" : "aaa",
             "required" : false,
-            "type" : "text"
+            "type" : "text",
+            "sortOrder": 1
         },
         "textarea_1402703169041" : {
             "name" : "textarea_1402703169041",
             "label" : "bbb",
             "required" : true,
-            "type" : "textarea"
+            "type" : "textarea",
+            "sortOrder": 2
         },
         "select_1402706449688" : {
             "name" : "select_1402706449688",
@@ -31,7 +33,8 @@
                     "label" : "cccc"
                 }
             ],
-            "type" : "select"
+            "type" : "select",
+            "sortOrder": 3
         }
     }
 }

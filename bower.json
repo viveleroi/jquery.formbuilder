@@ -9,6 +9,7 @@
   "license": "MIT",
   "devDependencies": {
     "lodash": "~2.4.1",
-    "dustjs-linkedin": "~2.4.0"
+    "dustjs-linkedin": "~2.4.0",
+    "html5sortable": "*"
   }
 }

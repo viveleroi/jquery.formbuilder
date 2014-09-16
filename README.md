@@ -55,9 +55,6 @@ For those using `node`-based servers, you can use javascript all the way around 
 
 ### To-Do
 
-- fix json sorting error with jquery/browsers
-- restore sortable elements
-
 - add html rendering for saved form
 - add processing/validation for saved form
 - save completed form entry

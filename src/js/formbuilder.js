@@ -120,7 +120,6 @@ dust.onLoad = function(name, callback) {
 
     this._opts = _.assign(defaultOptions,opts);
 
-
     (function(engine){
 
       var targets = engine._opts.targets;
@@ -132,9 +131,12 @@ dust.onLoad = function(name, callback) {
 
         engine._model = engine._opts.startingModel;
         // @todo validate against the field schema
+        
+        // Sort incoming model
+        var sorted = _.sortBy(engine._model,'sortOrder');
 
         // Iterate model and render proper editors
-        _.each(engine._model,function(model,id){
+        _.each(sorted,function(model,index){
           var field = engine.getFieldTypeByName( model.type );
           engine.addFormElementEditor( field, model );
         });
@@ -203,7 +205,7 @@ dust.onLoad = function(name, callback) {
       });
 
       // Save
-      targets.on('submit', '.frmb-save', function(e){
+      targets.on('click', '.frmb-save', function(e){
         e.preventDefault();
         engine.save();
         return false;
@@ -240,7 +242,7 @@ dust.onLoad = function(name, callback) {
 
         // Append final content
         self._opts.targets.append( out );
-
+        
       });
     },
 
@@ -294,8 +296,17 @@ dust.onLoad = function(name, callback) {
 
         var elem = $(out);
 
+        var parent = self._opts.targets.find('ul');
+
         // append base
-        self._opts.targets.find('.frmb-group:last').after( elem );
+        var last_li = parent.find('.frmb-group:last');
+        if( last_li.length !== 0 ){
+          last_li.after( elem );
+        } else {
+          parent.append( elem );
+        }
+
+        self._opts.targets.find('ul').sortable();
 
         // Load choices already present
         if( _.has(existingModel,'choices') ){
@@ -308,6 +319,25 @@ dust.onLoad = function(name, callback) {
         // Add a default/empty one
         self.appendFieldToFormElementEditor( elem, field, existingModel );
 
+      });
+    },
+
+    /**
+     * Update the internal model with the sorted list items
+     */
+    updateModelWithSort: function(){
+
+      var self = this;
+
+      var groups = self._opts.targets.find('.frmb-group');
+
+      var i = 1;
+      _.each(groups,function(elem,key){
+        var id = $(elem).attr('id');
+        if( _.has(self._model,id) ){
+          self._model[id].sortOrder = i;
+        }
+        i++;
       });
     },
 
@@ -420,6 +450,8 @@ dust.onLoad = function(name, callback) {
      * code.
      */
     save: function(){
+
+      this.updateModelWithSort();
 
       var save = {
         form_id: this._opts.form_id,
