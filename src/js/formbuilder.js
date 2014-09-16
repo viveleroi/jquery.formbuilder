@@ -297,8 +297,6 @@ dust.onLoad = function(name, callback) {
         // append base
         self._opts.targets.find('.frmb-group:last').after( elem );
 
-        $('#' + bodyObj.name + '_label').attr('required', true);
-
         // Load choices already present
         if( _.has(existingModel,'choices') ){
           _.each(existingModel.choices,function(choice,key){
