@@ -57,7 +57,7 @@ For those using `node`-based servers, you can use javascript all the way around 
 
 - add html rendering for saved form
 - add processing/validation for saved form
-- save completed form entry
 
+- allow sorting choices for appropriate elements
 - set maxcharacters/size for fields
 - add support for newer/html5 elements

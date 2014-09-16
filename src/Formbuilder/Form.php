@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: botskonet
- * Date: 6/13/14
- * Time: 4:23 PM
- */
-
 namespace Formbuilder;
 
 /**
