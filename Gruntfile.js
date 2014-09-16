@@ -11,10 +11,27 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'src/js/formbuilder.min.js': ['src/js/*.js']
+          'dist/js/formbuilder.js': ['src/js/*.js']
         }
       }
     },
+    copy: {
+      dist: {
+        files: [
+          {
+            expand: true,
+            cwd:'src/',
+            src: '**',
+            dest: 'dist/'
+          },
+          {
+            src: ['LICENSE','README.MD'],
+            dest: 'dist/'
+          }
+        ]
+      }
+    },
+    clean: ['dist'],
     jshint: {
       options: {
         jshintrc: '.jshintrc',
@@ -22,12 +39,12 @@ module.exports = function(grunt) {
       },
       all: ['Gruntfile.js','src/js/*.js']
     }
-
   });
 
   // Default task(s).
   grunt.registerTask('default', ['jshint']);
 
   // @todo add proper dist/uglify build
+  grunt.registerTask('dist', ['jshint','clean','copy:dist','uglify']);
 
 };
