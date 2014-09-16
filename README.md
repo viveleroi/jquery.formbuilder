@@ -55,9 +55,14 @@ For those using `node`-based servers, you can use javascript all the way around 
 
 ### To-Do
 
-- add html rendering for saved form
-- add processing/validation for saved form
+*Soon*
 
-- allow sorting choices for appropriate elements
+- allow checkbox/radio options to be grouped
+- update html with checkbox/radio grouping
+- add bower_components to dist
+
+*Someday*
+
 - set maxcharacters/size for fields
-- add support for newer/html5 elements
+- allow setting placeholders
+- add support for html5 field elements

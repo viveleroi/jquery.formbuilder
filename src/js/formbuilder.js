@@ -5,7 +5,7 @@
  * @return {[type]}            [description]
  */
 dust.onLoad = function(name, callback) {
-  $.ajax('templates/' + name + '.tpl', {
+  $.ajax('templates/builder/' + name + '.tpl', {
     success: function(data) {
       callback(undefined, data);
     },
