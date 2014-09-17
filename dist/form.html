@@ -9,7 +9,7 @@
 		<!-- REQUIRED: jquery ^, lodash, dust-linkedin -->
 		<script src="js/libs.min.js"></script>
 
-		<script src="js/formbuilder.min.js"></script>
+		<script src="js/formrunner.min.js"></script>
 		<!-- <link href="css/formbuilder.css" media="screen" rel="stylesheet" /> -->
 
 		<!-- Demo-only styles -->
@@ -25,35 +25,31 @@
 				// IF you're loaded existing form data, it's up to you
 				// how you want to load the JSON. In this example,
 				// we pull it using ajax - all that form builder requires
-				// is that you inject the JSON when calling `formbuilder`
+				// is that you inject the JSON when calling `formrunner`
 				$.getJSON( 'example-load.php', function(resp){
 
-          // Create an instance of form builder
-					var myForm = new formbuilder({
-
-						// Provide a dom element the form will be built to
+          var formRunner = new formrunner({
+          	// Provide a dom element the form will be built to
 						// jQuery or simpleDOM elements required
-						targets: $('.formbuilder'),
+						targets: $('.formrunner'),
 
 						// Specify the url that form save data will be sent to
-						save_url: 'example-save.php',
+						action: '#',
 
-						// we loaded existing JSON, so we have a form_id. If you're
-						// creating a new form, this may be left out
+						// we loaded existing JSON, so we have a form_id.
 						form_id: resp.form_id,
 
-						// we loaded existing JSON, so we pass it in here. If you're
-						// creating a new form, this may be left out
-						startingModel: resp.model
+						// Pass in the model data
+						model: resp.model
 
-					});
+          });
         });
 			});
 		</script>
 	</head>
 	<body>
-		<h1>Form Builder Demo</h1>
-		<p><a href="form.html">View sample rendered html</a>.</p>
-		<div class="formbuilder"></div>
+		<h1>Form Builder Demo (Generated Form)</h1>
+		<p><a href="index.html">View form builder tool</a>.</p>
+		<div class="formrunner"></div>
 	</body>
 </html>

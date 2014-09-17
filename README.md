@@ -14,6 +14,11 @@ Formbuilder 2 requires a few tools, but we include them in the `dist` package fo
 - `jQuery` - A DOM manipulation/ajax library
 - `dustjs` - A javascript templating engine
 
+### Distribusion Code
+
+We provide a `dist` folder with a complete copy of everything you need to get started. Our build process copies over
+and compiles the libraries and source for production-ready environments.
+
 ### Issues/Feedback
 
 Please report all issues, bugs, and feature suggestions to our [issue tracker](https://snowy-evening.com/botsko/jquery-form-builder/)
@@ -54,10 +59,6 @@ data as JSON documents. So your data is JSON all the way around. Plus, I absolut
 For those using `node`-based servers, you can use javascript all the way around as well.
 
 ### To-Do
-
-*Soon*
-
-- add bower_components to dist
 
 *Someday*
 

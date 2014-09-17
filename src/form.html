@@ -4,14 +4,19 @@
 		<title>FormBuilder Demo</title>
 		<meta charset="utf-8" />
 
-		<!-- REQUIRED: jquery, lodash, dust-linkedin -->
 		<script src="//code.jquery.com/jquery-latest.min.js"></script>
+
+		<!-- REQUIRED: jquery ^, lodash, dust-linkedin -->
+		<!-- build:js js/libs.min.js -->
 		<script src="../bower_components/lodash/dist/lodash.min.js"></script>
+		<script src="../bower_components/html5sortable/jquery.sortable.js"></script>
 		<script src="../bower_components/dustjs-linkedin/dist/dust-core.min.js"></script>
 		<script src="../bower_components/dustjs-linkedin/dist/dust-full.min.js"></script>
+		<!-- endbuild -->
 
-		<!-- formbuilder -->
+		<!-- build:js js/formrunner.min.js -->
 		<script src="js/formrunner.js"></script>
+		<!-- endbuild -->
 		<!-- <link href="css/formbuilder.css" media="screen" rel="stylesheet" /> -->
 
 		<!-- Demo-only styles -->

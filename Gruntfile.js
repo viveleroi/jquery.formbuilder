@@ -5,16 +5,6 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    uglify: {
-      options: {
-        banner: '/*! <%= pkg.name %> */\n'
-      },
-      dist: {
-        files: {
-          'dist/js/formbuilder.js': ['src/js/*.js']
-        }
-      }
-    },
     copy: {
       dist: {
         files: [
@@ -31,7 +21,16 @@ module.exports = function(grunt) {
         ]
       }
     },
-    clean: ['dist'],
+    clean: {
+      dist: ['dist'],
+      post: ['dist/js/formbuilder.js','dist/js/formrunner.js']
+    },
+    useminPrepare: {
+      html: ['dist/index.html','dist/form.html']
+    },
+    usemin: {
+      html: ['dist/index.html','dist/form.html']
+    },
     jshint: {
       options: {
         jshintrc: '.jshintrc',
@@ -43,8 +42,6 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('default', ['jshint']);
-
-  // @todo add proper dist/uglify build
-  grunt.registerTask('dist', ['jshint','clean','copy:dist','uglify']);
+  grunt.registerTask('dist', ['jshint','clean:dist','copy:dist','useminPrepare','concat:generated','uglify:generated','usemin','clean:post']);
 
 };

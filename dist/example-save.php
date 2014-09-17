@@ -4,6 +4,7 @@ require('Formbuilder/Formbuilder.php');
 
 
 // IF you have a db setup, remove the following line. it's for demo only
+print_r(json_decode(file_get_contents('php://input'), true));
 exit;
 
 

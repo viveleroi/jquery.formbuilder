@@ -148,6 +148,6 @@ formrunner.prototype = {
    * @return string HTML/backend-safe string
    */
   fieldNameToId: function( name ){
-    return name.toLowerCase().replace(/ /g,'-').replace(/[^a-zA-Z0-9_.-]/g, '');;
+    return name.toLowerCase().replace(/ /g,'-').replace(/[^a-zA-Z0-9_.-]/g, '');
   }
 };

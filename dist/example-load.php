@@ -21,7 +21,7 @@ $form_id = 'frmb-1402703162109';
 $m = new MongoClient();
 $forms_collection = $m->formbuilder->forms;
 
-// Insert or update a record
+// Find the form data
 $form = $forms_collection->findOne( array('form_id' => $form_id) );
 
 if( $form ){

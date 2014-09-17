@@ -5,13 +5,15 @@
             "name" : "text_1402703164059",
             "label" : "aaa",
             "required" : false,
-            "type" : "text"
+            "type" : "text",
+            "sortOrder": 1
         },
         "textarea_1402703169041" : {
             "name" : "textarea_1402703169041",
             "label" : "bbb",
             "required" : true,
-            "type" : "textarea"
+            "type" : "textarea",
+            "sortOrder": 2
         },
         "select_1402706449688" : {
             "name" : "select_1402706449688",
@@ -19,7 +21,7 @@
             "required" : false,
             "choices" : [ 
                 {
-                    "selected" : true,
+                    "selected" : false,
                     "label" : "aaaa"
                 }, 
                 {
@@ -31,7 +33,29 @@
                     "label" : "cccc"
                 }
             ],
-            "type" : "select"
+            "type" : "select",
+            "sortOrder": 3
+        },
+        "checkbox_1402706449802" : {
+            "name" : "checkbox_1402706449802",
+            "label" : "dddd",
+            "required" : false,
+            "choices" : [ 
+                {
+                    "selected" : false,
+                    "label" : "aaaa"
+                }, 
+                {
+                    "selected" : false,
+                    "label" : "bbbb"
+                }, 
+                {
+                    "selected" : true,
+                    "label" : "cccc"
+                }
+            ],
+            "type" : "checkbox",
+            "sortOrder": 4
         }
     }
 }
