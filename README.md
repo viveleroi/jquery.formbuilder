@@ -60,6 +60,10 @@ For those using `node`-based servers, you can use javascript all the way around 
 
 ### To-Do
 
+*Soon*
+
+- add sorting to choices
+
 *Someday*
 
 - set maxcharacters/size for fields
