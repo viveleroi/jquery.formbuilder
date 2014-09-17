@@ -1,0 +1,13 @@
+.frmb-form ul { padding-left: 20px }
+.frmb-form > ul { padding: 0 }
+.frmb-form li { list-style: none }
+.formbuilder li input { margin: 0 10px }
+.frmb-add-choice { display: block; margin: 5px 0 0 20px }
+
+.frmb-group { border: 1px solid #eee; padding: 10px }
+.frmb-group:hover { border: 1px solid #f7ca75; background: #fffeeb }
+.frmb-group li { padding: 5px 0 }
+.frmb-group h4 { margin-top: 0 }
+
+.formrunner li { padding: 10px }
+.formrunner form > ul > li > label { display: block; font-weight: 700 }
