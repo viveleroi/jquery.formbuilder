@@ -125,6 +125,9 @@ formrunner.prototype = {
       if( _.has(model,'choices') ){
         _.each(model.choices,function(choice,key){
 
+          choice.id = self.fieldNameToId( choice.label );
+          choice.name = self.fieldNameToId(model.label);
+
           // Load choice template
           dust.render(model.type+'-choices', choice, function(err, out){
 

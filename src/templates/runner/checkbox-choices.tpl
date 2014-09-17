@@ -1,4 +1,4 @@
 <li>
   <label for="{id}">{label}</label>
-  <input type="checkbox" value="{value}"{?selected} checked="checked"{/selected}>
+  <input id="{id}" name="{name}" type="checkbox" value="{label}"{?selected} checked="checked"{/selected}>
 </li>
