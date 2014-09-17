@@ -57,8 +57,6 @@ For those using `node`-based servers, you can use javascript all the way around 
 
 *Soon*
 
-- allow checkbox/radio options to be grouped
-- update html with checkbox/radio grouping
 - add bower_components to dist
 
 *Someday*

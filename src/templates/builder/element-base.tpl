@@ -5,4 +5,9 @@
   <label for="{name}_required">Required?</label>
   <input type="checkbox" value="1" {?model.required}checked="checked"{/model.required} name="{name}_required" id="{name}_required">
   <a href="#" class="frmb-remove">Remove</a>
+  {?allowsChoices}
+  <a href="#" class="frmb-add-choice">Add Choice</a>
+  <ul class="frmb-choices">
+  </ul>
+  {/allowsChoices}
 </li>

@@ -287,7 +287,8 @@ dust.onLoad = function(name, callback) {
       // Prep data for template
       var bodyObj = {
         name: name,
-        model: existingModel
+        model: existingModel,
+        allowsChoices: _.has(existingModel,'choices')
       };
       bodyObj = _.assign(bodyObj,field);
 
@@ -370,7 +371,7 @@ dust.onLoad = function(name, callback) {
           bodyObj.name += '_choices.'+index;
 
           dust.render(field.template, bodyObj, function(err, out){
-            frmb_group.append( out );
+            frmb_group.find('.frmb-choices').append( out );
           });
         }
       }

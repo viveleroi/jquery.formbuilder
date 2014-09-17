@@ -130,6 +130,8 @@ formrunner.prototype = {
 
             if( model.type === 'select' ){
               lastLi.find('select').append(out);
+            } else {
+              lastLi.find('.frmb-choices').append(out);
             }
           });
         });

@@ -35,6 +35,27 @@
             ],
             "type" : "select",
             "sortOrder": 3
+        },
+        "checkbox_1402706449802" : {
+            "name" : "checkbox_1402706449802",
+            "label" : "dddd",
+            "required" : false,
+            "choices" : [ 
+                {
+                    "selected" : false,
+                    "label" : "aaaa"
+                }, 
+                {
+                    "selected" : false,
+                    "label" : "bbbb"
+                }, 
+                {
+                    "selected" : true,
+                    "label" : "cccc"
+                }
+            ],
+            "type" : "checkbox",
+            "sortOrder": 4
         }
     }
 }
