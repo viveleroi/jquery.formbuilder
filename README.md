@@ -1,10 +1,14 @@
-FormBuilder v2
+FormBuilder v2 (Beta)
 ==================
 
 Formbuilder is a component for your web-application that allows users to build web forms. We provide
 basic logic for rendering the resulting form. 
 
 Think of it like a CMS for forms.
+
+### Installation with Bower
+
+We support installation via [Bower](http://bower.io/): `bower install jquery.formbuilder`
 
 ### Requirements
 
@@ -41,6 +45,8 @@ data as JSON documents. So your data is JSON all the way around. Plus, I absolut
 However, php/mongo aren't required and can be easily replaced with any back-end storage/language.
 
 ### Important Notes
+
+v2 is still in development, we're mainly working on cleanup and making it better.
 
 Unlike v1, we're now leaving validation and processing of actual form submissions up to you. While validation may
 be improved, processing and handling form data is something we can't predict for your use case.
