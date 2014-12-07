@@ -203,6 +203,17 @@
         return false;
       });
 
+      // Remove a form element choice
+      targets.on('click', '.frmb-choice-remove', function(e){
+        e.preventDefault();
+        var elem = $(this);
+        var parent = elem.parents('.frmb-choice-group:eq(0)');
+        var id = parent.attr('id');
+        engine.removeModel( id );
+        parent.remove();
+        return false;
+      });
+
       // Update model with keyboard entries
       targets.on('keyup', 'input[type=text]', function(e){
 
@@ -388,7 +399,7 @@
       if( field.template !== undefined ){
 
         // choices
-        if( parentModel.choices !== undefined && parentModel.choices.length > 0 ){
+        if( parentModel.choices !== undefined ){
 
           // Create a new model
           if( typeof existingModel !== 'object' ){
