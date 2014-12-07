@@ -297,7 +297,7 @@ dust.onLoad = function(name, callback) {
 
       // Determine field name
       var name = field.key + '_' + Date.now();
-      if( typeof existingModel.name === 'string' ){
+      if( existingModel !== undefined && typeof existingModel.name === 'string' ){
         name = existingModel.name;
       }
       else if( typeof field.name === 'string' ){
