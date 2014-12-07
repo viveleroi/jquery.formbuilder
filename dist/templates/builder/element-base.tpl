@@ -1,9 +1,9 @@
-<li id="{name}" class="frmb-group">
+<li id="{fbid}" class="frmb-group">
   <h4>{label}</h4>
-  <label for="{name}_label">Field Label:</label>
-  <input type="text" value="{model.label}" placeholder="ex: First Name" name="{name}_label" id="{name}_label" required>
-  <label for="{name}_required">Required?</label>
-  <input type="checkbox" value="1" {?model.required}checked="checked"{/model.required} name="{name}_required" id="{name}_required">
+  <label for="{fbid}_label">Field Label:</label>
+  <input type="text" value="{model.label}" placeholder="ex: First Name" name="{fbid}_label" id="{fbid}_label" required>
+  <label for="{fbid}_required">Required?</label>
+  <input type="checkbox" value="1" {?model.required}checked="checked"{/model.required} name="{fbid}_required" id="{fbid}_required">
   <a href="#" class="frmb-remove">Remove</a>
   {?allowsChoices}
   <a href="#" class="frmb-add-choice">Add Choice</a>

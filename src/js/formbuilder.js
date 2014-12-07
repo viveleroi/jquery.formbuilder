@@ -50,6 +50,7 @@
           label: 'Text',
           schema: {
             name: false,
+            fbid: false,
             label: '',
             required: false
           }
@@ -58,6 +59,7 @@
           label: 'Textarea',
           schema: {
             name: false,
+            fbid: false,
             label: '',
             required: false
           }
@@ -67,6 +69,7 @@
           template: 'choices',
           schema: {
             name: false,
+            fbid: false,
             label: '',
             required: false,
             choices: []
@@ -81,6 +84,7 @@
           template: 'choices',
           schema: {
             name: false,
+            fbid: false,
             label: '',
             required: false,
             choices: []
@@ -95,6 +99,7 @@
           template: 'choices',
           schema: {
             name: false,
+            fbid: false,
             label: '',
             required: false,
             choices: []
@@ -311,26 +316,26 @@
       }
 
       // Determine field name
-      var name = field.key + '_' + Date.now();
-      if( existingModel !== undefined && typeof existingModel.name === 'string' ){
-        name = existingModel.name;
+      var fbid = field.key + '_' + Date.now();
+      if( existingModel !== undefined && typeof existingModel.fbid === 'string' ){
+        fbid = existingModel.fbid;
       }
-      else if( typeof field.name === 'string' ){
-        name = field.name;
+      else if( typeof field.fbid === 'string' ){
+        fbid = field.fbid;
       }
 
       // Create a new model entry
       if( typeof existingModel !== 'object' ){
-        self._model[name] = $.extend(true, {}, field.schema, {
-          name: name,
+        self._model[fbid] = $.extend(true, {}, field.schema, {
+          fbid: fbid,
           type: field.key
         });
-        existingModel = self._model[name];
+        existingModel = self._model[fbid];
       }
 
       // Prep data for template
       var bodyObj = {
-        name: name,
+        fbid: fbid,
         model: existingModel,
         allowsChoices: (existingModel.choices !== undefined)
       };
@@ -408,13 +413,13 @@
           }
 
           var bodyObj = {
-            name: parentModel.name,
+            fbid: parentModel.fbid,
             model: existingModel
           };
 
           // new index
           index = (typeof index === 'number') ? index : parentModel.choices.length;
-          bodyObj.name += '_choices.'+index;
+          bodyObj.fbid += '_choices.'+index;
 
           dust.render(field.template, bodyObj, function(err, out){
             frmb_group.find('.frmb-choices').append( out );
@@ -451,7 +456,7 @@
       // Special handling for choice
       if( type === 'choices' ){
 
-        var index = parseInt(path[1],10);
+        var index = parseInt(path[1],10) - 1;
 
         // verify field is in schema
         if( this._model[id][type][index][path[2]] === undefined  ){
@@ -493,12 +498,30 @@
     },
 
     /**
+     * Determines a good form field "name" attribute based on the label
+     * and updates each model, unless a name exists
+     */
+    setFieldNames: function(){
+
+      var self = this;
+
+      for( var k in self._model ){
+        var field = self._model[k];
+        if( field.name === undefined || field.name === '' ){
+          self._model[k].name = field.label.toLowerCase().replace(/([^a-zA-Z0-9\._-]+)/g,'-');
+        }
+      }
+    },
+
+    /**
      * Passes a JSON model of the resulting form to the server-side
      * code.
      */
     save: function(){
 
       this.updateModelWithSort();
+
+      this.setFieldNames();
 
       var save = {
         form_id: this._opts.form_id,

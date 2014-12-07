@@ -2,21 +2,21 @@
     "form_id" : "frmb-1402703162109",
     "model" : {
         "text_1402703164059" : {
-            "name" : "text_1402703164059",
+            "fbid" : "text_1402703164059",
             "label" : "aaa",
             "required" : false,
             "type" : "text",
             "sortOrder": 1
         },
         "textarea_1402703169041" : {
-            "name" : "textarea_1402703169041",
+            "fbid" : "textarea_1402703169041",
             "label" : "bbb",
             "required" : true,
             "type" : "textarea",
             "sortOrder": 2
         },
         "select_1402706449688" : {
-            "name" : "select_1402706449688",
+            "fbid" : "select_1402706449688",
             "label" : "cccc",
             "required" : false,
             "choices" : [ 
@@ -37,7 +37,7 @@
             "sortOrder": 3
         },
         "checkbox_1402706449802" : {
-            "name" : "checkbox_1402706449802",
+            "fbid" : "checkbox_1402706449802",
             "label" : "dddd",
             "required" : false,
             "choices" : [ 

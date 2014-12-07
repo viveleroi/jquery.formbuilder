@@ -1,4 +1,4 @@
-FormBuilder v2
+FormBuilder v2 (Beta)
 ==================
 
 Formbuilder is a component for your web-application that allows users to build web forms. We provide
@@ -6,13 +6,17 @@ basic logic for rendering the resulting form.
 
 Think of it like a CMS for forms.
 
-### Requirements
+### Installation with Bower
 
-Formbuilder 2 requires a few tools, but we include them in the `dist` package for your convenience.
+We support installation via [Bower](http://bower.io/): `bower install jquery.formbuilder`. Requires `jQuery` and `dustjs-linkedin` template library.
 
-- `lodash` - An excellent (fast/light-weight) javascript utility library
-- `jQuery` - A DOM manipulation/ajax library
-- `dustjs` - A javascript templating engine
+### Usage
+
+Take a look at `dist/index.html`. You essentially need to declare a `new formbuilder()` with at least a few options:
+
+- `targets` - A jQuery DOM element to attach instances to, i.e. `$('.formbuilder')`
+- `save` - A callback that executes when a form is saved
+- `startingModel` - A starting model if one is loaded from a database
 
 ### What's Different In v2
 
@@ -41,6 +45,8 @@ data as JSON documents. So your data is JSON all the way around. Plus, I absolut
 However, php/mongo aren't required and can be easily replaced with any back-end storage/language.
 
 ### Important Notes
+
+v2 is still in development, we're mainly working on cleanup and making it better.
 
 Unlike v1, we're now leaving validation and processing of actual form submissions up to you. While validation may
 be improved, processing and handling form data is something we can't predict for your use case.

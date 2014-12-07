@@ -4,9 +4,7 @@
 		<title>FormBuilder Demo</title>
 		<meta charset="utf-8" />
 
-		<script src="//code.jquery.com/jquery-latest.min.js"></script>
-
-		<!-- REQUIRED: jquery ^, lodash, dust-linkedin -->
+		<!-- REQUIRED: jquery, lodash, dust-linkedin -->
 		<script src="js/libs.min.js"></script>
 
 		<script src="js/formbuilder.min.js"></script>
@@ -26,7 +24,7 @@
 				// how you want to load the JSON. In this example,
 				// we pull it using ajax - all that form builder requires
 				// is that you inject the JSON when calling `formbuilder`
-				$.getJSON( 'example-load.php', function(resp){
+				$.getJSON( 'fake-form-db-vals.json', function(resp){
 
           // Create an instance of form builder
 					var myForm = new formbuilder({
@@ -35,8 +33,10 @@
 						// jQuery or simpleDOM elements required
 						targets: $('.formbuilder'),
 
-						// Specify the url that form save data will be sent to
-						save_url: 'example-save.php',
+						// A callback allowing you to handle saving the form
+						save: function(formData){
+							console.log(formData);
+						},
 
 						// we loaded existing JSON, so we have a form_id. If you're
 						// creating a new form, this may be left out
