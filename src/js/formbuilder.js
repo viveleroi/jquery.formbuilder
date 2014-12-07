@@ -1,21 +1,4 @@
 /**
- * Dynamically load templates
- * @param  {[type]}   name     [description]
- * @param  {Function} callback [description]
- * @return {[type]}            [description]
- */
-dust.onLoad = function(name, callback) {
-  $.ajax('templates/builder/' + name + '.tpl', {
-    success: function(data) {
-      callback(undefined, data);
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-      callback(textStatus, undefined);
-    }
-  });
-};
-
-/**
  * Formbuilder
  * Copyright (c) 2009, 2014 (v2) Mike Botsko, Helion3 LLC (http://www.helion3.com)
  * http://www.botsko.net/blog/2009/04/jquery-form-builder-plugin/
@@ -53,6 +36,12 @@ dust.onLoad = function(name, callback) {
 
       // We'll call this function on form save with the proper objects
       save: false,
+
+      // Whether to allow sorting of list items
+      sortable: true,
+
+      // Customizable base for templates
+      templateBasePath: 'templates/builder',
 
       // Description of allowed field types
       field_types: [
@@ -118,7 +107,22 @@ dust.onLoad = function(name, callback) {
       ]
     };
 
+    var _privateSelf = this;
     this._opts = $.extend(true, {}, defaultOptions,opts);
+
+    // Dynamically load templates
+    if( dust.onLoad === undefined ){
+      dust.onLoad = function(name, callback) {
+        $.ajax(_privateSelf._opts.templateBasePath + '/' + name + '.tpl', {
+          success: function(data) {
+            callback(undefined, data);
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            callback(textStatus, undefined);
+          }
+        });
+      };
+    }
 
     // Sort field models by sortOrder
     var sortObject = function(obj){
@@ -336,7 +340,9 @@ dust.onLoad = function(name, callback) {
           parent.append( elem );
         }
 
-        self._opts.targets.find('ul').sortable();
+        if( self._opts.sortable ){
+          self._opts.targets.find('ul').sortable();
+        }
 
         // Load choices already present
         if( existingModel.choices !== undefined ){

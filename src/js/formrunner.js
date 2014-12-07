@@ -1,21 +1,4 @@
 /**
- * Dynamically load templates
- * @param  {[type]}   name     [description]
- * @param  {Function} callback [description]
- * @return {[type]}            [description]
- */
-dust.onLoad = function(name, callback) {
-  $.ajax('templates/runner/' + name + '.tpl', {
-    success: function(data) {
-      callback(undefined, data);
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-      callback(textStatus, undefined);
-    }
-  });
-};
-
-/**
  * formrunner
  * Copyright (c) 2009, 2014 (v2) Mike Botsko, Helion3 LLC (http://www.helion3.com)
  * http://www.botsko.net/blog/2009/04/jquery-form-builder-plugin/
@@ -45,11 +28,29 @@ var formrunner = function(opts){
     action: '',
 
     // Form submission method
-    method: 'POST'
+    method: 'POST',
+
+    // Customizable base for templates
+    templateBasePath: 'templates/runner'
 
   };
 
-  this._opts = $.extend(true,defaultOptions,opts);
+  var _privateSelf = this;
+  this._opts = $.extend(true, {}, defaultOptions,opts);
+
+  // Dynamically load templates
+  if( dust.onLoad === undefined ){
+    dust.onLoad = function(name, callback) {
+      $.ajax(_privateSelf._opts.templateBasePath + '/' + name + '.tpl', {
+        success: function(data) {
+          callback(undefined, data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          callback(textStatus, undefined);
+        }
+      });
+    };
+  }
 
   this.render();
 
