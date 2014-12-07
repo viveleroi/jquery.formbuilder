@@ -317,7 +317,7 @@ dust.onLoad = function(name, callback) {
       var bodyObj = {
         name: name,
         model: existingModel,
-        allowsChoices: (existingModel !== undefined)
+        allowsChoices: (existingModel.choices !== undefined)
       };
       bodyObj = $.extend(true, {}, bodyObj,field);
 
