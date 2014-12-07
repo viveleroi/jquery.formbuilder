@@ -4,11 +4,9 @@
 		<title>FormBuilder Demo</title>
 		<meta charset="utf-8" />
 
-		<script src="//code.jquery.com/jquery-latest.min.js"></script>
-
-		<!-- REQUIRED: jquery ^, lodash, dust-linkedin -->
+		<!-- REQUIRED: jquery, lodash, dust-linkedin -->
 		<!-- build:js js/libs.min.js -->
-		<script src="../bower_components/lodash/dist/lodash.min.js"></script>
+		<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="../bower_components/html5sortable/jquery.sortable.js"></script>
 		<script src="../bower_components/dustjs-linkedin/dist/dust-core.min.js"></script>
 		<script src="../bower_components/dustjs-linkedin/dist/dust-full.min.js"></script>
@@ -33,7 +31,7 @@
 				// how you want to load the JSON. In this example,
 				// we pull it using ajax - all that form builder requires
 				// is that you inject the JSON when calling `formrunner`
-				$.getJSON( 'example-load.php', function(resp){
+				$.getJSON( 'fake-form-db-vals.json', function(resp){
 
           var formRunner = new formrunner({
           	// Provide a dom element the form will be built to

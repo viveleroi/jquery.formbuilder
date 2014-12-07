@@ -8,17 +8,14 @@
   "description": "Build and process dynamic forms",
   "license": "MIT",
   "dependencies": {
-    "lodash": "~2.4.1",
     "dustjs-linkedin": "~2.4.0",
-    "html5sortable": "*"
+    "html5sortable": "*",
+    "jquery": "~2.1.1"
   },
   "devDependencies": [],
   "main": [
     "dist/js/formbuilder.min.js",
     "dist/js/formrunner.min.js"
-  ],
-  "ignore": [
-    "src"
   ],
   "private": false
 }

@@ -24,12 +24,8 @@ dust.onLoad = function(name, callback) {
  */
 var formrunner = function(opts){
 
-  if( !_.has(opts,'targets') || !_.isObject(opts.targets) || opts.targets.length === 0 ){
+  if( typeof opts.targets !== 'object' || opts.targets.length === 0 ){
     throw new Error('Invalid or missing target element(s)');
-  }
-
-  if( !_.has(opts,'action') || !_.isString(opts.action) || opts.action.trim() === '' ){
-    throw new Error('Invalid or missing save url');
   }
 
   // Define all default options
@@ -53,12 +49,34 @@ var formrunner = function(opts){
 
   };
 
-  this._opts = _.assign(defaultOptions,opts);
+  this._opts = $.extend(true,defaultOptions,opts);
 
   this.render();
 
   return this;
 
+};
+
+// Sort field models by sortOrder
+var sortObject = function(obj){
+  var arr = [];
+  for (var prop in obj){
+    if (obj.hasOwnProperty(prop)){
+      arr.push({
+        'key': prop,
+        'value': obj[prop].sortOrder
+      });
+    }
+  }
+  arr.sort(function(a, b){ return a.value - b.value; });
+
+  var result = [];
+  for( var i = 0, l = arr.length; i < l; i++ ){
+    var key = arr[i].key;
+    result.push(obj[key]);
+  }
+
+  return result;
 };
 
 formrunner.prototype = {
@@ -88,10 +106,10 @@ formrunner.prototype = {
       self._opts.targets.append( out );
 
       // Sort incoming models
-      var sorted = _.sortBy(self._opts.model,'sortOrder');
+      var sorted = sortObject(self._opts.model);
 
       // Iterate model and render proper editors
-      _.each(sorted,function(model,index){
+      $.each(sorted,function(index,model){
         self.appendElementForModel(model);
       });
       
@@ -122,8 +140,8 @@ formrunner.prototype = {
       var lastLi = self._opts.targets.find('form>ul>li:last-child');
 
       // Build choices
-      if( _.has(model,'choices') ){
-        _.each(model.choices,function(choice,key){
+      if( model.choices !== undefined && model.choices.length > 0 ){
+        $.each(model.choices,function(key,choice){
 
           choice.id = self.fieldNameToId( choice.label );
           choice.name = self.fieldNameToId(model.label);

@@ -30,19 +30,19 @@ dust.onLoad = function(name, callback) {
 
   var formbuilderEngine = function(opts){
 
-    if( !_.has(opts,'targets') || !_.isObject(opts.targets) || opts.targets.length === 0 ){
+    if( typeof opts.targets !== 'object' || opts.targets.length === 0 ){
       throw new Error('Invalid or missing target element(s)');
     }
 
-    if( !_.has(opts,'save_url') || !_.isString(opts.save_url) || opts.save_url.trim() === '' ){
-      throw new Error('Invalid or missing save url');
+    if( typeof opts.save !== 'function' ){
+      throw new Error('Invalid or missing save callback');
     }
 
     // Define all default options
     var defaultOptions = {
 
       // A unique ID shared with the server-side code
-      form_id: 'frmb-'+_.now(),
+      form_id: 'frmb-'+Date.now(),
 
       // Injected model, allows us to start with an
       // existing form
@@ -51,8 +51,8 @@ dust.onLoad = function(name, callback) {
       // A dom-lib wrapped element
       targets: false,
 
-      // A url we'll POST form data to on save
-      save_url: false,
+      // We'll call this function on form save with the proper objects
+      save: false,
 
       // Description of allowed field types
       field_types: [
@@ -118,7 +118,29 @@ dust.onLoad = function(name, callback) {
       ]
     };
 
-    this._opts = _.assign(defaultOptions,opts);
+    this._opts = $.extend(true, {}, defaultOptions,opts);
+
+    // Sort field models by sortOrder
+    var sortObject = function(obj){
+      var arr = [];
+      for (var prop in obj){
+        if (obj.hasOwnProperty(prop)){
+          arr.push({
+            'key': prop,
+            'value': obj[prop].sortOrder
+          });
+        }
+      }
+      arr.sort(function(a, b){ return a.value - b.value; });
+
+      var result = [];
+      for( var i = 0, l = arr.length; i < l; i++ ){
+        var key = arr[i].key;
+        result.push(obj[key]);
+      }
+
+      return result;
+    };
 
     (function(engine){
 
@@ -126,17 +148,16 @@ dust.onLoad = function(name, callback) {
 
       engine.render();
 
-          // Load the starting model
-      if( _.isObject(engine._opts.startingModel) ){
+      // Load the starting model
+      if( typeof engine._opts.startingModel === 'object' ){
 
         engine._model = engine._opts.startingModel;
         // @todo validate against the field schema
         
-        // Sort incoming model
-        var sorted = _.sortBy(engine._model,'sortOrder');
+        var sorted = sortObject(engine._model);
 
         // Iterate model and render proper editors
-        _.each(sorted,function(model,index){
+        $.each(sorted,function(index,model){
           var field = engine.getFieldTypeByName( model.type );
           engine.addFormElementEditor( field, model );
         });
@@ -252,7 +273,15 @@ dust.onLoad = function(name, callback) {
      * @return {object}
      */
     getFieldTypeByName: function( field_type_name ){
-      return _.find(this._opts.field_types, { 'key': field_type_name });
+      var field = null;
+      for( var i = 0, l = this._opts.field_types.length; i < l; i++ ){
+        var fieldType = this._opts.field_types[i];
+        if( fieldType.key === field_type_name ){
+          field = fieldType;
+          break;
+        }
+      }
+      return field;
     },
 
     /**
@@ -262,22 +291,22 @@ dust.onLoad = function(name, callback) {
 
       var self = this;
 
-      if( !_.isObject(field) ){
+      if( typeof field !== 'object' ){
         throw new Error('Failed to add form element editor: Invalid field object');
       }
 
       // Determine field name
-      var name = field.key + '_' + _.now();
-      if( _.has(existingModel,'name') && _.isString(existingModel.name) ){
+      var name = field.key + '_' + Date.now();
+      if( typeof existingModel.name === 'string' ){
         name = existingModel.name;
       }
-      else if( _.isString(field.name) ){
+      else if( typeof field.name === 'string' ){
         name = field.name;
       }
 
       // Create a new model entry
-      if( !_.isObject(existingModel) ){
-        self._model[name] = _.assign(field.schema, {
+      if( typeof existingModel !== 'object' ){
+        self._model[name] = $.extend(true, {}, field.schema, {
           name: name,
           type: field.key
         });
@@ -288,9 +317,9 @@ dust.onLoad = function(name, callback) {
       var bodyObj = {
         name: name,
         model: existingModel,
-        allowsChoices: _.has(existingModel,'choices')
+        allowsChoices: (existingModel !== undefined)
       };
-      bodyObj = _.assign(bodyObj,field);
+      bodyObj = $.extend(true, {}, bodyObj,field);
 
       // Render base element (all fields need these base values)
       dust.render('element-base', bodyObj, function(err, out){
@@ -310,8 +339,8 @@ dust.onLoad = function(name, callback) {
         self._opts.targets.find('ul').sortable();
 
         // Load choices already present
-        if( _.has(existingModel,'choices') ){
-          _.each(existingModel.choices,function(choice,key){
+        if( existingModel.choices !== undefined ){
+          $.each(existingModel.choices,function(key,choice){
             self.appendFieldToFormElementEditor( elem, field, existingModel, choice, key );
           });
           return;
@@ -333,9 +362,9 @@ dust.onLoad = function(name, callback) {
       var groups = self._opts.targets.find('.frmb-group');
 
       var i = 1;
-      _.each(groups,function(elem,key){
+      $.each(groups,function(key,elem){
         var id = $(elem).attr('id');
-        if( _.has(self._model,id) ){
+        if( self._model[id] !== undefined ){
           self._model[id].sortOrder = i;
         }
         i++;
@@ -350,14 +379,14 @@ dust.onLoad = function(name, callback) {
     appendFieldToFormElementEditor: function( frmb_group, field, parentModel, existingModel, index ){
 
       // load additional details template
-      if( _.has(field,'template') ){
+      if( field.template !== undefined ){
 
         // choices
-        if( _.has(parentModel,'choices') && _.isArray(parentModel.choices) ){
+        if( parentModel.choices !== undefined && parentModel.choices.length > 0 ){
 
           // Create a new model
-          if( !_.isObject(existingModel) ){
-            existingModel = _.clone(field.choiceSchema);
+          if( typeof existingModel !== 'object' ){
+            existingModel = $.extend(true,{},field.choiceSchema);
             parentModel.choices.push( existingModel);
           }
 
@@ -367,7 +396,7 @@ dust.onLoad = function(name, callback) {
           };
 
           // new index
-          index = _.isNumber(index) ? index : parentModel.choices.length;
+          index = (typeof index === 'number') ? index : parentModel.choices.length;
           bodyObj.name += '_choices.'+index;
 
           dust.render(field.template, bodyObj, function(err, out){
@@ -392,11 +421,11 @@ dust.onLoad = function(name, callback) {
         type = path[0];
       }
 
-      if( !_.isObject( this._model[id] ) ){
+      if( this._model[id] === undefined ){
         throw new Error('Model has no entry for ' + id);
       }
 
-      if( !_.has( this._model[id], type ) ){
+      if( this._model[id].type === undefined ){
         throw new Error('Invalid schema field ' + type + ' for model ' + id);
       }
 
@@ -405,10 +434,10 @@ dust.onLoad = function(name, callback) {
       // Special handling for choice
       if( type === 'choices' ){
 
-        var index = _.parseInt(path[1]);
+        var index = parseInt(path[1],10);
 
         // verify field is in schema
-        if( !_.has( this._model[id][type][index], path[2] ) ){
+        if( this._model[id][type][index][path[2]] === undefined  ){
           throw new Error('Invalid choice schema field ' + path[2] + ' for model ' + id);
         }
 
@@ -434,7 +463,7 @@ dust.onLoad = function(name, callback) {
         // we're deleting a sub model
         var _tmp = id.replace(/.*_/,'');
         var path = _tmp.split('.');
-        var index = _.parseInt(path[1]);
+        var index = parseInt(path[1],10);
         id = id.replace('_'+_tmp,'');
 
         delete this._model[id][path[0]][index];
@@ -459,13 +488,9 @@ dust.onLoad = function(name, callback) {
         model: this._model
       };
 
-      $.ajax({
-        url: this._opts.save_url,
-        data: JSON.stringify(save),
-        contentType : 'application/json',
-        type: 'post',
-        success: function(resp){
-        }
+      this._opts.save({
+        form_id: this._opts.form_id,
+        model: this._model
       });
     }
   };

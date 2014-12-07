@@ -8,15 +8,15 @@ Think of it like a CMS for forms.
 
 ### Installation with Bower
 
-We support installation via [Bower](http://bower.io/): `bower install jquery.formbuilder`
+We support installation via [Bower](http://bower.io/): `bower install jquery.formbuilder`. Requires `jQuery` and `dustjs-linkedin` template library.
 
-### Requirements
+### Usage
 
-Formbuilder 2 requires a few tools, but we include them in the `dist` package for your convenience.
+Take a look at `dist/index.html`. You essentially need to declare a `new formbuilder()` with at least a few options:
 
-- `lodash` - An excellent (fast/light-weight) javascript utility library
-- `jQuery` - A DOM manipulation/ajax library
-- `dustjs` - A javascript templating engine
+- `targets` - A jQuery DOM element to attach instances to, i.e. `$('.formbuilder')`
+- `save` - A callback that executes when a form is saved
+- `startingModel` - A starting model if one is loaded from a database
 
 ### What's Different In v2
 
