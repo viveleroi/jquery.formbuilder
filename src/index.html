@@ -4,7 +4,7 @@
 		<title>FormBuilder Demo</title>
 		<meta charset="utf-8" />
 
-		<!-- REQUIRED: jquery, lodash, dust-linkedin -->
+		<!-- REQUIRED: jquery, dust-linkedin -->
 		<!-- build:js js/libs.min.js -->
 		<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="../bower_components/html5sortable/jquery.sortable.js"></script>
@@ -34,7 +34,7 @@
 				$.getJSON( 'fake-form-db-vals.json', function(resp){
 
           // Create an instance of form builder
-					var myForm = new formbuilder({
+					var myForm = new Formbuilder({
 
 						// Provide a dom element the form will be built to
 						// jQuery or simpleDOM elements required

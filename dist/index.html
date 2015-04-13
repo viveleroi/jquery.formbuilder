@@ -4,7 +4,7 @@
 		<title>FormBuilder Demo</title>
 		<meta charset="utf-8" />
 
-		<!-- REQUIRED: jquery, lodash, dust-linkedin -->
+		<!-- REQUIRED: jquery, dust-linkedin -->
 		<script src="js/libs.min.js"></script>
 
 		<script src="js/formbuilder.min.js"></script>
@@ -27,7 +27,7 @@
 				$.getJSON( 'fake-form-db-vals.json', function(resp){
 
           // Create an instance of form builder
-					var myForm = new formbuilder({
+					var myForm = new Formbuilder({
 
 						// Provide a dom element the form will be built to
 						// jQuery or simpleDOM elements required
