@@ -507,7 +507,7 @@
 
       for( var k in self._model ){
         var field = self._model[k];
-        if( field.name === undefined || field.name === '' ){
+        if( typeof field.name !== 'string' || field.name.trim().length === 0 ){
           self._model[k].name = field.label.toLowerCase().replace(/([^a-zA-Z0-9\._-]+)/g,'-');
         }
       }
